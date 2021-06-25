@@ -16,6 +16,8 @@
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 #include "effect.h"
+#include "glyph.h"
+#include "text.h"
 CRenderer* CManager::m_pRenderer = NULL;
 CInput* CManager::m_pInput = NULL;
 CCamera* CManager::m_pCamera = NULL;
@@ -72,7 +74,7 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 
 	LoadFile();									//ファイル読み込み
 	CDebug::Init();								//デバッグ情報の初期化処理（今はFPSのみ）
-	
+	CText::Create(ZERO_VEC, 100, "テストてすとtestｔｅｓｔ仮123", CText::ALIGN_LEFT, "Nikkyou Sans", D3DCOLOR_RGBA(255, 255, 255, 255));
 	CPlayer::Create(D3DXVECTOR3(0.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 	CPolygon3d::Create(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1000.0f, 1000.0f, 0));
 	CPolygon3d::Create(D3DXVECTOR3(0, 1000, 0), D3DXVECTOR3(0, 0, 180), D3DXVECTOR3(1000.0f, 1000.0f, 0));
@@ -132,7 +134,7 @@ void CManager::Update(void)
 
 	m_pCamera->Update();
 
-	
+
 	ImGui::Begin("Debug",&m_bImShowAnotherWindow);
 	ImGui::Text("FPS:%d", GetFPS());
 	if (ImGui::Button("ToggleShadow"))
@@ -146,6 +148,10 @@ void CManager::Update(void)
 	if (ImGui::Button("Effect(Nega)"))
 	{
 		CEffect::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0), D3DXVECTOR3(1, 1, 0), true);
+	}
+	if (ImGui::Button("mozi"))
+	{
+		CGlyph::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0), "￥");
 	}
 	ImGui::End();
 	ImGui::EndFrame();
@@ -194,6 +200,7 @@ void CManager::LoadFile(void)
 {
 	CPlayer::Load();
 	CEffect::Load();
+	CText::Load();
 }
 
 //・・・・・・・・・・・・・・・・・・・・・・・・・・・
@@ -203,4 +210,5 @@ void CManager::UnloadFiles(void)
 {
 	CPlayer::Unload();
 	CEffect::Unload();
+	CText::Unload();
 }

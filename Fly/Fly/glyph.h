@@ -1,39 +1,36 @@
 //・・・・・・・・・・・・・・・・・・・・・・・・・・・
 //
-//	effect.h
+//	glyph.h
 //	Author:池田悠希
 //
 //・・・・・・・・・・・・・・・・・・・・・・・・・・・
-#ifndef _EFFECT_H_
-#define _EFFECT_H_
+#ifndef _GLYPH_H_
+#define _GLYPH_H_
+
 #include "main.h"
-#include "scene.h"
+#include "scene2d.h"
 //・・・・・・・・・・・・・・・・・・・・・・・・・・・
 //前方宣言
 //・・・・・・・・・・・・・・・・・・・・・・・・・・・
-class CEffect : public CScene
+class CGlyph : public CScene2d
 {
 public:
-	CEffect();
-	~CEffect();
+	CGlyph();
+	~CGlyph();
 
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CEffect* Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, bool bNega);
+	static CGlyph* Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, TCHAR* chara);
 
 	static void Load(void);
 	static void Unload(void);
 
 private:
-	void CreateStencil(int vtxIndex);
-
-	static LPDIRECT3DTEXTURE9 m_apTexture[2];
-	D3DXVECTOR3 m_pos;
-	D3DXVECTOR3 m_size;
-	bool m_bNega;
-	LPDIRECT3DVERTEXBUFFER9 m_apVtxBuff[2];
+	static LPD3DXFONT m_pFont;
+	TCHAR *m_pChar;
+	LPDIRECT3DTEXTURE9 m_pTexture;
 };
 #endif

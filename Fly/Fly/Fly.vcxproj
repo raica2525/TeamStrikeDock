@@ -148,6 +148,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="glyph.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_dx9.h" />
@@ -171,11 +172,13 @@
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="text.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="glyph.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_dx9.cpp" />
@@ -197,6 +200,7 @@
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="text.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
