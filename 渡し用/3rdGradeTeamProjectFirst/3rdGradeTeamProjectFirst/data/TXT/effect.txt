@@ -1,0 +1,41 @@
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# エフェクトの情報（F4でリロード可能）
+#------------------------------------------------------------------------------
+
+#---------------------------------------
+# [0] 回復
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 4
+	ONCE = 35
+	PLANE = 1		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1700
+	SPEED_MIN = 1200
+	SPEED_AA_MAX = 1000
+	SPEED_AA_MIN = 700
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 0.407 0.956 0.878 1.0
+	COL_CHANGE = 0.0 0.0 0.0 0.0
+	FADE_OUT_RATE = 0.0	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -2.0 -2.0 0.0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+
+
+END_SCRIPT		# この行は絶対消さないこと！
