@@ -1,0 +1,957 @@
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# エフェクトの情報（F4でリロード可能）
+#------------------------------------------------------------------------------
+
+#---------------------------------------
+# [0] 回復
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 4
+	ONCE = 35
+	PLANE = 1		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1700
+	SPEED_MIN = 1200
+	SPEED_AA_MAX = 1000
+	SPEED_AA_MIN = 700
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 0.407 0.956 0.878 1.0
+	COL_CHANGE = 0.0 0.0 0.0 0.0
+	FADE_OUT_RATE = 0.0	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -2.0 -2.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [1] ボールオーラ
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 1
+	TEX_TYPE = 6
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 40	# 0～314
+	SPEED_MAX = 1000
+	SPEED_MIN = 500
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 1.0 1.0 1.0
+	COL_CHANGE = 0.0 0.0 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -4.0 -4.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [2] ボール出現
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 2
+	TEX_TYPE = 11
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 1		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1000
+	SPEED_MIN = 700
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 12000
+	SIZE_MIN = 12000
+	SIZE_CHANGE = -2.5 10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 250
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [3] 反転合成用
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 3
+	TEX_TYPE = 20
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 0
+	SIZE_MIN = 0
+	SIZE_CHANGE = 75.0 75.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 50
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [4] 歩き始めの砂煙右
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 4
+	TEX_TYPE = 6
+	ONCE = 15
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 34	# 0～314
+	SCATTER_WIDTH = 44	# 0～314
+	SPEED_MAX = 900
+	SPEED_MIN = 600
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 0.452 0.452 0.452 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 17500
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [5] ジャンプの砂埃右
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 5
+	TEX_TYPE = 6
+	ONCE = 10
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 25	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 1700
+	SPEED_MIN = 1200
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 0.452 0.452 0.452 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [6] 着地の砂埃
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 6
+	TEX_TYPE = 6
+	ONCE = 25
+	PLANE = 1		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 400
+	SPEED_MIN = 400
+	SPEED_AA_MAX = 300
+	SPEED_AA_MIN = 300
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 0.452 0.452 0.452 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 15000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [7] 二段ジャンプの空気の輪
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 7
+	TEX_TYPE = 34
+	ONCE = 20
+	PLANE = 1		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1000
+	SPEED_MIN = 1000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 0.950	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.020	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 15000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -9.0 -9.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 160
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [8] 二段ジャンプの砂埃
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 8
+	TEX_TYPE = 34
+	ONCE = 10
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 157	# 0～314
+	SCATTER_WIDTH = 90	# 0～314
+	SPEED_MAX = 800
+	SPEED_MIN = 700
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.010	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [9] 歩き始めの砂煙左
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 9
+	TEX_TYPE = 6
+	ONCE = 15
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 280	# 0～314
+	SCATTER_WIDTH = 44	# 0～314
+	SPEED_MAX = 900
+	SPEED_MIN = 600
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 0.452 0.452 0.452 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 17500
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [10] ジャンプの砂埃左
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 10
+	TEX_TYPE = 6
+	ONCE = 10
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 289	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 1700
+	SPEED_MIN = 1200
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 0.452 0.452 0.452 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [11] ボールを撃つ1P
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 11
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 1500
+	SPEED_MIN = 1000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 0.99 0.0 1.0
+	COL_CHANGE = 0.0 -0.05 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.5 -2.5 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [12] ボールを撃つ2P
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 12
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 1500
+	SPEED_MIN = 1000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 0.588 0.937 1.0 1.0
+	COL_CHANGE = -0.03 -0.03 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.5 -2.5 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [13] ボールを撃つ3P
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 13
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 1500
+	SPEED_MIN = 1000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 0.933 0.478 0.02 1.0
+	COL_CHANGE = 0.0 0.01 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.5 -2.5 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [14] ボールを撃つ4P
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 14
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 1500
+	SPEED_MIN = 1000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 1.0 0.0 1.0
+	COL_CHANGE = -0.05 0.0 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.5 -2.5 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [15] ボールを撃つ1P改
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 15
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 500
+	SPEED_MIN = 250
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.1		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 0.99 0.0 1.0
+	COL_CHANGE = 0.0 -0.05 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.0 -2.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [16] ボールを撃つ2P改
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 16
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 500
+	SPEED_MIN = 250
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.1		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 0.588 0.937 1.0 1.0
+	COL_CHANGE = -0.03 -0.03 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.0 -2.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [17] ボールを撃つ3P改
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 17
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 500
+	SPEED_MIN = 250
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.1		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 0.933 0.478 0.02 1.0
+	COL_CHANGE = 0.0 0.01 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.0 -2.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [18] ボールを撃つ4P改
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 18
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 500
+	SPEED_MIN = 250
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.1		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 1.0 0.0 1.0
+	COL_CHANGE = -0.05 0.0 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 19500
+	SIZE_CHANGE = -2.0 -2.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [19] ボールを打ったときの吸収してるやつ（1Fづつ生成）
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 19
+	TEX_TYPE = 38
+	ONCE = 2
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 1		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 4000
+	SPEED_MIN = 4000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 15000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = 0.0 -17.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 300
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [20] ボールが当たったときの衝撃みたいなやつ(角度はボールの当たった角度で)
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 20
+	TEX_TYPE = 11
+	ONCE = 15
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 70	# 0～314
+	SPEED_MAX = 2000
+	SPEED_MIN = 1800
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 10000
+	SIZE_MIN = 8000
+	SIZE_CHANGE = -5.0 25.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 70
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [21] ラッキーガード本体
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 21
+	TEX_TYPE = 29
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.05	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 45
+	SIZE_MAX = 0
+	SIZE_MIN = 0
+	SIZE_CHANGE = 10.0 10.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 30
+	SIZE_CHANGE_START_OR_FINISH = 1		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 50
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [22] ラッキーガードオーラ
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 22
+	TEX_TYPE = 29
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.02	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 0
+	SIZE_MIN = 0
+	SIZE_CHANGE = 10.5 10.5 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 50
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [23] タイトル炎赤
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 23
+	TEX_TYPE = 6
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 40	# 0～314
+	SPEED_MAX = 1000
+	SPEED_MIN = 500
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 0.99 0.0 1.0
+	COL_CHANGE = 0.0 -0.05 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -4.0 -4.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [24] タイトル炎青
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 24
+	TEX_TYPE = 6
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 40	# 0～314
+	SPEED_MAX = 1000
+	SPEED_MIN = 500
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 0.588 0.937 1.0 1.0
+	COL_CHANGE = -0.03 -0.03 0.0 0.0
+	FADE_OUT_RATE = 0.001	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 22500
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -4.0 -4.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+END_SCRIPT		# この行は絶対消さないこと！

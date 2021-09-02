@@ -1,0 +1,342 @@
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# テクスチャの情報（リロード不可、起動前に前もって追加しておく）
+#------------------------------------------------------------------------------
+
+#---------------------------------------
+# [0] 仮
+#---------------------------------------
+TEXTURESET
+	TYPE = 0
+	NAME = data/TEXTURE/000_default.png
+END_TEXTURESET
+
+#---------------------------------------
+# [1] タイトルの背景
+#---------------------------------------
+TEXTURESET
+	TYPE = 1
+	NAME = data/TEXTURE/001_title_bg.png
+END_TEXTURESET
+
+#---------------------------------------
+# [2] タイトルのロゴ
+#---------------------------------------
+TEXTURESET
+	TYPE = 2
+	NAME = data/TEXTURE/002_title_logo.png
+END_TEXTURESET
+
+#---------------------------------------
+# [3] タイトルのプレスボタン
+#---------------------------------------
+TEXTURESET
+	TYPE = 3
+	NAME = data/TEXTURE/003_title_press.png
+END_TEXTURESET
+
+#---------------------------------------
+# [4] パーティクル（一粒）
+#---------------------------------------
+TEXTURESET
+	TYPE = 4
+	NAME = data/TEXTURE/004_particle001.png
+END_TEXTURESET
+
+#---------------------------------------
+# [5] アニメーションのある煙
+#---------------------------------------
+TEXTURESET
+	TYPE = 5
+	NAME = data/TEXTURE/005_explosion001.png
+	PATTERN = 8
+	SPEED = 2
+	REPEAT = 0
+END_TEXTURESET
+
+#---------------------------------------
+# [6] パーティクル（細かめ）
+#---------------------------------------
+TEXTURESET
+	TYPE = 6
+	NAME = data/TEXTURE/006_particle002.png
+END_TEXTURESET
+
+#---------------------------------------
+# [7] 波のドーナッツ
+#---------------------------------------
+TEXTURESET
+	TYPE = 7
+	NAME = data/TEXTURE/007_Donuts.png
+END_TEXTURESET
+
+#---------------------------------------
+# [8] 衝撃波
+#---------------------------------------
+TEXTURESET
+	TYPE = 8
+	NAME = data/TEXTURE/008_shock.png
+END_TEXTURESET
+
+#---------------------------------------
+# [9] jpgダブルドーナッツ
+#---------------------------------------
+TEXTURESET
+	TYPE = 9
+	NAME = data/TEXTURE/009_DoubleDonuts.jpg
+END_TEXTURESET
+
+#---------------------------------------
+# [10] jpgパーティクル
+#---------------------------------------
+TEXTURESET
+	TYPE = 10
+	NAME = data/TEXTURE/010_particle003.jpg
+END_TEXTURESET
+
+#---------------------------------------
+# [11] 細長パーティクル
+#---------------------------------------
+TEXTURESET
+	TYPE = 11
+	NAME = data/TEXTURE/011_particle004.png
+END_TEXTURESET
+
+#---------------------------------------
+# [12] 数字
+#---------------------------------------
+TEXTURESET
+	TYPE = 12
+	NAME = data/TEXTURE/012_number.png
+END_TEXTURESET
+
+#---------------------------------------
+# [13] コンティニュー
+#---------------------------------------
+TEXTURESET
+	TYPE = 13
+	NAME = data/TEXTURE/013_pause000.png
+END_TEXTURESET
+
+#---------------------------------------
+# [14] リセット
+#---------------------------------------
+TEXTURESET
+	TYPE = 14
+	NAME = data/TEXTURE/014_pause001.png
+END_TEXTURESET
+
+#---------------------------------------
+# [15] やめる
+#---------------------------------------
+TEXTURESET
+	TYPE = 15
+	NAME = data/TEXTURE/015_pause002.png
+END_TEXTURESET
+
+#---------------------------------------
+# [16] ポーズ画面の背景
+#---------------------------------------
+TEXTURESET
+	TYPE = 16
+	NAME = data/TEXTURE/016_pause100.png
+END_TEXTURESET
+
+#---------------------------------------
+# [17] ゲージのフレーム
+#---------------------------------------
+TEXTURESET
+	TYPE = 17
+	NAME = data/TEXTURE/017_frame.png
+END_TEXTURESET
+
+#---------------------------------------
+# [18] ゲージ
+#---------------------------------------
+TEXTURESET
+	TYPE = 18
+	NAME = data/TEXTURE/018_gauge.png
+END_TEXTURESET
+
+#---------------------------------------
+# [19] ストック
+#---------------------------------------
+TEXTURESET
+	TYPE = 19
+	NAME = data/TEXTURE/019_stock.png
+END_TEXTURESET
+
+#---------------------------------------
+# [20] 反転合成用
+#---------------------------------------
+TEXTURESET
+	TYPE = 20
+	NAME = data/TEXTURE/020_nega.png
+END_TEXTURESET
+
+#---------------------------------------
+# [21] 1p
+#---------------------------------------
+TEXTURESET
+	TYPE = 21
+	NAME = data/TEXTURE/021_1p.png
+END_TEXTURESET
+
+#---------------------------------------
+# [22] 2p
+#---------------------------------------
+TEXTURESET
+	TYPE = 22
+	NAME = data/TEXTURE/022_2p.png
+END_TEXTURESET
+
+#---------------------------------------
+# [23] 3p
+#---------------------------------------
+TEXTURESET
+	TYPE = 23
+	NAME = data/TEXTURE/023_3p.png
+END_TEXTURESET
+
+#---------------------------------------
+# [24] 4p
+#---------------------------------------
+TEXTURESET
+	TYPE = 24
+	NAME = data/TEXTURE/024_4p.png
+END_TEXTURESET
+
+#---------------------------------------
+# [25] cpよわい
+#---------------------------------------
+TEXTURESET
+	TYPE = 25
+	NAME = data/TEXTURE/025_cp1.png
+	PATTERN = 2
+	SPEED = 180
+	REPEAT = 1
+END_TEXTURESET
+
+#---------------------------------------
+# [26] ラジカセ
+#---------------------------------------
+TEXTURESET
+	TYPE = 26
+	NAME = data/TEXTURE/026_radio.png
+END_TEXTURESET
+
+#---------------------------------------
+# [27] cpふつう
+#---------------------------------------
+TEXTURESET
+	TYPE = 27
+	NAME = data/TEXTURE/027_cp2.png
+	PATTERN = 2
+	SPEED = 180
+	REPEAT = 1
+END_TEXTURESET
+
+#---------------------------------------
+# [28] cpつよい
+#---------------------------------------
+TEXTURESET
+	TYPE = 28
+	NAME = data/TEXTURE/028_cp3.png
+	PATTERN = 2
+	SPEED = 180
+	REPEAT = 1
+END_TEXTURESET
+
+#---------------------------------------
+# [29] ラッキーガード
+#---------------------------------------
+TEXTURESET
+	TYPE = 29
+	NAME = data/TEXTURE/029_guard.png
+END_TEXTURESET
+
+#---------------------------------------
+# [30] コンポL
+#---------------------------------------
+TEXTURESET
+	TYPE = 30
+	NAME = data/TEXTURE/030_compoL.png
+END_TEXTURESET
+
+
+#---------------------------------------
+# [31] コンポLO
+#---------------------------------------
+TEXTURESET
+	TYPE = 31
+	NAME = data/TEXTURE/031_compoLO.png
+END_TEXTURESET
+
+#---------------------------------------
+# [32] コンポR
+#---------------------------------------
+TEXTURESET
+	TYPE = 32
+	NAME = data/TEXTURE/032_compoR.png
+END_TEXTURESET
+
+
+#---------------------------------------
+# [33] コンポRO
+#---------------------------------------
+TEXTURESET
+	TYPE = 33
+	NAME = data/TEXTURE/033_compoRO.png
+END_TEXTURESET
+
+#---------------------------------------
+# [34] ようご追加の煙1
+#---------------------------------------
+TEXTURESET
+    TYPE = 34
+    NAME = data/TEXTURE/034_particle004.png
+END_TEXTURESET
+
+#---------------------------------------
+# [35] ちょっと欠けた輪
+#---------------------------------------
+TEXTURESET
+    TYPE = 35
+    NAME = data/TEXTURE/035_lackring.png
+END_TEXTURESET
+
+#---------------------------------------
+# [36] ようご追加の煙2
+#---------------------------------------
+TEXTURESET
+    TYPE = 36
+    NAME = data/TEXTURE/036_smoke.png
+END_TEXTURESET
+
+#---------------------------------------
+# [37] 輪っか
+#---------------------------------------
+TEXTURESET
+    TYPE = 37
+    NAME = data/TEXTURE/037_ring.png
+END_TEXTURESET
+
+#---------------------------------------
+# [38] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 38
+    NAME = data/TEXTURE/038_line.png
+END_TEXTURESET
+
+
+#---------------------------------------
+# [39] カスタマイズ画面の背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 39
+    NAME = data/TEXTURE/039_custom_bg.jpg
+END_TEXTURESET
+
+END_SCRIPT		# この行は絶対消さないこと！
