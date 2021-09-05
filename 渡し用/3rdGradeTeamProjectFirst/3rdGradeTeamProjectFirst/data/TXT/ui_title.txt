@@ -32,10 +32,10 @@ UISET
 	PARAM1 = 4.0
 	PARAM2 = 1.0
 	PARAM3 = 1
-	PARAM4 = 90
+	PARAM4 = 100
 	ACTION1 = 2		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
-	PARAM0 = 0.075
+	PARAM0 = 0.1
 	PARAM1 = 4
 	PARAM2 = 180
 END_UISET
@@ -45,7 +45,7 @@ END_UISET
 #---------------------------------------
 UISET
 	TYPE = 3
-	POS = 640.0 580.0
+	POS = 640.0 500.0
 	SIZE = 934.0 50.0
 	COL = 0.431 0.431 0.388 1.0
 	ACTION = 2

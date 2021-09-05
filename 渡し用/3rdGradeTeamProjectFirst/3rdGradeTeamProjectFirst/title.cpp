@@ -70,6 +70,16 @@ void CTitle::Update(void)
     // 炎エフェクトを上下に発生
     EmitFire(FIRE_POS_UP);
     EmitFire(FIRE_POS_DOWN);
+    EmitFire(FIRE_POS_UP);
+    EmitFire(FIRE_POS_DOWN);
+    EmitFire(FIRE_POS_UP);
+    EmitFire(FIRE_POS_DOWN);
+    EmitFire(FIRE_POS_UP);
+    EmitFire(FIRE_POS_DOWN);
+    EmitFire(FIRE_POS_UP);
+    EmitFire(FIRE_POS_DOWN);
+    EmitFire(FIRE_POS_UP);
+    EmitFire(FIRE_POS_DOWN);
 
     // タイトルの時間をカウント
     m_nCntTime++;
@@ -109,9 +119,32 @@ void CTitle::Update(void)
 //=============================================================================
 void CTitle::EmitFire(FIRE_POS firePos)
 {
-    // 炎エフェクト生成
-    const float ANGLE_ADJUST = 90.0f;
-    CEffect2D::Create(CEffectData::TYPE_TITLE_FIRE_RED, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f), D3DXToRadian(247.5f));
-    CEffect2D::Create(CEffectData::TYPE_TITLE_FIRE_RED, D3DXVECTOR3(SCREEN_WIDTH, -50.0f, 0.0f), D3DXToRadian(247.5f));
-    CEffect2D::Create(CEffectData::TYPE_TITLE_FIRE_BLUE, D3DXVECTOR3(0.0f, SCREEN_HEIGHT + 50.0f, 0.0f), D3DXToRadian(67.5f));
+    // 変数宣言
+    const float ANGLE_ADJUST = 90.0f;   // 時計でいう0が0度の時に合わせる（2Dポリゴンの頂点をZで指定しているから）
+    const float POS_Y_ADJUST = 50.0f;
+    const int RAND_X = 1380;
+    const float BASE_ANGLE = 67.5f;
+    D3DXVECTOR3 pos = DEFAULT_VECTOR;
+    float fAngle = 0.0f;
+    CEffectData::TYPE effectType = CEffectData::TYPE_TITLE_FIRE_RED;
+
+    // 位置と向きと色を決める
+    switch (firePos)
+    {
+    case FIRE_POS_UP:
+        pos.y = -POS_Y_ADJUST;
+        pos.x = float(rand() % RAND_X);
+        fAngle = D3DXToRadian(180.0f) + BASE_ANGLE - ANGLE_ADJUST;
+        effectType = CEffectData::TYPE_TITLE_FIRE_BLUE;
+        break;
+    case FIRE_POS_DOWN:
+        pos.y = SCREEN_HEIGHT + POS_Y_ADJUST;
+        pos.x = float(rand() % RAND_X) - float(RAND_X - SCREEN_WIDTH);
+        fAngle = BASE_ANGLE - ANGLE_ADJUST;
+        effectType = CEffectData::TYPE_TITLE_FIRE_RED;
+        break;
+    }
+
+    // 炎生成
+    CEffect2D::Create(effectType, pos, fAngle);
 }
