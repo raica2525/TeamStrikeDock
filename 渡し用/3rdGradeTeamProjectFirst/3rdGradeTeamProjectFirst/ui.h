@@ -181,6 +181,12 @@ public:
     void PlayActionRot(int nNum);        // 回転アクション
     void PlayActionTexBrend(int nNum);   // テクスチャブレンドアクション
 
+    /*========================================================
+    // アクション用の共通処理
+    //======================================================*/
+    void RimitToValue(const float fChangeRate, const float fCurrentValue, const float fDestValue, bool& bUpdate);
+    void RimitRepeatValue(float& fChangeRate, const float fMemoryValue, const float fCurrentValue, const float fDestValue, bool& bUpdate);
+
 private:
     int m_nTexType;                         // 使うテクスチャの種類
     ActionInfo m_aActionInfo[MAX_ACTION];   // 動きの状態

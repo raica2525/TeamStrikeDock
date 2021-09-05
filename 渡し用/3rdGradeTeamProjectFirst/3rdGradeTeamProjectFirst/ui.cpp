@@ -489,6 +489,12 @@ void CUI::SetActionInfo(int nNum, int action, bool bLock, float fParam0, float f
         m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]
             = (float)BindTexture((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_TEX_NUMBER], brend);
     }
+    else if (m_aActionInfo[nNum].action == ACTION_ROT)
+    {
+        // 回転アクションなら、値をラジアンにする
+        m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE] = D3DXToRadian(m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE]);
+        m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE] = D3DXToRadian(m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE]);
+    }
 
     // 記憶用変数に結びつける
     m_aActionInfo[nNum].bMemoryLock = m_aActionInfo[nNum].bLock;
@@ -534,6 +540,9 @@ void CUI::SetActionReset(int nNum)
     case ACTION_ROT:
         m_fRotAngle = m_fMemoryRotAngle;
         break;
+    case ACTION_TEX_BREND:
+        CScene2D::ResetCountAnim((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]);
+        break;
     }
 
     // 構造体の内容をリセット
@@ -551,36 +560,9 @@ void CUI::SetActionReset(int nNum)
 //=========================================================
 void CUI::SetAllActionReset(void)
 {
-    // 記憶しておいたものを結びつける
-    for (int nCntInfo = 0; nCntInfo < MAX_ACTION; nCntInfo++)
+    for (int nCnt = 0; nCnt < MAX_ACTION; nCnt++)
     {
-        // アクションによって、リセットするものを変える
-        switch (m_aActionInfo[nCntInfo].action)
-        {
-        case ACTION_SIZE:
-            CScene2D::SetSize(m_memorySize);
-            break;
-        case ACTION_POS:
-            CScene2D::SetPosition(m_memoryPos);
-            break;
-        case ACTION_ALPHA:
-            m_col.a = m_memoryCol.a;
-            break;
-        case ACTION_COLOR:
-            m_col = m_memoryCol;
-            break;
-        case ACTION_ROT:
-            m_fRotAngle = m_fMemoryRotAngle;
-            break;
-        }
-
-        // 構造体の内容をリセット
-        m_aActionInfo[nCntInfo].nCntTime = 0;
-        m_aActionInfo[nCntInfo].bLock = m_aActionInfo[nCntInfo].bMemoryLock;
-        for (int nCntParam = 0; nCntParam < MAX_ACTION_PARAM; nCntParam++)
-        {
-            m_aActionInfo[nCntInfo].afParam[nCntParam] = m_aActionInfo[nCntInfo].afMemoryParam[nCntParam];
-        }
+        SetActionReset(nCnt);
     }
 }
 
@@ -657,22 +639,8 @@ void CUI::PlayActionSize(int nNum)
         break;
 
     case RIMIT_TO_VALUE:
-        // 拡大中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] > 0)
-        {
-            // 指定値より小さいなら拡大
-            if (size.x < m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE])
-            {
-                bUpdate = true;
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] < 0)
-        {
-            if (size.x > m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE])
-            {
-                bUpdate = true;
-            }
-        }
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X],
+            size.x, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE], bUpdate);
         break;
 
     case RIMIT_REPEAT_FRAME:
@@ -691,67 +659,8 @@ void CUI::PlayActionSize(int nNum)
         break;
 
     case RIMIT_REPEAT_VALUE:
-        // 拡大中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] > 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memorySize.x < m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE])
-            {
-                // 「指定値」より小さいなら拡大
-                if (size.x < m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE])
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] *= -1;
-                }
-            }
-            else
-            {
-                // 「記憶した位置」より小さいなら拡大
-                if (size.x < m_memorySize.x)
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] *= -1;
-                }
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] < 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memorySize.x < m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE])
-            {
-                // 「記憶した位置」より大きいなら縮小
-                if (size.x > m_memorySize.x)
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] *= -1;
-                }
-            }
-            else
-            {
-                // 「指定値」より大きいなら縮小
-                if (size.x > m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE])
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] *= -1;
-                }
-            }
-        }
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X],
+            m_memorySize.x, size.y, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE], bUpdate);
         break;
 
     case RIMIT_EQUAL_VALUE:
@@ -818,39 +727,12 @@ void CUI::PlayActionPos(int nNum)
         break;
 
     case RIMIT_TO_VALUE:
-        // X正方向に移動中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] > 0)
-        {
-            // 指定値より小さいなら移動
-            if (pos.x < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X])
-            {
-                bUpdateX = true;
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] < 0)
-        {
-            if (pos.x > m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X])
-            {
-                bUpdateX = true;
-            }
-        }
-
-        // Y正方向に移動中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] > 0)
-        {
-            // 指定値より小さいなら移動
-            if (pos.y < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y])
-            {
-                bUpdateY = true;
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] < 0)
-        {
-            if (pos.y > m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y])
-            {
-                bUpdateY = true;
-            }
-        }
+        // X
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X],
+            pos.x, m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X], bUpdateX);
+        // Y
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y],
+            pos.y, m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y], bUpdateY);
         break;
 
     case RIMIT_REPEAT_FRAME:
@@ -871,129 +753,12 @@ void CUI::PlayActionPos(int nNum)
         break;
 
     case RIMIT_REPEAT_VALUE:
-        // X正方向に移動中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] > 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memoryPos.x < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X])
-            {
-                // 「指定値」より小さいなら移動
-                if (pos.x < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X])
-                {
-                    bUpdateX = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] *= -1;
-                }
-            }
-            else
-            {
-                // 「記憶した位置」より小さいなら移動
-                if (pos.x < m_memoryPos.x)
-                {
-                    bUpdateX = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] *= -1;
-                }
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] < 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memoryPos.x < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X])
-            {
-                // 「記憶した位置」より大きいなら移動
-                if (pos.x > m_memoryPos.x)
-                {
-                    bUpdateX = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] *= -1;
-                }
-            }
-            else
-            {
-                // 「指定値」より大きいなら移動
-                if (pos.x > m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X])
-                {
-                    bUpdateX = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X] *= -1;
-                }
-            }
-        }
-
-        // Y正方向に移動中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] > 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memoryPos.y < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y])
-            {
-                // 「指定値」より小さいなら移動
-                if (pos.y < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y])
-                {
-                    bUpdateY = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] *= -1;
-                }
-            }
-            else
-            {
-                // 「記憶した位置」より小さいなら移動
-                if (pos.y < m_memoryPos.y)
-                {
-                    bUpdateY = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] *= -1;
-                }
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] < 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memoryPos.y < m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y])
-            {
-                // 「記憶した位置」より大きいなら移動
-                if (pos.y > m_memoryPos.y)
-                {
-                    bUpdateY = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] *= -1;
-                }
-            }
-            else
-            {
-                // 「指定値」より大きいなら移動
-                if (pos.y > m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y])
-                {
-                    bUpdateY = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y] *= -1;
-                }
-            }
-        }
+        // X
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_X],
+            m_memoryPos.x, pos.x, m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X], bUpdateX);
+        // Y
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_POS_CHANGE_RATE_Y],
+            m_memoryPos.y, pos.y, m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y], bUpdateY);
         break;
 
     case RIMIT_EQUAL_VALUE:
@@ -1056,22 +821,8 @@ void CUI::PlayActionAlpha(int nNum)
         break;
 
     case RIMIT_TO_VALUE:
-        // 加算中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] > 0)
-        {
-            // 指定値より小さいなら加算
-            if (m_col.a < m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE])
-            {
-                bUpdate = true;
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] < 0)
-        {
-            if (m_col.a > m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE])
-            {
-                bUpdate = true;
-            }
-        }
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE],
+            m_col.a, m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE], bUpdate);
         break;
 
     case RIMIT_REPEAT_FRAME:
@@ -1090,67 +841,8 @@ void CUI::PlayActionAlpha(int nNum)
         break;
 
     case RIMIT_REPEAT_VALUE:
-        // 加算中なら
-        if (m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] > 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memoryCol.a < m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE])
-            {
-                // 「指定値」より小さいなら加算
-                if (m_col.a < m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE])
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] *= -1;
-                }
-            }
-            else
-            {
-                // 「記憶した位置」より小さいなら加算
-                if (m_col.a < m_memoryCol.a)
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] *= -1;
-                }
-            }
-        }
-        else if (m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] < 0)
-        {
-            // 記憶した値が指定値より小さいなら
-            if (m_memoryCol.a < m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE])
-            {
-                // 「記憶した位置」より大きいなら減算
-                if (m_col.a > m_memoryCol.a)
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] *= -1;
-                }
-            }
-            else
-            {
-                // 「指定値」より大きいなら減算
-                if (m_col.a > m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE])
-                {
-                    bUpdate = true;
-                }
-                else
-                {
-                    // 変化量を反転
-                    m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE] *= -1;
-                }
-            }
-        }
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_ALPHA_CHANGE_RATE],
+            m_memoryCol.a, m_col.a, m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE], bUpdate);
         break;
 
     case RIMIT_EQUAL_VALUE:
@@ -1171,6 +863,110 @@ void CUI::PlayActionAlpha(int nNum)
 //=========================================================
 void CUI::PlayActionColor(int nNum)
 {
+    // 制限を考慮
+    bool bUpdateR = false;   // R更新するかどうか
+    bool bUpdateG = false;   // G更新するかどうか
+    bool bUpdateB = false;   // B更新するかどうか
+    switch ((int)m_aActionInfo[nNum].afParam[PARAM_COLOR_RIMIT])
+    {
+    case RIMIT_NONE:
+        bUpdateR = true;
+        bUpdateG = true;
+        bUpdateB = true;
+        break;
+
+    case RIMIT_TO_FRAME:
+        if (m_aActionInfo[nNum].nCntTime < (int)m_aActionInfo[nNum].afParam[PARAM_COLOR_FRAME])
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+            bUpdateR = true;
+            bUpdateG = true;
+            bUpdateB = true;
+        }
+        break;
+
+    case RIMIT_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_COLOR_FRAME])
+        {
+            bUpdateR = true;
+            bUpdateG = true;
+            bUpdateB = true;
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
+        break;
+
+    case RIMIT_TO_VALUE:
+        // R
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_R],
+            m_col.r, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_R], bUpdateR);
+        // G
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_G],
+            m_col.g, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_G], bUpdateG);
+        // B
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_B],
+            m_col.b, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_B], bUpdateB);
+        break;
+
+    case RIMIT_REPEAT_FRAME:
+        if (m_aActionInfo[nNum].nCntTime < (int)m_aActionInfo[nNum].afParam[PARAM_COLOR_FRAME])
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+            bUpdateR = true;
+            bUpdateG = true;
+            bUpdateB = true;
+        }
+        else
+        {
+            // カウンタリセットし、変化量を反転させる
+            m_aActionInfo[nNum].nCntTime = 0;
+            m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_R] *= -1;
+            m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_G] *= -1;
+            m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_B] *= -1;
+        }
+        break;
+
+    case RIMIT_REPEAT_VALUE:
+        // R
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_R],
+            m_memoryCol.r, m_col.r, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_R], bUpdateR);
+        // G
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_G],
+            m_memoryCol.g, m_col.g, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_G], bUpdateG);
+        // B
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_B],
+            m_memoryCol.b, m_col.b, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_B], bUpdateB);
+        break;
+
+    case RIMIT_EQUAL_VALUE:
+        m_col.r = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_R];
+        m_col.g = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_G];
+        m_col.b = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_B];
+        break;
+    }
+
+    // R更新
+    if (bUpdateR)
+    {
+        m_col.r += m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_R];
+    }
+
+    // G更新
+    if (bUpdateG)
+    {
+        m_col.g += m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_G];
+    }
+
+    // B更新
+    if (bUpdateB)
+    {
+        m_col.b += m_aActionInfo[nNum].afParam[PARAM_COLOR_CHANGE_RATE_B];
+    }
 }
 
 //=========================================================
@@ -1179,6 +975,79 @@ void CUI::PlayActionColor(int nNum)
 //=========================================================
 void CUI::PlayActionRot(int nNum)
 {
+    // 変数宣言
+    const float ANGLE_ADJUST = D3DXToRadian(90.0f);   // 時計でいう0が0度の時に合わせる（2Dポリゴンの頂点をZで指定しているから）
+
+    // 制限を考慮
+    bool bUpdate = false;   // 更新するかどうか
+    switch ((int)m_aActionInfo[nNum].afParam[PARAM_ROT_RIMIT])
+    {
+    case RIMIT_NONE:
+        bUpdate = true;
+        break;
+
+    case RIMIT_TO_FRAME:
+        if (m_aActionInfo[nNum].nCntTime < (int)m_aActionInfo[nNum].afParam[PARAM_ROT_FRAME])
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+            bUpdate = true;
+        }
+        break;
+
+    case RIMIT_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_ROT_FRAME])
+        {
+            bUpdate = true;
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
+        break;
+
+    case RIMIT_TO_VALUE:
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE],
+            m_fRotAngle, m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE] - ANGLE_ADJUST, bUpdate);
+        break;
+
+    case RIMIT_REPEAT_FRAME:
+        if (m_aActionInfo[nNum].nCntTime < (int)m_aActionInfo[nNum].afParam[PARAM_ROT_FRAME])
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+            bUpdate = true;
+        }
+        else
+        {
+            // カウンタリセットし、変化量を反転させる
+            m_aActionInfo[nNum].nCntTime = 0;
+            m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE] *= -1;
+        }
+        break;
+
+    case RIMIT_REPEAT_VALUE:
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE],
+            m_fMemoryRotAngle, m_fRotAngle, m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE] - ANGLE_ADJUST, bUpdate);
+        break;
+
+    case RIMIT_EQUAL_VALUE:
+        m_fRotAngle = m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE];
+        break;
+    }
+
+    // 更新
+    if (bUpdate)
+    {
+        m_fRotAngle += m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE];
+    }
+
+    // 角度の調整
+    if (m_fRotAngle > D3DXToRadian(180.0f) || m_fRotAngle < D3DXToRadian(-180.0f))
+    {
+        m_fRotAngle *= -1;
+    }
 }
 
 //=========================================================
@@ -1231,6 +1100,99 @@ void CUI::PlayActionTexBrend(int nNum)
         {
             // 一周したら、インターバル
             m_aActionInfo[nNum].nCntTime = (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_INTERVAL_FRAME];
+        }
+    }
+}
+
+//=========================================================
+// 〇値までの共通処理
+// Author : 後藤慎之助
+//=========================================================
+void CUI::RimitToValue(const float fChangeRate, const float fCurrentValue, const float fDestValue, bool& bUpdate)
+{
+    // 加算中なら
+    if (fChangeRate > 0)
+    {
+        // 現在の値が目的値より小さいなら更新
+        if (fCurrentValue < fDestValue)
+        {
+            bUpdate = true;
+        }
+    }
+    else if (fChangeRate < 0)
+    {
+        if (fCurrentValue > fDestValue)
+        {
+            bUpdate = true;
+        }
+    }
+}
+
+//=========================================================
+// 値リピートの共通処理
+// Author : 後藤慎之助
+//=========================================================
+void CUI::RimitRepeatValue(float& fChangeRate, const float fMemoryValue, const float fCurrentValue, const float fDestValue, bool& bUpdate)
+{
+    // 加算中なら
+    if (fChangeRate > 0)
+    {
+        // 記憶した値が目的値より小さいなら
+        if (fMemoryValue < fDestValue)
+        {
+            // 現在の値が目的値より小さいなら更新
+            if (fCurrentValue < fDestValue)
+            {
+                bUpdate = true;
+            }
+            else
+            {
+                // 変化量を反転
+                fChangeRate *= -1;
+            }
+        }
+        else
+        {
+            // 現在の値が記憶した値より小さいなら更新
+            if (fCurrentValue < fMemoryValue)
+            {
+                bUpdate = true;
+            }
+            else
+            {
+                // 変化量を反転
+                fChangeRate *= -1;
+            }
+        }
+    }
+    else if (fChangeRate < 0)
+    {
+        // 記憶した値が目的値より小さいなら
+        if (fMemoryValue < fDestValue)
+        {
+            // 現在の値が記憶した値より大きいなら更新
+            if (fCurrentValue > fMemoryValue)
+            {
+                bUpdate = true;
+            }
+            else
+            {
+                // 変化量を反転
+                fChangeRate *= -1;
+            }
+        }
+        else
+        {
+            // 現在の値が目的値より大きいなら移動
+            if (fCurrentValue > fDestValue)
+            {
+                bUpdate = true;
+            }
+            else
+            {
+                // 変化量を反転
+                fChangeRate *= -1;
+            }
         }
     }
 }

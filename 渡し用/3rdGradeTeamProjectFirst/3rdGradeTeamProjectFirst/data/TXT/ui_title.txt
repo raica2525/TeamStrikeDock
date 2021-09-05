@@ -55,8 +55,17 @@ UISET
 	TYPE = 3
 	POS = 640.0 500.0
 	SIZE = 934.0 50.0
+	ROT = 0			# 0～360
 	COL = 0.431 0.431 0.388 1.0
-	ACTION = 2
+	ADD_BLEND = 0		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+	ACTION0 = 5		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0.01
+	PARAM1 = 0.01
+	PARAM2 = 0.01
+	PARAM3 = 4
+	PARAM4 = 120
 END_UISET
 
 END_SCRIPT		# この行は絶対消さないこと！
