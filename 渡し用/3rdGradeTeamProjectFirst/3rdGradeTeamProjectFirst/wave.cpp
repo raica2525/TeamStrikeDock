@@ -74,10 +74,10 @@ HRESULT CWave::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
     pVtx[2].pos = m_pos + D3DXVECTOR3((float)-m_size.x / 2, (float)m_size.y / 2, 0.0f);
     pVtx[3].pos = m_pos + D3DXVECTOR3((float)m_size.x / 2, (float)m_size.y / 2, 0.0f);
     //テクスチャ座標の設定
-    pVtx[0].tex = D3DXVECTOR2(0, 0);
-    pVtx[1].tex = D3DXVECTOR2(1, 0);
-    pVtx[2].tex = D3DXVECTOR2(0, 1);
-    pVtx[3].tex = D3DXVECTOR2(1, 1);
+    pVtx[0].tex[0] = D3DXVECTOR2(0, 0);
+    pVtx[1].tex[0] = D3DXVECTOR2(1, 0);
+    pVtx[2].tex[0] = D3DXVECTOR2(0, 1);
+    pVtx[3].tex[0] = D3DXVECTOR2(1, 1);
 
     //rhwの設定
     pVtx[0].rhw = 1.0f;
@@ -105,7 +105,7 @@ HRESULT CWave::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
     //テクスチャ座標の設定
     for (int nCount = 0; nCount < NUM_VERTEX; nCount++)
     {
-        pVtx[nCount].tex = D3DXVECTOR2(pVtx[nCount].pos.x / SCREEN_WIDTH, pVtx[nCount].pos.y / SCREEN_HEIGHT);
+        pVtx[nCount].tex[0] = D3DXVECTOR2(pVtx[nCount].pos.x / SCREEN_WIDTH, pVtx[nCount].pos.y / SCREEN_HEIGHT);
     }
 
     //rhwの設定
@@ -172,7 +172,7 @@ void CWave::Update(void)
 
             for (int nCount = 0; nCount < NUM_VERTEX; nCount++)
             {
-                pVtx[nCount].tex = D3DXVECTOR2(pVtx[nCount].pos.x / SCREEN_WIDTH, pVtx[nCount].pos.y / SCREEN_HEIGHT);
+                pVtx[nCount].tex[0] = D3DXVECTOR2(pVtx[nCount].pos.x / SCREEN_WIDTH, pVtx[nCount].pos.y / SCREEN_HEIGHT);
             }
         }
 

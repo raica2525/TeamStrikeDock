@@ -51,6 +51,7 @@ public:
         ACTION_ALPHA,       // 透明度変更
         ACTION_COLOR,       // 色変更
         ACTION_ROT,         // 角度変更
+        ACTION_TEX_BREND,   // テクスチャブレンド
         ACTION_MAX
     }ACTION;
 
@@ -123,11 +124,23 @@ public:
     // 補助値の内訳（回転編）
     typedef enum
     {
-        PARAM_ROT_CHANGE_RATE = 0,       // 角度変更割合（YもXの変更幅を参考に変わっていく）
+        PARAM_ROT_CHANGE_RATE = 0,       // 角度変更割合
         PARAM_ROT_RIMIT,                 // 制限
         PARAM_ROT_FRAME,                 // フレーム数
         PARAM_ROT_VALUE,                 // 指定値
     }PARAM_ROT;
+
+    // 補助値の内訳（テクスチャブレンド編）
+    typedef enum
+    {
+        PARAM_TEX_BREND_TEX_NUMBER = 0,  // テクスチャブレンドに使うテクスチャ番号
+        PARAM_TEX_BREND_HOW_TO,          // 合成方法
+        PARAM_TEX_BREND_ONE_ROUND_FRAME, // 一周フレーム数
+        PARAM_TEX_BREND_INTERVAL_FRAME,  // インターバルフレーム数
+        PARAM_TEX_BREND_RIGHT_TO_LEFT,   // 右から左か
+        PARAM_TEX_BREND_DIRECT,          // 向き
+        PARAM_TEX_BREND_IDX,             // テクスチャブレンドに使うインデックス（1～3）
+    }PARAM_TEX_BREND;
 
     CUI();
     ~CUI();
@@ -160,12 +173,13 @@ public:
     /*========================================================
     // アクション
     //======================================================*/
-    void PlayAction(int nNum);      // 全てのアクションを実行するもと
-    void PlayActionSize(int nNum);  // サイズアクション
-    void PlayActionPos(int nNum);   // 位置アクション
-    void PlayActionAlpha(int nNum); // 透明度アクション
-    void PlayActionColor(int nNum); // 色変えアクション
-    void PlayActionRot(int nNum);   // 回転アクション
+    void PlayAction(int nNum);           // 全てのアクションを実行するもと
+    void PlayActionSize(int nNum);       // サイズアクション
+    void PlayActionPos(int nNum);        // 位置アクション
+    void PlayActionAlpha(int nNum);      // 透明度アクション
+    void PlayActionColor(int nNum);      // 色変えアクション
+    void PlayActionRot(int nNum);        // 回転アクション
+    void PlayActionTexBrend(int nNum);   // テクスチャブレンドアクション
 
 private:
     int m_nTexType;                         // 使うテクスチャの種類

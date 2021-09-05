@@ -21,7 +21,7 @@ END_UISET
 UISET
 	TYPE = 2
 	POS = 640.0 -131.0
-	SIZE = 800.0 262.0
+	SIZE = 1200.0 1200.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
@@ -35,9 +35,17 @@ UISET
 	PARAM4 = 100
 	ACTION1 = 2		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
-	PARAM0 = 0.1
+	PARAM0 = 0.25
 	PARAM1 = 4
 	PARAM2 = 180
+	ACTION2 = 7		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 40
+	PARAM1 = 0
+	PARAM2 = 60
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 1
 END_UISET
 
 #---------------------------------------

@@ -1,7 +1,7 @@
 //====================================================================
 //
 // シーン上の2Dポリゴン処理 (scene2d.h)
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //
 //====================================================================
 #ifndef _SCENE2D_H_
@@ -38,6 +38,13 @@ public:
         DIRECT_MAX          // 向きの最大数
     }DIRECT;
 
+    // テクスチャブレンドの方法 //池田追加
+    typedef enum
+    {
+        BREND_NORMAL = 0,	// 単純貼付け
+        BREND_SEAL          // ポリゴンの透明度を無視する
+    }BREND;
+
     CScene2D();
     CScene2D(OBJTYPE objType);
     virtual ~CScene2D();
@@ -45,21 +52,21 @@ public:
     virtual void Uninit(void);
     virtual void Update(void);
     virtual void Draw(void);
-    void BindTexture(const int nNumTexture);                                                      // テクスチャを割り当てる
-    void SetVertex(void);                                                                         // 頂点座標を設定
-    void SetRotVertex(float fAngle);                                                              // 回転する頂点座標を設定
-    void SetVisualVertex(D3DXVECTOR3 posVisual, D3DXVECTOR3 sizeVisual);                          // 見かけ上の頂点座標を設定
-    bool SetAnimation(int nSpeed, int nPattern);                                                  // アニメーション
-    bool SetReverseAnimation(int nSpeed, int nPattern);                                           // 逆向きのアニメーション
-    void SetFlowingAnimation(int nSpeed, int nPattern, bool bRightToLeft, DIRECT direct);         // 流れるアニメーション
-    void SetTextureRange(int nRange, int nPattern);                                               // テクスチャの描画範囲を設定
-    void SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpeed, int nPattern);      // 段落のあるアニメーション
-    void SetTexturePlace(int nPlace, int nPattern);                                               // テクスチャの描画場所を決める
-    void SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern);   // 段落のあるアニメーションから一部分を切り取る
-    int CountAnimation(int nSpeed, int nPattern);                                                 // アニメーションのカウンタを利用する
-    void ResetCountAnim(void) { m_nCounterAnim = 0; m_nPatternAnim = 0; }                         // アニメーションのカウンタをリセット
-    void SetColor(D3DXCOLOR col);                                                                 // 色を変える
-    void SetLeftToRightGauge(float fMax, float fNow);                                             // 左から右に伸びたゲージ
+    int BindTexture(const int nNumTexture, const BREND brend = BREND_NORMAL);                                  // テクスチャを割り当てる
+    void SetVertex(void);                                                                                       // 頂点座標を設定
+    void SetRotVertex(float fAngle);                                                                            // 回転する頂点座標を設定
+    void SetVisualVertex(D3DXVECTOR3 posVisual, D3DXVECTOR3 sizeVisual);                                        // 見かけ上の頂点座標を設定
+    bool SetAnimation(int nSpeed, int nPattern, int nTex = 0);                                                  // アニメーション
+    bool SetReverseAnimation(int nSpeed, int nPattern, int nTex = 0);                                           // 逆向きのアニメーション
+    bool SetFlowingAnimation(int nSpeed, int nPattern, bool bRightToLeft, DIRECT direct, int nTex = 0);         // 流れるアニメーション
+    void SetTextureRange(int nRange, int nPattern, int nTex = 0);                                               // テクスチャの描画範囲を設定
+    void SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpeed, int nPattern, int nTex = 0);      // 段落のあるアニメーション
+    void SetTexturePlace(int nPlace, int nPattern, int nTex = 0);                                               // テクスチャの描画場所を決める
+    void SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern, int nTex = 0);   // 段落のあるアニメーションから一部分を切り取る
+    int CountAnimation(int nSpeed, int nPattern);                                                               // アニメーションのカウンタを利用する
+    void ResetCountAnim(void) { m_anCounterAnim[0] = 0; m_anPatternAnim[0] = 0; }                               // アニメーションのカウンタをリセット
+    void SetColor(D3DXCOLOR col);                                                                               // 色を変える
+    void SetLeftToRightGauge(float fMax, float fNow, int nTex = 0);                                             // 左から右に伸びたゲージ
 
     /*========================================================
     // セッター
@@ -79,17 +86,20 @@ public:
     D3DXVECTOR3 GetSize(void) { return m_size; }
 
 private:
-    static bool m_bAdditiveSynthesis;       // 加算合成するかどうか
-    static bool m_bAlphaTest;               // αテストするかどうか
-    static bool m_bNega;                    // 反転合成するかどうか
-    LPDIRECT3DTEXTURE9		m_pTexture;		// テクスチャへのポインタ
-    LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファへのポインタ
-    D3DXVECTOR3				m_pos;	        // 位置
-    D3DXVECTOR3             m_size;         // 大きさ
-    int m_nCounterAnim;                     // アニメーションカウンタ
-    int m_nPatternAnim;                     // アニメーションパターン
+    static bool m_bAdditiveSynthesis;                       // 加算合成するかどうか
+    static bool m_bAlphaTest;                               // αテストするかどうか
+    static bool m_bNega;                                    // 反転合成するかどうか
+    LPDIRECT3DTEXTURE9		m_apTexture[MAX_BREND_TEXTURE];	// テクスチャへのポインタ
+    LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		                // 頂点バッファへのポインタ
+    D3DXVECTOR3				m_pos;	                        // 位置
+    D3DXVECTOR3             m_size;                         // 大きさ
+    int m_anCounterAnim[MAX_BREND_TEXTURE];                 // アニメーションカウンタ
+    int m_anPatternAnim[MAX_BREND_TEXTURE];                 // アニメーションパターン
 
-    int m_nAlphaTestBorder;                 // アルファテストの境界値
+    int m_nNumTexture;						                // 使用中のテクスチャ数
+    BREND m_aBrend[MAX_BREND_TEXTURE];		                // ブレンド方法
+
+    int m_nAlphaTestBorder;                                 // アルファテストの境界値
 };
 
 #endif

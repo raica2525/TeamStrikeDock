@@ -470,6 +470,26 @@ void CUI::SetActionInfo(int nNum, int action, bool bLock, float fParam0, float f
     m_aActionInfo[nNum].afParam[6] = fParam6;
     m_aActionInfo[nNum].afParam[7] = fParam7;
 
+    // テクスチャブレンドアクションなら、ここで用いるテクスチャをバインド
+    if (m_aActionInfo[nNum].action == ACTION_TEX_BREND)
+    {
+        // ブレンド方法
+        CScene2D::BREND brend = CScene2D::BREND_NORMAL;
+        switch ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_HOW_TO])
+        {
+        case CScene2D::BREND_NORMAL:
+            brend = CScene2D::BREND_NORMAL;
+            break;
+        case CScene2D::BREND_SEAL:
+            brend = CScene2D::BREND_SEAL;
+            break;
+        }
+
+        // ブレンド用のテクスチャをバインド
+        m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]
+            = (float)BindTexture((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_TEX_NUMBER], brend);
+    }
+
     // 記憶用変数に結びつける
     m_aActionInfo[nNum].bMemoryLock = m_aActionInfo[nNum].bLock;
     for (int nCnt = 0; nCnt < MAX_ACTION_PARAM; nCnt++)
@@ -590,6 +610,9 @@ void CUI::PlayAction(int nNum)
             break;
         case ACTION_ROT:
             PlayActionRot(nNum);
+            break;
+        case ACTION_TEX_BREND:
+            PlayActionTexBrend(nNum);
             break;
         }
     }
@@ -1156,4 +1179,58 @@ void CUI::PlayActionColor(int nNum)
 //=========================================================
 void CUI::PlayActionRot(int nNum)
 {
+}
+
+//=========================================================
+// テクスチャブレンドアクション
+// Author : 後藤慎之助
+//=========================================================
+void CUI::PlayActionTexBrend(int nNum)
+{
+    // インターバル時間をカウントダウン
+    if (m_aActionInfo[nNum].nCntTime > 0)
+    {
+        m_aActionInfo[nNum].nCntTime--;
+    }
+    else
+    {
+        // 変数宣言
+        bool bRightToLeft = false;
+        CScene2D::DIRECT direct = CScene2D::DIRECT_VERTICAL;
+
+        // 右から左か
+        if ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_RIGHT_TO_LEFT] == 0)
+        {
+            bRightToLeft = false;
+        }
+        else if ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_RIGHT_TO_LEFT] == 1)
+        {
+            bRightToLeft = true;
+        }
+
+        // 向き
+        switch ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_DIRECT])
+        {
+        case CScene2D::DIRECT_VERTICAL:
+            direct = CScene2D::DIRECT_VERTICAL;
+            break;
+        case CScene2D::DIRECT_HORIZON:
+            direct = CScene2D::DIRECT_HORIZON;
+            break;
+        case CScene2D::DIRECT_RIGHT_UP:
+            direct = CScene2D::DIRECT_RIGHT_UP;
+            break;
+        case CScene2D::DIRECT_RIGHT_DOWN:
+            direct = CScene2D::DIRECT_RIGHT_DOWN;
+            break;
+        }
+
+        // アニメーションさせる
+        if (SetFlowingAnimation(1, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_ONE_ROUND_FRAME],
+            bRightToLeft, direct, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]))
+        {
+            // 一周したら、インターバル
+            m_aActionInfo[nNum].nCntTime = (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_INTERVAL_FRAME];
+        }
+    }
 }

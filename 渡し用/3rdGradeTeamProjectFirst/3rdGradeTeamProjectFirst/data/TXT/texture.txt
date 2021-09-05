@@ -339,4 +339,12 @@ TEXTURESET
     NAME = data/TEXTURE/039_custom_bg.jpg
 END_TEXTURESET
 
+#---------------------------------------
+# [40] ブレンド用縦線
+#---------------------------------------
+TEXTURESET
+    TYPE = 40
+    NAME = data/TEXTURE/040_brendLine.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

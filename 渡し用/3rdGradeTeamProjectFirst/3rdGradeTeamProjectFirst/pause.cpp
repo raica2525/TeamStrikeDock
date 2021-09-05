@@ -118,10 +118,10 @@ HRESULT CPause::Init(void)
         pVtx[3].rhw = 1.0f;
 
         // テクスチャ座標の設定
-        pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-        pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-        pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-        pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+        pVtx[0].tex[0] = D3DXVECTOR2(0.0f, 0.0f);
+        pVtx[1].tex[0] = D3DXVECTOR2(1.0f, 0.0f);
+        pVtx[2].tex[0] = D3DXVECTOR2(0.0f, 1.0f);
+        pVtx[3].tex[0] = D3DXVECTOR2(1.0f, 1.0f);
 
         pVtx += 4;
     }

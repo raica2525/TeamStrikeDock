@@ -47,12 +47,15 @@ template<class T> T Divide(const T data0, const T data1)
 //============================================================
 CScene2D::CScene2D()
 {
-    m_pTexture = NULL;
+    ZeroMemory(m_apTexture, sizeof(m_apTexture));
     m_pVtxBuff = NULL;
     m_pos = DEFAULT_VECTOR;
     m_size = DEFAULT_VECTOR;
-    m_nCounterAnim = 0;
-    m_nPatternAnim = 0;
+    memset(m_anCounterAnim, 0, sizeof(m_anCounterAnim));
+    memset(m_anPatternAnim, 0, sizeof(m_anPatternAnim));
+
+    m_nNumTexture = 0;
+    memset(m_aBrend, BREND_NORMAL, sizeof(m_aBrend));
 
     m_nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_2D;
 }
@@ -63,12 +66,15 @@ CScene2D::CScene2D()
 //============================================================
 CScene2D::CScene2D(OBJTYPE objType) :CScene(objType)
 {
-    m_pTexture = NULL;
+    ZeroMemory(m_apTexture, sizeof(m_apTexture));
     m_pVtxBuff = NULL;
     m_pos = DEFAULT_VECTOR;
     m_size = DEFAULT_VECTOR;
-    m_nCounterAnim = 0;
-    m_nPatternAnim = 0;
+    memset(m_anCounterAnim, 0, sizeof(m_anCounterAnim));
+    memset(m_anPatternAnim, 0, sizeof(m_anPatternAnim));
+
+    m_nNumTexture = 0;
+    memset(m_aBrend, BREND_NORMAL, sizeof(m_aBrend));
 
     m_nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_2D;
 }
@@ -123,10 +129,13 @@ HRESULT CScene2D::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
     pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
     //テクスチャ座標の設定
-    pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+    for (int nCount = 0; nCount < MAX_BREND_TEXTURE; nCount++)
+    {
+        pVtx[0].tex[nCount] = D3DXVECTOR2(0.0f, 0.0f);
+        pVtx[1].tex[nCount] = D3DXVECTOR2(1.0f, 0.0f);
+        pVtx[2].tex[nCount] = D3DXVECTOR2(0.0f, 1.0f);
+        pVtx[3].tex[nCount] = D3DXVECTOR2(1.0f, 1.0f);
+    }
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -162,7 +171,7 @@ void CScene2D::Update(void)
 
 //=============================================================
 // シーン上の2Dポリゴンの描画処理
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //=============================================================
 void CScene2D::Draw(void)
 {
@@ -211,8 +220,44 @@ void CScene2D::Draw(void)
         pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVDESTCOLOR);
     }
 
-    // テクスチャの設定
-    pDevice->SetTexture(0, m_pTexture);
+    // ブレンド方法設定　//池田追加
+    for (int nCount = 0; nCount < m_nNumTexture; nCount++)
+    {
+        switch (nCount)
+        {
+        case 0:
+            pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+            pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+            pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_MODULATE); // アルファブレンディング処理
+            break;
+        default:
+            pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_CURRENT);
+            pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
+            switch (m_aBrend[nCount])
+            {
+            case BREND_NORMAL:
+                pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+                pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
+                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
+                break;
+
+            case BREND_SEAL:
+                pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+                pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
+                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_ADD);
+                break;
+            }
+            break;
+        }
+    }
+
+    // テクスチャの設定 //池田変更
+    for (int nCount = 0; nCount < m_nNumTexture; nCount++)
+    {
+        pDevice->SetTexture(nCount, m_apTexture[nCount]);
+    }
 
     // ポリゴンの描画
     pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
@@ -252,18 +297,33 @@ void CScene2D::Draw(void)
         m_bAlphaTest = false;
     }
 
-    // テクスチャの設定の解除
-    pDevice->SetTexture(0, NULL);
+    // テクスチャの設定の解除　//池田変更
+    for (int nCount = 0; nCount < MAX_BREND_TEXTURE; nCount++)
+    {
+        pDevice->SetTexture(nCount, NULL);
+    }
+
+    // ブレンド方法を戻す
+    pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+    pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+    pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 }
 
 //=============================================================
 // シーン上の2Dポリゴンのテクスチャを割り当て
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //=============================================================
-void CScene2D::BindTexture(const int nNumTexture)
+int CScene2D::BindTexture(const int nNumTexture, const BREND brend)
 {
+    // 戻り値で、現在使っているテクスチャ数を返す用
+    int nCurrentNumTex = m_nNumTexture;
+
+    // テクスチャを持ってきて、ブレンドの方法を決めつつ現在使っているテクスチャ数を加算
     CTexture *pTexture = CManager::GetTexture();
-    m_pTexture = pTexture->GetInfo(nNumTexture)->pTexture;
+    m_apTexture[m_nNumTexture] = pTexture->GetInfo(nNumTexture)->pTexture;
+    m_aBrend[m_nNumTexture++] = brend;
+
+    return nCurrentNumTex;
 }
 
 //=============================================================
@@ -368,27 +428,27 @@ void CScene2D::SetVisualVertex(D3DXVECTOR3 posVisual, D3DXVECTOR3 sizeVisual)
 // シーン上の2Dポリゴンのアニメーションを設定
 // Author : 後藤慎之助
 //=============================================================
-bool CScene2D::SetAnimation(int nSpeed, int nPattern)
+bool CScene2D::SetAnimation(int nSpeed, int nPattern, int nTex)
 {
     // 変数宣言
     bool bOneRound = false;   // アニメーションが一周したかどうか
 
-                              // アニメーション
-    m_nCounterAnim++;	//カウンタ加算
-    if (m_nCounterAnim == nSpeed)//速さ
+    // アニメーション
+    m_anCounterAnim[nTex]++;	//カウンタ加算
+    if (m_anCounterAnim[nTex] == nSpeed)//速さ
     {
         // オーバーフロー防止
-        m_nCounterAnim = 0;  // カウンタを0に戻す
+        m_anCounterAnim[nTex] = 0;  // カウンタを0に戻す
 
-                             // アニメーションが一周したら
-        if ((m_nPatternAnim + 1) % nPattern == 0)
+        // アニメーションが一周したら
+        if ((m_anPatternAnim[nTex] + 1) % nPattern == 0)
         {
             // 一周のフラグをtrueに
             bOneRound = true;
         }
 
         // アニメーションを切り替える
-        m_nPatternAnim = (m_nPatternAnim + 1) % nPattern;  // 枚数
+        m_anPatternAnim[nTex] = (m_anPatternAnim[nTex] + 1) % nPattern;  // 枚数
     }
 
     VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
@@ -404,10 +464,10 @@ bool CScene2D::SetAnimation(int nSpeed, int nPattern)
     fEqualDivision = Divide(1.0f, (float)nPattern);
 
     // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + fEqualDivision, 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + fEqualDivision, 1.0f);
+    pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + fEqualDivision, 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + fEqualDivision, 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -419,27 +479,27 @@ bool CScene2D::SetAnimation(int nSpeed, int nPattern)
 // シーン上の2Dポリゴンの逆向きのアニメーションを設定
 // Author : 後藤慎之助
 //=============================================================
-bool CScene2D::SetReverseAnimation(int nSpeed, int nPattern)
+bool CScene2D::SetReverseAnimation(int nSpeed, int nPattern, int nTex)
 {
     // 変数宣言
     bool bOneRound = false;   // アニメーションが一周したかどうか
 
-                              // アニメーション
-    m_nCounterAnim++;	//カウンタ加算
-    if (m_nCounterAnim == nSpeed)//速さ
+    // アニメーション
+    m_anCounterAnim[nTex]++;	//カウンタ加算
+    if (m_anCounterAnim[nTex] == nSpeed)//速さ
     {
         // オーバーフロー防止
-        m_nCounterAnim = 0;  // カウンタを0に戻す
+        m_anCounterAnim[nTex] = 0;  // カウンタを0に戻す
 
-                             // アニメーションが一周したら
-        if ((m_nPatternAnim + 1) % nPattern == 0)
+        // アニメーションが一周したら
+        if ((m_anPatternAnim[nTex] + 1) % nPattern == 0)
         {
             // 一周のフラグをtrueに
             bOneRound = true;
         }
 
         // アニメーションを切り替える
-        m_nPatternAnim = (m_nPatternAnim + 1) % nPattern;  // 枚数
+        m_anPatternAnim[nTex] = (m_anPatternAnim[nTex] + 1) % nPattern;  // 枚数
     }
 
     VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
@@ -455,10 +515,10 @@ bool CScene2D::SetReverseAnimation(int nSpeed, int nPattern)
     fEqualDivision = Divide(1.0f, (float)nPattern);
 
     // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + fEqualDivision, 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + fEqualDivision, 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, 1.0f);
+    pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + fEqualDivision, 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + fEqualDivision, 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -470,24 +530,34 @@ bool CScene2D::SetReverseAnimation(int nSpeed, int nPattern)
 // シーン上の2Dポリゴンのアニメーションを設定
 // Author : 後藤慎之助
 //=============================================================
-void CScene2D::SetFlowingAnimation(int nSpeed, int nPattern, bool bRightToLeft, DIRECT direct)
+bool CScene2D::SetFlowingAnimation(int nSpeed, int nPattern, bool bRightToLeft, DIRECT direct, int nTex)
 {
+    // 変数宣言
+    bool bOneRound = false;   // アニメーションが一周したかどうか
+
     // アニメーション
-    m_nCounterAnim++;	//カウンタ加算
-    if (m_nCounterAnim == nSpeed)//速さ
+    m_anCounterAnim[nTex]++;	//カウンタ加算
+    if (m_anCounterAnim[nTex] == nSpeed)//速さ
     {
         // オーバーフロー防止
-        m_nCounterAnim = 0;  // カウンタを0に戻す
+        m_anCounterAnim[nTex] = 0;  // カウンタを0に戻す
+
+        // アニメーションが一周したら
+        if ((m_anPatternAnim[nTex] + 1) % nPattern == 0)
+        {
+            // 一周のフラグをtrueに
+            bOneRound = true;
+        }
 
         if (bRightToLeft)
         {
             // アニメーションを切り替える
-            m_nPatternAnim = (m_nPatternAnim + 1) % nPattern;  // 枚数
+            m_anPatternAnim[nTex] = (m_anPatternAnim[nTex] + 1) % nPattern;  // 枚数
         }
         else
         {
             // アニメーションを切り替える
-            m_nPatternAnim = (m_nPatternAnim - 1) % nPattern;  // 枚数
+            m_anPatternAnim[nTex] = (m_anPatternAnim[nTex] - 1) % nPattern;  // 枚数
         }
     }
 
@@ -508,47 +578,49 @@ void CScene2D::SetFlowingAnimation(int nSpeed, int nPattern, bool bRightToLeft, 
     {
     case CScene2D::DIRECT_VERTICAL:
         // 縦
-        pVtx[0].tex = D3DXVECTOR2(0.0f, m_nPatternAnim * fEqualDivision);
-        pVtx[1].tex = D3DXVECTOR2(1.0f, m_nPatternAnim * fEqualDivision);
-        pVtx[2].tex = D3DXVECTOR2(0.0f, m_nPatternAnim * fEqualDivision + 1.0f);
-        pVtx[3].tex = D3DXVECTOR2(1.0f, m_nPatternAnim * fEqualDivision + 1.0f);
+        pVtx[0].tex[nTex] = D3DXVECTOR2(0.0f, m_anPatternAnim[nTex] * fEqualDivision);
+        pVtx[1].tex[nTex] = D3DXVECTOR2(1.0f, m_anPatternAnim[nTex] * fEqualDivision);
+        pVtx[2].tex[nTex] = D3DXVECTOR2(0.0f, m_anPatternAnim[nTex] * fEqualDivision + 1.0f);
+        pVtx[3].tex[nTex] = D3DXVECTOR2(1.0f, m_anPatternAnim[nTex] * fEqualDivision + 1.0f);
         break;
 
     case CScene2D::DIRECT_HORIZON:
         // 横
-        pVtx[0].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, 0.0f);
-        pVtx[1].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + 1.0f, 0.0f);
-        pVtx[2].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, 1.0f);
-        pVtx[3].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + 1.0f, 1.0f);
+        pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, 0.0f);
+        pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + 1.0f, 0.0f);
+        pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, 1.0f);
+        pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + 1.0f, 1.0f);
         break;
 
     case CScene2D::DIRECT_RIGHT_UP:
         // 右肩上がり
-        pVtx[0].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, m_nPatternAnim * (fEqualDivision * (-1)));
-        pVtx[1].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + 1.0f, m_nPatternAnim * (fEqualDivision * (-1)));
-        pVtx[2].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, m_nPatternAnim * (fEqualDivision * (-1)) + 1.0f);
-        pVtx[3].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + 1.0f, m_nPatternAnim * (fEqualDivision * (-1)) + 1.0f);
+        pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, m_anPatternAnim[nTex] * (fEqualDivision * (-1)));
+        pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + 1.0f, m_anPatternAnim[nTex] * (fEqualDivision * (-1)));
+        pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, m_anPatternAnim[nTex] * (fEqualDivision * (-1)) + 1.0f);
+        pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + 1.0f, m_anPatternAnim[nTex] * (fEqualDivision * (-1)) + 1.0f);
 
         break;
 
     case CScene2D::DIRECT_RIGHT_DOWN:
         // 右肩下がり
-        pVtx[0].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, m_nPatternAnim * fEqualDivision);
-        pVtx[1].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + 1.0f, m_nPatternAnim * fEqualDivision);
-        pVtx[2].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision, m_nPatternAnim * fEqualDivision + 1.0f);
-        pVtx[3].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivision + 1.0f, m_nPatternAnim * fEqualDivision + 1.0f);
+        pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, m_anPatternAnim[nTex] * fEqualDivision);
+        pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + 1.0f, m_anPatternAnim[nTex] * fEqualDivision);
+        pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision, m_anPatternAnim[nTex] * fEqualDivision + 1.0f);
+        pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivision + 1.0f, m_anPatternAnim[nTex] * fEqualDivision + 1.0f);
         break;
     }
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
+
+    return bOneRound;
 }
 
 //=============================================================
 // テクスチャの描画範囲の設定
 // Author : 後藤慎之助
 //=============================================================
-void CScene2D::SetTextureRange(int nRange, int nPattern)
+void CScene2D::SetTextureRange(int nRange, int nPattern, int nTex)
 {
     VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
@@ -563,10 +635,10 @@ void CScene2D::SetTextureRange(int nRange, int nPattern)
     fEqualDivision = Divide((float)nRange, (float)nPattern);
 
     // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(fEqualDivision, 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(fEqualDivision, 1.0f);
+    pVtx[0].tex[nTex] = D3DXVECTOR2(0.0f, 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivision, 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2(0.0f, 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivision, 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -576,17 +648,17 @@ void CScene2D::SetTextureRange(int nRange, int nPattern)
 // 段落のあるアニメーションの設定
 // Author : 後藤慎之助
 //=============================================================
-void CScene2D::SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpeed, int nPattern)
+void CScene2D::SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpeed, int nPattern, int nTex)
 {
     // アニメーション
-    m_nCounterAnim++;	//カウンタ加算
-    if (m_nCounterAnim == nSpeed)//速さ
+    m_anCounterAnim[nTex]++;	//カウンタ加算
+    if (m_anCounterAnim[nTex] == nSpeed)//速さ
     {
         // オーバーフロー防止
-        m_nCounterAnim = 0;  // カウンタを0に戻す
+        m_anCounterAnim[nTex] = 0;  // カウンタを0に戻す
 
-                             // アニメーションを切り替える
-        m_nPatternAnim = (m_nPatternAnim + 1) % nPattern;  // 枚数
+        // アニメーションを切り替える
+        m_anPatternAnim[nTex] = (m_anPatternAnim[nTex] + 1) % nPattern;  // 枚数
     }
 
     VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
@@ -604,10 +676,10 @@ void CScene2D::SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpe
     fEqualDivisionY = Divide(1.0f, (float)nMaxParagraph);
 
     // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivisionX, fEqualDivisionY * (nParagraph - 1));
-    pVtx[1].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivisionX + fEqualDivisionX, fEqualDivisionY * (nParagraph - 1));
-    pVtx[2].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivisionX, fEqualDivisionY * nParagraph);
-    pVtx[3].tex = D3DXVECTOR2(m_nPatternAnim * fEqualDivisionX + fEqualDivisionX, fEqualDivisionY * nParagraph);
+    pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX, fEqualDivisionY * (nParagraph - 1));
+    pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX + fEqualDivisionX, fEqualDivisionY * (nParagraph - 1));
+    pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX, fEqualDivisionY * nParagraph);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX + fEqualDivisionX, fEqualDivisionY * nParagraph);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -617,25 +689,25 @@ void CScene2D::SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpe
 // テクスチャの描画場所を決める
 // Author : 後藤慎之助
 //=============================================================
-void CScene2D::SetTexturePlace(int nPlace, int nPattern)
+void CScene2D::SetTexturePlace(int nPlace, int nPattern, int nTex)
 {
     VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
-                            // 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+    // 頂点データの範囲をロックし、頂点バッファへのポインタを取得
     m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);	// この書式は変えないこと
 
-                                                // テクスチャ座標の設定
-                                                // 変数宣言
+    // テクスチャ座標の設定
+    // 変数宣言
     float fEqualDivision = 0.0f;   // テクスチャを等分する
 
-                                   // 何等分するか計算
+    // 何等分するか計算
     fEqualDivision = Divide(1.0f, (float)nPattern);
 
     // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2((fEqualDivision * (nPlace - 1)), 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(fEqualDivision + (fEqualDivision * (nPlace - 1)), 0.0f);
-    pVtx[2].tex = D3DXVECTOR2((fEqualDivision * (nPlace - 1)), 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(fEqualDivision + (fEqualDivision * (nPlace - 1)), 1.0f);
+    pVtx[0].tex[nTex] = D3DXVECTOR2((fEqualDivision * (nPlace - 1)), 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivision + (fEqualDivision * (nPlace - 1)), 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2((fEqualDivision * (nPlace - 1)), 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivision + (fEqualDivision * (nPlace - 1)), 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -645,7 +717,7 @@ void CScene2D::SetTexturePlace(int nPlace, int nPattern)
 // 段落があるテクスチャの描画場所を決める
 // Author : 後藤慎之助
 //=============================================================
-void CScene2D::SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern)
+void CScene2D::SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern, int nTex)
 {
     VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
@@ -662,10 +734,10 @@ void CScene2D::SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxPara
     fEqualDivisionY = Divide(1.0f, (float)nMaxParagraph);
 
     // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2((fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * (nParagraph - 1));
-    pVtx[1].tex = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * (nParagraph - 1));
-    pVtx[2].tex = D3DXVECTOR2((fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * nParagraph);
-    pVtx[3].tex = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * nParagraph);
+    pVtx[0].tex[nTex] = D3DXVECTOR2((fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * (nParagraph - 1));
+    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * (nParagraph - 1));
+    pVtx[2].tex[nTex] = D3DXVECTOR2((fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * nParagraph);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * nParagraph);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -678,18 +750,18 @@ void CScene2D::SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxPara
 int CScene2D::CountAnimation(int nSpeed, int nPattern)
 {
     // アニメーション
-    m_nCounterAnim++;	//カウンタ加算
-    if (m_nCounterAnim == nSpeed)//速さ
+    m_anCounterAnim[0]++;	//カウンタ加算
+    if (m_anCounterAnim[0] == nSpeed)//速さ
     {
         // オーバーフロー防止
-        m_nCounterAnim = 0;  // カウンタを0に戻す
+        m_anCounterAnim[0] = 0;  // カウンタを0に戻す
 
                              // アニメーションを切り替える
-        m_nPatternAnim = (m_nPatternAnim + 1) % nPattern;  // 枚数
+        m_anPatternAnim[0] = (m_anPatternAnim[0] + 1) % nPattern;  // 枚数
     }
 
     // アニメーションのパターンのカウンタを返す
-    return m_nPatternAnim;
+    return m_anPatternAnim[0];
 }
 
 //=============================================================
@@ -717,7 +789,7 @@ void CScene2D::SetColor(D3DXCOLOR col)
 // 横長ゲージのサイズを設定
 // Author : 後藤慎之助
 //=============================================================
-void CScene2D::SetLeftToRightGauge(float fMax, float fNow)
+void CScene2D::SetLeftToRightGauge(float fMax, float fNow, int nTex)
 {
     // 重み
     float fWeight = fNow / fMax;
@@ -734,10 +806,10 @@ void CScene2D::SetLeftToRightGauge(float fMax, float fNow)
     pVtx[3].pos = m_pos + D3DXVECTOR3(-(m_size.x / 2) + (m_size.x * fWeight), +(m_size.y / 2), 0.0f);
 
     // テクスチャ座標を更新
-    pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(fWeight, 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(fWeight, 1.0f);
+    pVtx[0].tex[nTex] = D3DXVECTOR2(0.0f, 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(fWeight, 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2(0.0f, 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(fWeight, 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();

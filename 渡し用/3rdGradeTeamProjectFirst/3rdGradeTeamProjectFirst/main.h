@@ -44,8 +44,11 @@
 #define NUM_VERTEX	(4)
 #define NUM_POLYGON	(2)
 
-//頂点フォーマット		(頂点座標|頂点カラー|テクスチャ座標)
-#define FVF_VERTEX_2D	(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1)
+// テクスチャブレンドの最大数
+#define MAX_BREND_TEXTURE (4)
+
+// 頂点フォーマット		(頂点座標|頂点カラー|テクスチャ座標 (* テクスチャブレンドの最大数))
+#define FVF_VERTEX_2D	(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1 * MAX_BREND_TEXTURE)
 #define FVF_VERTEX_3D   (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1)
 
 // デフォルト設定
@@ -91,7 +94,7 @@ typedef struct
     D3DXVECTOR3 pos;
     float rhw;
     D3DCOLOR col;
-    D3DXVECTOR2 tex;
+    D3DXVECTOR2 tex[MAX_BREND_TEXTURE];
 }VERTEX_2D;
 
 typedef struct

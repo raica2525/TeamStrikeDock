@@ -93,10 +93,10 @@ HRESULT CNumber::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 
     // テクスチャ座標の設定
     // ここでは、0に合わせている
-    pVtx[0].tex = D3DXVECTOR2(0.0f + (0.1f * 0), 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(0.1f + (0.1f * 0), 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(0.0f + (0.1f * 0), 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(0.1f + (0.1f * 0), 1.0f);
+    pVtx[0].tex[0] = D3DXVECTOR2(0.0f + (0.1f * 0), 0.0f);
+    pVtx[1].tex[0] = D3DXVECTOR2(0.1f + (0.1f * 0), 0.0f);
+    pVtx[2].tex[0] = D3DXVECTOR2(0.0f + (0.1f * 0), 1.0f);
+    pVtx[3].tex[0] = D3DXVECTOR2(0.1f + (0.1f * 0), 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -264,10 +264,10 @@ void CNumber::SetNumber(int nNumber)
     m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);	// この書式は変えないこと
 
                                                 // テクスチャの座標を反映
-    pVtx[0].tex = D3DXVECTOR2(0.0f + (0.1f * nNumber), 0.0f);
-    pVtx[1].tex = D3DXVECTOR2(0.1f + (0.1f * nNumber), 0.0f);
-    pVtx[2].tex = D3DXVECTOR2(0.0f + (0.1f * nNumber), 1.0f);
-    pVtx[3].tex = D3DXVECTOR2(0.1f + (0.1f * nNumber), 1.0f);
+    pVtx[0].tex[0] = D3DXVECTOR2(0.0f + (0.1f * nNumber), 0.0f);
+    pVtx[1].tex[0] = D3DXVECTOR2(0.1f + (0.1f * nNumber), 0.0f);
+    pVtx[2].tex[0] = D3DXVECTOR2(0.0f + (0.1f * nNumber), 1.0f);
+    pVtx[3].tex[0] = D3DXVECTOR2(0.1f + (0.1f * nNumber), 1.0f);
 
     // 頂点カラーを設定（0.0f～1.0fの値で設定する）
     pVtx[0].col = m_col;
