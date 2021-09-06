@@ -52,6 +52,7 @@ public:
         ACTION_COLOR,       // 色変更
         ACTION_ROT,         // 角度変更
         ACTION_TEX_BREND,   // テクスチャブレンド
+        ACTION_LOOP_ANIM,   // ループアニメーション
         ACTION_MAX
     }ACTION;
 
@@ -142,6 +143,15 @@ public:
         PARAM_TEX_BREND_IDX,             // テクスチャブレンドに使うインデックス（1～3）
     }PARAM_TEX_BREND;
 
+    // 補助値の内訳（ループアニメーション編）
+    typedef enum
+    {
+        PARAM_LOOP_ANIM_ONE_ROUND_FRAME = 0, // 一周フレーム数
+        PARAM_LOOP_ANIM_INTERVAL_FRAME,      // インターバルフレーム数
+        PARAM_LOOP_ANIM_RIGHT_TO_LEFT,       // 右から左か
+        PARAM_LOOP_ANIM_DIRECT,              // 向き
+    }PARAM_LOOP_ANIM;
+
     CUI();
     ~CUI();
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
@@ -180,6 +190,7 @@ public:
     void PlayActionColor(int nNum);      // 色変えアクション
     void PlayActionRot(int nNum);        // 回転アクション
     void PlayActionTexBrend(int nNum);   // テクスチャブレンドアクション
+    void PlayActionLoopAnim(int nNum);   // ループアニメーションアクション
 
     /*========================================================
     // アクション用の共通処理

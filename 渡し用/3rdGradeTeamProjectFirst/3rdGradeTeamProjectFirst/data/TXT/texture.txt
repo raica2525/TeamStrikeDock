@@ -336,15 +336,114 @@ END_TEXTURESET
 #---------------------------------------
 TEXTURESET
     TYPE = 39
-    NAME = data/TEXTURE/039_custom_bg.jpg
+    NAME = data/TEXTURE/039_custom_bg.png
 END_TEXTURESET
 
 #---------------------------------------
-# [40] ブレンド用縦線
+# [40] ブレンド用縦線右
 #---------------------------------------
 TEXTURESET
     TYPE = 40
     NAME = data/TEXTURE/040_brendLine.png
+END_TEXTURESET
+
+#---------------------------------------
+# [41] カスタマイズ画面の背景線
+#---------------------------------------
+TEXTURESET
+    TYPE = 41
+    NAME = data/TEXTURE/041_custom_bg_line.png
+END_TEXTURESET
+
+#---------------------------------------
+# [42] カスタマイズ画面のバナー
+#---------------------------------------
+TEXTURESET
+    TYPE = 42
+    NAME = data/TEXTURE/042_Banner.png
+END_TEXTURESET
+
+#---------------------------------------
+# [43] カスタマイズ画面の通常
+#---------------------------------------
+TEXTURESET
+    TYPE = 43
+    NAME = data/TEXTURE/043_Back_normal.png
+END_TEXTURESET
+
+#---------------------------------------
+# [44] カスタマイズ画面の準備完了
+#---------------------------------------
+TEXTURESET
+    TYPE = 44
+    NAME = data/TEXTURE/044_Back_done.png
+END_TEXTURESET
+
+#---------------------------------------
+# [45] カスタマイズ画面の待機
+#---------------------------------------
+TEXTURESET
+    TYPE = 45
+    NAME = data/TEXTURE/045_Back_wait.png
+END_TEXTURESET
+
+#---------------------------------------
+# [46] wait
+#---------------------------------------
+TEXTURESET
+    TYPE = 46
+    NAME = data/TEXTURE/046_wait.png
+    PATTERN = 4
+    SPEED = 30
+    REPEAT = 0
+END_TEXTURESET
+
+#---------------------------------------
+# [47] カスタマイズ画面の1p
+#---------------------------------------
+TEXTURESET
+    TYPE = 47
+    NAME = data/TEXTURE/047_Player1.png
+END_TEXTURESET
+
+#---------------------------------------
+# [48] カスタマイズ画面の2p
+#---------------------------------------
+TEXTURESET
+    TYPE = 48
+    NAME = data/TEXTURE/048_Player2.png
+END_TEXTURESET
+
+#---------------------------------------
+# [49] カスタマイズ画面の3p
+#---------------------------------------
+TEXTURESET
+    TYPE = 49
+    NAME = data/TEXTURE/049_Player3.png
+END_TEXTURESET
+
+#---------------------------------------
+# [50] カスタマイズ画面の4p
+#---------------------------------------
+TEXTURESET
+    TYPE = 50
+    NAME = data/TEXTURE/050_Player4.png
+END_TEXTURESET
+
+#---------------------------------------
+# [51] カスタマイズ画面の準備完了
+#---------------------------------------
+TEXTURESET
+    TYPE = 51
+    NAME = data/TEXTURE/051_ready.png
+END_TEXTURESET
+
+#---------------------------------------
+# [52] カスタマイズ画面の選択枠
+#---------------------------------------
+TEXTURESET
+    TYPE = 52
+    NAME = data/TEXTURE/052_select.png
 END_TEXTURESET
 
 END_SCRIPT		# この行は絶対消さないこと！

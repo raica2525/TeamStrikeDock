@@ -270,6 +270,7 @@ void CUI::Place(SET set)
                     bool bAddBrend = false;                             // 加算合成
                     bool bUseZBuffer = false;                           // 3Dモデルの後ろに出すかどうか
                     int nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_2D; // アルファテストのボーダー
+                    bool bShaveTex = false;                             // 端の1ピクセル削るかどうか
                     int nIndexAction = 0;                               // アクションのインデックス    
                     ActionInfo aActionInfo[MAX_ACTION] = {};            // アクションの情報
                     memset(aActionInfo, 0, sizeof(aActionInfo));
@@ -336,6 +337,19 @@ void CUI::Place(SET set)
                         else if (strcmp(cHeadText, "ALPHA_TEST_BORDER") == 0)
                         {
                             sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nAlphaTestBorder);
+                        }
+                        else if (strcmp(cHeadText, "SHAVE_TEX") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nBool);
+
+                            if (nBool == 0)
+                            {
+                                bShaveTex = false;
+                            }
+                            else
+                            {
+                                bShaveTex = true;
+                            }
                         }
                         else if (strcmp(cHeadText, "ACTION0") == 0)
                         {
@@ -435,6 +449,12 @@ void CUI::Place(SET set)
                         pUI->SetActionInfo(nCnt, aActionInfo[nCnt].action, aActionInfo[nCnt].bLock,
                             aActionInfo[nCnt].afParam[0], aActionInfo[nCnt].afParam[1], aActionInfo[nCnt].afParam[2], aActionInfo[nCnt].afParam[3],
                             aActionInfo[nCnt].afParam[4], aActionInfo[nCnt].afParam[5], aActionInfo[nCnt].afParam[6], aActionInfo[nCnt].afParam[7]);
+                    }
+
+                    // 端の1ピクセルを削るかどうか
+                    if (bShaveTex)
+                    {
+                        pUI->SetShaveTex();
                     }
 #ifdef _DEBUG
                     pUI->SetReloadUI();
@@ -543,6 +563,9 @@ void CUI::SetActionReset(int nNum)
     case ACTION_TEX_BREND:
         CScene2D::ResetCountAnim((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]);
         break;
+    case ACTION_LOOP_ANIM:
+        CScene2D::ResetCountAnim();
+        break;
     }
 
     // 構造体の内容をリセット
@@ -595,6 +618,9 @@ void CUI::PlayAction(int nNum)
             break;
         case ACTION_TEX_BREND:
             PlayActionTexBrend(nNum);
+            break;
+        case ACTION_LOOP_ANIM:
+            PlayActionLoopAnim(nNum);
             break;
         }
     }
@@ -1056,52 +1082,107 @@ void CUI::PlayActionRot(int nNum)
 //=========================================================
 void CUI::PlayActionTexBrend(int nNum)
 {
-    // インターバル時間をカウントダウン
-    if (m_aActionInfo[nNum].nCntTime > 0)
+    // テクスチャ情報から、アニメーションの有無等を取得
+    CTexture::Info *pTextureInfo = CManager::GetTexture()->GetInfo((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_TEX_NUMBER]);
+    int nPattern = pTextureInfo->nPattern;
+    int nAnimSpeed = pTextureInfo->nSpeed;
+
+    // アニメーションを使うなら
+    if (nPattern > 1)
     {
-        m_aActionInfo[nNum].nCntTime--;
+        // textureの方で設定されているものを使う
+        CScene2D::SetAnimation(nAnimSpeed, nPattern, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]);
     }
     else
     {
-        // 変数宣言
-        bool bRightToLeft = false;
-        CScene2D::DIRECT direct = CScene2D::DIRECT_VERTICAL;
-
-        // 右から左か
-        if ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_RIGHT_TO_LEFT] == 0)
+        // インターバル時間をカウントダウン
+        if (m_aActionInfo[nNum].nCntTime > 0)
         {
-            bRightToLeft = false;
+            m_aActionInfo[nNum].nCntTime--;
         }
-        else if ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_RIGHT_TO_LEFT] == 1)
+        else
         {
-            bRightToLeft = true;
-        }
+            // 変数宣言
+            bool bRightToLeft = false;
+            CScene2D::DIRECT direct = CScene2D::DIRECT_VERTICAL;
 
-        // 向き
-        switch ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_DIRECT])
-        {
-        case CScene2D::DIRECT_VERTICAL:
-            direct = CScene2D::DIRECT_VERTICAL;
-            break;
-        case CScene2D::DIRECT_HORIZON:
-            direct = CScene2D::DIRECT_HORIZON;
-            break;
-        case CScene2D::DIRECT_RIGHT_UP:
-            direct = CScene2D::DIRECT_RIGHT_UP;
-            break;
-        case CScene2D::DIRECT_RIGHT_DOWN:
-            direct = CScene2D::DIRECT_RIGHT_DOWN;
-            break;
-        }
+            // 右から左か
+            if ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_RIGHT_TO_LEFT] == 0)
+            {
+                bRightToLeft = false;
+            }
+            else if ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_RIGHT_TO_LEFT] == 1)
+            {
+                bRightToLeft = true;
+            }
 
-        // アニメーションさせる
-        if (SetFlowingAnimation(1, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_ONE_ROUND_FRAME],
-            bRightToLeft, direct, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]))
-        {
-            // 一周したら、インターバル
-            m_aActionInfo[nNum].nCntTime = (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_INTERVAL_FRAME];
+            // 向き
+            switch ((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_DIRECT])
+            {
+            case CScene2D::DIRECT_VERTICAL:
+                direct = CScene2D::DIRECT_VERTICAL;
+                break;
+            case CScene2D::DIRECT_HORIZON:
+                direct = CScene2D::DIRECT_HORIZON;
+                break;
+            case CScene2D::DIRECT_RIGHT_UP:
+                direct = CScene2D::DIRECT_RIGHT_UP;
+                break;
+            case CScene2D::DIRECT_RIGHT_DOWN:
+                direct = CScene2D::DIRECT_RIGHT_DOWN;
+                break;
+            }
+
+            // アニメーションさせる
+            if (SetFlowingAnimation(1, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_ONE_ROUND_FRAME],
+                bRightToLeft, direct, (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]))
+            {
+                // 一周したら、インターバル
+                m_aActionInfo[nNum].nCntTime = (int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_INTERVAL_FRAME];
+            }
         }
     }
+}
+
+//=========================================================
+// ループアニメーションアクション
+// Author : 後藤慎之助
+//=========================================================
+void CUI::PlayActionLoopAnim(int nNum)
+{
+    // 変数宣言
+    bool bRightToLeft = false;
+    CScene2D::DIRECT direct = CScene2D::DIRECT_VERTICAL;
+
+    // 右から左か
+    if ((int)m_aActionInfo[nNum].afParam[PARAM_LOOP_ANIM_RIGHT_TO_LEFT] == 0)
+    {
+        bRightToLeft = false;
+    }
+    else if ((int)m_aActionInfo[nNum].afParam[PARAM_LOOP_ANIM_RIGHT_TO_LEFT] == 1)
+    {
+        bRightToLeft = true;
+    }
+
+    // 向き
+    switch ((int)m_aActionInfo[nNum].afParam[PARAM_LOOP_ANIM_DIRECT])
+    {
+    case CScene2D::DIRECT_VERTICAL:
+        direct = CScene2D::DIRECT_VERTICAL;
+        break;
+    case CScene2D::DIRECT_HORIZON:
+        direct = CScene2D::DIRECT_HORIZON;
+        break;
+    case CScene2D::DIRECT_RIGHT_UP:
+        direct = CScene2D::DIRECT_RIGHT_UP;
+        break;
+    case CScene2D::DIRECT_RIGHT_DOWN:
+        direct = CScene2D::DIRECT_RIGHT_DOWN;
+        break;
+    }
+
+    // アニメーションさせる
+    SetFlowingAnimation(1, (int)m_aActionInfo[nNum].afParam[PARAM_LOOP_ANIM_ONE_ROUND_FRAME], bRightToLeft, direct);
 }
 
 //=========================================================

@@ -1020,7 +1020,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable
     switch (pPlayer->m_playable)
     {
     case PLAYER_1:
-        startPos = D3DXVECTOR3((SCREEN_WIDTH / 4) + (SCREEN_WIDTH / 8), (SCREEN_HEIGHT / 4) - (SCREEN_HEIGHT / 8), 0.0f);
+        startPos = D3DXVECTOR3(150.0f, 290.0f, 0.0f);
         break;
     case PLAYER_2:
 
@@ -1053,13 +1053,12 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable
     // テキストを生成
     char cExName[256];
     pPlayer->CustomExName(cExName);
-    pPlayer->m_pText_Custom_Ex = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), 30, cExName,
+    pPlayer->m_pText_Custom_Ex = CText::Create(startPos + D3DXVECTOR3(-120.0f, -80.0f, 0.0f), 30, cExName,
         CText::ALIGN_LEFT, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    fDigitPosY += fDigitValue * 3;
 
     char cSpName[256];
     pPlayer->CustomSpName(cSpName);
-    pPlayer->m_pText_Custom_Sp = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), 30, cSpName,
+    pPlayer->m_pText_Custom_Sp = CText::Create(startPos + D3DXVECTOR3(-120.0f, -50.0f, 0.0f), 30, cSpName,
         CText::ALIGN_LEFT, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
 
     return pPlayer;

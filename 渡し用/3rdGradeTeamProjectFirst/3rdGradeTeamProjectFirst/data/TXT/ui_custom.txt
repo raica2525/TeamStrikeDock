@@ -5,7 +5,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 
 #---------------------------------------
-# [0] カスタマイズ画面の仮背景
+# [0] カスタマイズ画面の背景
 #---------------------------------------
 UISET
 	TYPE = 39
@@ -16,67 +16,141 @@ UISET
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
-	ACTION0 = 0		# 補助値はこの下に書いていく
 END_UISET
 
 #---------------------------------------
-# [0] 仮頭1p
+# [1] カスタマイズ画面の背景の線
 #---------------------------------------
 UISET
-	TYPE = 0
-	POS = 200.0 200.0
-	SIZE = 50.0 50.0
+	TYPE = 41
+	POS = 640.0 360.0
+	SIZE = 1280.0 720.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+	ACTION0 = 8		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 1
+	PARAM1 = 0
+	PARAM2 = 1
+	PARAM3 = 3
+END_UISET
+
+#---------------------------------------
+# [2] 1p
+#---------------------------------------
+UISET
+	TYPE = 43
+	POS = 165.0 390.0
+	SIZE = 298.0 658.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+	SHAVE_TEX = 1		# bool
+END_UISET
+
+#---------------------------------------
+# [3] 2p
+#---------------------------------------
+UISET
+	TYPE = 45
+	POS = 480.0 390.0
+	SIZE = 298.0 658.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+	SHAVE_TEX = 1		# bool
+	ACTION2 = 7		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 46
+	PARAM1 = 0
+END_UISET
+
+#---------------------------------------
+# [4] 3p
+#---------------------------------------
+UISET
+	TYPE = 45
+	POS = 798.0 390.0
+	SIZE = 298.0 658.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+	SHAVE_TEX = 1		# bool
+	ACTION2 = 7		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 46
+	PARAM1 = 0
+END_UISET
+
+#---------------------------------------
+# [5] 4p
+#---------------------------------------
+UISET
+	TYPE = 45
+	POS = 1116.0 390.0
+	SIZE = 298.0 658.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+	SHAVE_TEX = 1		# bool
+	ACTION2 = 7		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 46
+	PARAM1 = 0
+END_UISET
+
+#---------------------------------------
+# [6] 1pカスタム
+#---------------------------------------
+UISET
+	TYPE = 47
+	POS = 165.0 555.5
+	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
-	ACTION0 = 0		# 補助値はこの下に書いていく
 END_UISET
 
 #---------------------------------------
-# [0] 仮上半身1p
+# [7] 1p準備完了
 #---------------------------------------
 UISET
-	TYPE = 0
-	POS = 200.0 250.0
-	SIZE = 50.0 50.0
+	TYPE = 51
+	POS = 165.0 684.0
+	SIZE = 170.0 37.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
-	ACTION0 = 0		# 補助値はこの下に書いていく
 END_UISET
 
 #---------------------------------------
-# [0] 仮下半身1p
+# [0] カスタマイズ画面のバナー
 #---------------------------------------
 UISET
-	TYPE = 0
-	POS = 200.0 300.0
-	SIZE = 50.0 50.0
+	TYPE = 42
+	POS = 640.0 28.0
+	SIZE = 1280.0 56.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
-	ACTION0 = 0		# 補助値はこの下に書いていく
-END_UISET
-
-#---------------------------------------
-# [0] 仮下半身1p
-#---------------------------------------
-UISET
-	TYPE = 0
-	POS = 200.0 350.0
-	SIZE = 50.0 50.0
-	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
-	ADD_BLEND = 0		# bool
-	USE_ZBUFFER = 0		# bool
-	ALPHA_TEST_BORDER = 50	# 0～255
-	ACTION0 = 0		# 補助値はこの下に書いていく
+	SHAVE_TEX = 1		# bool
 END_UISET
 
 END_SCRIPT		# この行は絶対消さないこと！

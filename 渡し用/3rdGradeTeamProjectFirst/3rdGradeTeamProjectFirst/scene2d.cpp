@@ -814,3 +814,23 @@ void CScene2D::SetLeftToRightGauge(float fMax, float fNow, int nTex)
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
 }
+
+//=============================================================
+// 端の1ピクセルが反対側に行く現象を解決する関数
+// Author : 後藤慎之助
+//=============================================================
+void CScene2D::SetShaveTex(void)
+{
+    // 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+    VERTEX_2D *pVtx = NULL;
+    m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+    // 1ピクセルぐらい削る
+    pVtx[0].tex[0] = D3DXVECTOR2(0.01f, 0.01f);
+    pVtx[1].tex[0] = D3DXVECTOR2(0.99f, 0.01f);
+    pVtx[2].tex[0] = D3DXVECTOR2(0.01f, 0.99f);
+    pVtx[3].tex[0] = D3DXVECTOR2(0.99f, 0.99f);
+
+    //頂点データをアンロックする
+    m_pVtxBuff->Unlock();
+}

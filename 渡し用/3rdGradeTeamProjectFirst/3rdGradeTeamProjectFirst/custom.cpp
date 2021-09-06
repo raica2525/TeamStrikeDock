@@ -72,14 +72,14 @@ HRESULT CCustom::Init(void)
     // UIを生成
     CUI::Place(CUI::SET_CUSTOM);
 
-    m_pUI_Cursor = CUI::Create(19, DEFAULT_VECTOR, D3DXVECTOR3(35.0f, 35.0f, 0.0f), 0, DEFAULT_COLOR);
+    m_pUI_Cursor = CUI::Create(52, DEFAULT_VECTOR, D3DXVECTOR3(270.0f, 55.0f, 0.0f), 0, DEFAULT_COLOR);
 
     //// BGMを再生
     //CSound *pSound = CManager::GetSound();
     //pSound->Play(CSound::LABEL_BGM_RESULT);
 
     // プレイヤーの生成
-    m_apPlayer[0] = CPlayer::CreateInCustom(D3DXVECTOR3(-300.0f, 300.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001);
+    m_apPlayer[0] = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001);
 
     // パーツ選択カーソルの初期化
     int nPartNum = m_apPlayer[0]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_HEAD);
@@ -122,13 +122,13 @@ HRESULT CCustom::Init(void)
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
 
     // テキストを設定
-    m_pText_Head = CText::Create(D3DXVECTOR3(200.0f, 250.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_nNumSelectHead]))->cName,
+    m_pText_Head = CText::Create(D3DXVECTOR3(165.0f, 427.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_nNumSelectHead]))->cName,
         CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    m_pText_Up = CText::Create(D3DXVECTOR3(200.0f, 300.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_nNumSelectUp]))->cName,
+    m_pText_Up = CText::Create(D3DXVECTOR3(165.0f, 490.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_nNumSelectUp]))->cName,
         CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    m_pText_Down = CText::Create(D3DXVECTOR3(200.0f, 350.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_nNumSelectDown]))->cName,
+    m_pText_Down = CText::Create(D3DXVECTOR3(165.0f, 553.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_nNumSelectDown]))->cName,
         CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    m_pText_Wep = CText::Create(D3DXVECTOR3(200.0f, 400.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_nNumSelectWep]))->cName,
+    m_pText_Wep = CText::Create(D3DXVECTOR3(165.0f, 616.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_nNumSelectWep]))->cName,
         CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
 
     return S_OK;
@@ -482,8 +482,8 @@ void CCustom::Update(void)
     }
 
     // カーソルの位置を変える
-    D3DXVECTOR3 pos = D3DXVECTOR3(150.0f, 200.0f, 0.0f);
-    float fDigitPosY = 50.0f * m_select;
+    D3DXVECTOR3 pos = D3DXVECTOR3(167.0f, 443.0f, 0.0f);
+    float fDigitPosY = 63.0f * m_select;
     pos.y += fDigitPosY;
     if (m_pUI_Cursor)
     {

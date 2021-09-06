@@ -64,9 +64,10 @@ public:
     void SetTexturePlace(int nPlace, int nPattern, int nTex = 0);                                               // テクスチャの描画場所を決める
     void SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern, int nTex = 0);   // 段落のあるアニメーションから一部分を切り取る
     int CountAnimation(int nSpeed, int nPattern);                                                               // アニメーションのカウンタを利用する
-    void ResetCountAnim(int nNum) { m_anCounterAnim[nNum] = 0; m_anPatternAnim[nNum] = 0; }                     // アニメーションのカウンタをリセット
+    void ResetCountAnim(int nNum = 0) { m_anCounterAnim[nNum] = 0; m_anPatternAnim[nNum] = 0; }                 // アニメーションのカウンタをリセット
     void SetColor(D3DXCOLOR col);                                                                               // 色を変える
     void SetLeftToRightGauge(float fMax, float fNow, int nTex = 0);                                             // 左から右に伸びたゲージ
+    void SetShaveTex(void);                                                                                     // 端の1ピクセルが反対側に行く現象を解決する関数
 
     /*========================================================
     // セッター
