@@ -446,4 +446,36 @@ TEXTURESET
     NAME = data/TEXTURE/052_select.png
 END_TEXTURESET
 
+#---------------------------------------
+# [53] カスタマイズ画面のカーソル1
+#---------------------------------------
+TEXTURESET
+    TYPE = 53
+    NAME = data/TEXTURE/053_Cursor_Player1.png
+END_TEXTURESET
+
+#---------------------------------------
+# [54] カスタマイズ画面のカーソル2
+#---------------------------------------
+TEXTURESET
+    TYPE = 54
+    NAME = data/TEXTURE/054_Cursor_Player2.png
+END_TEXTURESET
+
+#---------------------------------------
+# [55] カスタマイズ画面のカーソル3
+#---------------------------------------
+TEXTURESET
+    TYPE = 55
+    NAME = data/TEXTURE/055_Cursor_Player3.png
+END_TEXTURESET
+
+#---------------------------------------
+# [56] カスタマイズ画面のカーソル4
+#---------------------------------------
+TEXTURESET
+    TYPE = 56
+    NAME = data/TEXTURE/056_Cursor_Player4.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

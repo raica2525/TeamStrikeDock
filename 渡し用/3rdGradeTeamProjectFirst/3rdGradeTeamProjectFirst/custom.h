@@ -39,13 +39,28 @@ public:
         SELECT_1P_UP,
         SELECT_1P_DOWN,
         SELECT_1P_WEP,
-        SELECT_MAX			      // 選択の最大数
+        SELECT_MAX
     }SELECT;
+
+    // エントリー情報
+    typedef struct
+    {
+        CUI *pUI_Cursor;        // カーソル
+        int select;             // 選択
+        int nNumSelectHead;     // 頭パーツ選択
+        int nNumSelectUp;       // 上半身パーツ選択
+        int nNumSelectDown;     // 下半身パーツ選択
+        int nNumSelectWep;      // 武器パーツ選択
+        CText *pText_Head;      // 頭パーツの名前
+        CText *pText_Up;        // 上半身パーツの名前
+        CText *pText_Down;      // 下半身パーツの名前
+        CText *pText_Wep;       // 武器パーツの名前
+    }ENTRY_INFO;
 
     CCustom();
     ~CCustom();
     HRESULT Init(void);
-    void BindHaveParts(void);
+    void BindHaveParts(void);                                                  // 所持しているパーツ情報を結びつける
     void Uninit(void);
     void Update(void);
 
@@ -58,18 +73,7 @@ private:
     int m_anPartsDown[MAX_EACH_PARTS];  // 下半身パーツ
     int m_anPartsWep[MAX_EACH_PARTS];   // 武器パーツ
 
-    // いずれ構造体になる人たち
-    CUI *m_pUI_Cursor;                  // カーソル
-    int m_nSelectCoolTime;              // 選択のクールタイム
-    int m_select;                       // 選択
-    int m_nNumSelectHead;               // 頭パーツ選択
-    int m_nNumSelectUp;                 // 上半身パーツ選択
-    int m_nNumSelectDown;               // 下半身パーツ選択
-    int m_nNumSelectWep;                // 武器パーツ選択
-    CText *m_pText_Head;                // 頭パーツの名前
-    CText *m_pText_Up;                  // 上半身パーツの名前
-    CText *m_pText_Down;                // 下半身パーツの名前
-    CText *m_pText_Wep;                 // 武器パーツの名前
+    ENTRY_INFO m_aEntryInfo[MAX_PLAYER];// エントリー情報
 };
 
 #endif

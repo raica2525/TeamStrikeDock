@@ -348,7 +348,7 @@ public:
     void Respawn(void);                                                                 // リスポーン
     void Draw(void);                                                                    // 描画処理
     static CPlayer *CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, int playable, AI_LEVEL AIlevel, bool bUseKeyboard = false);   // ゲーム内での生成処理
-    static CPlayer *CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable);     // カスタマイズ画面での生成
+    static CPlayer *CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable, bool bDisp);     // カスタマイズ画面での生成
 
     void Movement(float fSpeed);                                                        // 行動
     void MoveMotion(void);                                                              // 移動モーションの管理
@@ -393,6 +393,7 @@ public:
     void SetAddPoint(void) { m_nPoint++; }
     void SetStopTime(int nStopTime) { m_nCntStopTime = nStopTime; }
     void SetSpGaugeCurrent(float fSpGauge) { m_fSpGaugeCurrent = fSpGauge; }
+    void SetDisp(bool bDisp) { m_bDisp = bDisp; }
 
     /*========================================================
     // ゲッター

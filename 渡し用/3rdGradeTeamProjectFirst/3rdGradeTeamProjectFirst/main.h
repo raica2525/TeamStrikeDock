@@ -54,6 +54,7 @@
 // デフォルト設定
 #define DEFAULT_COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))
 #define DEFAULT_COLOR_NONE (D3DXCOLOR(0.0f,0.0f,0.0f,0.0f))
+#define DEFAULT_COLOR_NONE_ALPHA (D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))
 #define DEFAULT_VECTOR (D3DXVECTOR3(0.0f,0.0f,0.0f))
 #define DEFAULT_SCALE (D3DXVECTOR3(1.0f,1.0f,1.0f))
 #define DEFAULT_NOR (D3DXVECTOR3(0.0f,1.0f,0.0f))
@@ -84,6 +85,10 @@
 
 // 0で初期化したくないとき用
 #define NOT_EXIST -1
+
+// テキスト周り
+#define TEXT_EXIST_COLOR D3DCOLOR_RGBA(255, 255, 255, 255)
+#define TEXT_NOT_EXIST_COLOR D3DCOLOR_RGBA(255, 255, 255, 0)
 
 //*****************************************************************************
 // 構造体定義

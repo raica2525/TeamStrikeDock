@@ -37,18 +37,7 @@ CCustom::CCustom()
     memset(m_anPartsUp, NOT_EXIST, sizeof(m_anPartsUp));
     memset(m_anPartsDown, NOT_EXIST, sizeof(m_anPartsDown));
     memset(m_anPartsWep, NOT_EXIST, sizeof(m_anPartsWep));
-
-    m_pUI_Cursor = NULL;
-    m_nSelectCoolTime = 0;
-    m_select = SELECT_1P_HEAD;
-    m_nNumSelectHead = 0;
-    m_nNumSelectUp = 0;  
-    m_nNumSelectDown = 0;
-    m_nNumSelectWep = 0; 
-    m_pText_Head = NULL;
-    m_pText_Up = NULL;
-    m_pText_Down = NULL;
-    m_pText_Wep = NULL;
+    memset(m_aEntryInfo, 0, sizeof(m_aEntryInfo));
 }
 
 //=============================================================================
@@ -69,67 +58,91 @@ HRESULT CCustom::Init(void)
     // 持っているパーツ情報を結びつける
     BindHaveParts();
 
-    // UIを生成
+    // UIを外部ファイルから生成
     CUI::Place(CUI::SET_CUSTOM);
 
-    m_pUI_Cursor = CUI::Create(52, DEFAULT_VECTOR, D3DXVECTOR3(270.0f, 55.0f, 0.0f), 0, DEFAULT_COLOR);
+    // カーソル生成
+    const D3DXVECTOR3 cursorFirstPos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
+    m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR);
+    m_aEntryInfo[PLAYER_2].pUI_Cursor = CUI::Create(54, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
+    m_aEntryInfo[PLAYER_3].pUI_Cursor = CUI::Create(55, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
+    m_aEntryInfo[PLAYER_4].pUI_Cursor = CUI::Create(56, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
 
-    //// BGMを再生
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Play(CSound::LABEL_BGM_RESULT);
+    // プレイヤー(マネキン)の生成
+    m_apPlayer[PLAYER_1] = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001, true);
+    m_apPlayer[PLAYER_2] = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_002, false);
+    m_apPlayer[PLAYER_3] = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_003, false);
+    m_apPlayer[PLAYER_4] = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_004, false);
 
-    // プレイヤーの生成
-    m_apPlayer[0] = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001);
-
-    // パーツ選択カーソルの初期化
-    int nPartNum = m_apPlayer[0]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_HEAD);
-    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
+    // パーツ選択情報の初期化
+    float fTextPosX = 167.0f;
+    for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
     {
-        if (m_anPartsHead[nCntEachParts] == nPartNum)
+        int nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_HEAD);
+        for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
-            m_nNumSelectHead = nCntEachParts;
+            if (m_anPartsHead[nCntEachParts] == nPartNum)
+            {
+                m_aEntryInfo[nCnt].nNumSelectHead = nCntEachParts;
+            }
         }
-    }
 
-    nPartNum = m_apPlayer[0]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_UP);
-    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
-    {
-        if (m_anPartsUp[nCntEachParts] == nPartNum)
+        nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_UP);
+        for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
-            m_nNumSelectUp = nCntEachParts;
+            if (m_anPartsUp[nCntEachParts] == nPartNum)
+            {
+                m_aEntryInfo[nCnt].nNumSelectUp = nCntEachParts;
+            }
         }
-    }
 
-    nPartNum = m_apPlayer[0]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_DOWN);
-    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
-    {
-        if (m_anPartsDown[nCntEachParts] == nPartNum)
+        nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_DOWN);
+        for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
-            m_nNumSelectDown = nCntEachParts;
+            if (m_anPartsDown[nCntEachParts] == nPartNum)
+            {
+                m_aEntryInfo[nCnt].nNumSelectDown = nCntEachParts;
+            }
         }
-    }
 
-    nPartNum = m_apPlayer[0]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_WEP);
-    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
-    {
-        if (m_anPartsWep[nCntEachParts] == nPartNum)
+        nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_WEP);
+        for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
-            m_nNumSelectWep = nCntEachParts;
+            if (m_anPartsWep[nCntEachParts] == nPartNum)
+            {
+                m_aEntryInfo[nCnt].nNumSelectWep = nCntEachParts;
+            }
         }
+
+        // テキストを設定
+        D3DCOLOR color = TEXT_EXIST_COLOR;
+        if (nCnt != PLAYER_1)
+        {
+            color = TEXT_NOT_EXIST_COLOR;
+        }
+        m_aEntryInfo[nCnt].pText_Head = CText::Create(D3DXVECTOR3(fTextPosX, 427.0f, 0.0f), 30,
+            CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_aEntryInfo[nCnt].nNumSelectHead]))->cName,
+            CText::ALIGN_CENTER, "Reggae One", color);
+        m_aEntryInfo[nCnt].pText_Up = CText::Create(D3DXVECTOR3(fTextPosX, 490.0f, 0.0f), 30,
+            CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_aEntryInfo[nCnt].nNumSelectUp]))->cName,
+            CText::ALIGN_CENTER, "Reggae One", color);
+        m_aEntryInfo[nCnt].pText_Down = CText::Create(D3DXVECTOR3(fTextPosX, 553.0f, 0.0f), 30,
+            CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_aEntryInfo[nCnt].nNumSelectDown]))->cName,
+            CText::ALIGN_CENTER, "Reggae One", color);
+        m_aEntryInfo[nCnt].pText_Wep = CText::Create(D3DXVECTOR3(fTextPosX, 616.0f, 0.0f), 30,
+            CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_aEntryInfo[nCnt].nNumSelectWep]))->cName,
+            CText::ALIGN_CENTER, "Reggae One", color);
+
+        // テキストの横位置を加算
+        fTextPosX += 315.0f;
     }
 
     // カメラのロックオン場所を変える
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
 
-    // テキストを設定
-    m_pText_Head = CText::Create(D3DXVECTOR3(165.0f, 427.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_nNumSelectHead]))->cName,
-        CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    m_pText_Up = CText::Create(D3DXVECTOR3(165.0f, 490.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_nNumSelectUp]))->cName,
-        CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    m_pText_Down = CText::Create(D3DXVECTOR3(165.0f, 553.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_nNumSelectDown]))->cName,
-        CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
-    m_pText_Wep = CText::Create(D3DXVECTOR3(165.0f, 616.0f, 0.0f), 30, CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_nNumSelectWep]))->cName,
-        CText::ALIGN_CENTER, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
+    //// BGMを再生
+    //CSound *pSound = CManager::GetSound();
+    //pSound->Play(CSound::LABEL_BGM_RESULT);
 
     return S_OK;
 }
@@ -216,12 +229,6 @@ void CCustom::Uninit(void)
 //=============================================================================
 void CCustom::Update(void)
 {
-    // 選択のクールタイムを数える
-    if (m_nSelectCoolTime > 0)
-    {
-        m_nSelectCoolTime--;
-    }
-
     //キーボードの確保したメモリを取得
     CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
 
@@ -239,256 +246,252 @@ void CCustom::Update(void)
         // 角度を求める
         fStickAngleP1 = atan2(ControllerP1.lX, ControllerP1.lY*-1);
     }
-    else
-    {
-        m_nSelectCoolTime = 0;
-    }
 
-    // フェードしていないなら、選択可能
-    if (CFade::GetFade() == CFade::FADE_NONE)
-    {
-        // 右または左が押されたら
-        if (pInputKeyboard->GetKeyboardTrigger(DIK_D) || pInputKeyboard->GetKeyboardTrigger(DIK_A) ||
-            bTiltedStickP1 && STICK_RIGHT(fStickAngleP1) && m_nSelectCoolTime <= 0 
-            || bTiltedStickP1 && STICK_LEFT(fStickAngleP1) && m_nSelectCoolTime <= 0)
-        {
-            bool bRight = false;
-            if (pInputKeyboard->GetKeyboardTrigger(DIK_D) || bTiltedStickP1 && STICK_RIGHT(fStickAngleP1) && m_nSelectCoolTime <= 0)
-            {
-                bRight = true;
-            }
+    //// フェードしていないなら、選択可能
+    //if (CFade::GetFade() == CFade::FADE_NONE)
+    //{
+    //    // 右または左が押されたら
+    //    if (pInputKeyboard->GetKeyboardTrigger(DIK_D) || pInputKeyboard->GetKeyboardTrigger(DIK_A) ||
+    //        bTiltedStickP1 && STICK_RIGHT(fStickAngleP1)
+    //        || bTiltedStickP1 && STICK_LEFT(fStickAngleP1))
+    //    {
+    //        bool bRight = false;
+    //        if (pInputKeyboard->GetKeyboardTrigger(DIK_D) || bTiltedStickP1 && STICK_RIGHT(fStickAngleP1) && m_nSelectCoolTime <= 0)
+    //        {
+    //            bRight = true;
+    //        }
 
-            // パーツを切り替え
-            switch (m_select)
-            {
-            case SELECT_1P_HEAD:
-                if (bRight)
-                {
-                    m_nNumSelectHead++;
+    //        // パーツを切り替え
+    //        switch (m_select)
+    //        {
+    //        case SELECT_1P_HEAD:
+    //            if (bRight)
+    //            {
+    //                m_nNumSelectHead++;
 
-                    // 右端
-                    if (m_anPartsHead[m_nNumSelectHead] == NOT_EXIST)
-                    {
-                        m_nNumSelectHead = 0;
-                    }
-                }
-                else
-                {
-                    m_nNumSelectHead--;
+    //                // 右端
+    //                if (m_anPartsHead[m_nNumSelectHead] == NOT_EXIST)
+    //                {
+    //                    m_nNumSelectHead = 0;
+    //                }
+    //            }
+    //            else
+    //            {
+    //                m_nNumSelectHead--;
 
-                    // 左端（存在する一番右のパーツに切り替える）
-                    if (m_nNumSelectHead < 0)
-                    {
-                        for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-                        {
-                            if (m_anPartsHead[nCnt] == NOT_EXIST)
-                            {
-                                m_nNumSelectHead = nCnt - 1;
+    //                // 左端（存在する一番右のパーツに切り替える）
+    //                if (m_nNumSelectHead < 0)
+    //                {
+    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
+    //                    {
+    //                        if (m_anPartsHead[nCnt] == NOT_EXIST)
+    //                        {
+    //                            m_nNumSelectHead = nCnt - 1;
 
-                                if (m_nNumSelectHead < 0)
-                                {
-                                    m_nNumSelectHead = 0;
-                                }
+    //                            if (m_nNumSelectHead < 0)
+    //                            {
+    //                                m_nNumSelectHead = 0;
+    //                            }
 
-                                break;
-                            }
-                        }
-                    }
-                }
-                SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_HEAD, m_anPartsHead[m_nNumSelectHead]);
-                m_pText_Head->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_nNumSelectHead]))->cName);
-                break;
+    //                            break;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_HEAD, m_anPartsHead[m_nNumSelectHead]);
+    //            m_pText_Head->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_nNumSelectHead]))->cName);
+    //            break;
 
-            case SELECT_1P_UP:
-                if (bRight)
-                {
-                    m_nNumSelectUp++;
+    //        case SELECT_1P_UP:
+    //            if (bRight)
+    //            {
+    //                m_nNumSelectUp++;
 
-                    // 右端
-                    if (m_anPartsUp[m_nNumSelectUp] == NOT_EXIST)
-                    {
-                        m_nNumSelectUp = 0;
-                    }
-                }
-                else
-                {
-                    m_nNumSelectUp--;
+    //                // 右端
+    //                if (m_anPartsUp[m_nNumSelectUp] == NOT_EXIST)
+    //                {
+    //                    m_nNumSelectUp = 0;
+    //                }
+    //            }
+    //            else
+    //            {
+    //                m_nNumSelectUp--;
 
-                    // 左端（存在する一番右のパーツに切り替える）
-                    if (m_nNumSelectUp < 0)
-                    {
-                        for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-                        {
-                            if (m_anPartsUp[nCnt] == NOT_EXIST)
-                            {
-                                m_nNumSelectUp = nCnt - 1;
+    //                // 左端（存在する一番右のパーツに切り替える）
+    //                if (m_nNumSelectUp < 0)
+    //                {
+    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
+    //                    {
+    //                        if (m_anPartsUp[nCnt] == NOT_EXIST)
+    //                        {
+    //                            m_nNumSelectUp = nCnt - 1;
 
-                                if (m_nNumSelectUp < 0)
-                                {
-                                    m_nNumSelectUp = 0;
-                                }
+    //                            if (m_nNumSelectUp < 0)
+    //                            {
+    //                                m_nNumSelectUp = 0;
+    //                            }
 
-                                break;
-                            }
-                        }
-                    }
-                }
-                SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_UP, m_anPartsUp[m_nNumSelectUp]);
-                m_pText_Up->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_nNumSelectUp]))->cName);
-                break;
+    //                            break;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_UP, m_anPartsUp[m_nNumSelectUp]);
+    //            m_pText_Up->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_nNumSelectUp]))->cName);
+    //            break;
 
-            case SELECT_1P_DOWN:
-                if (bRight)
-                {
-                    m_nNumSelectDown++;
+    //        case SELECT_1P_DOWN:
+    //            if (bRight)
+    //            {
+    //                m_nNumSelectDown++;
 
-                    // 右端
-                    if (m_anPartsDown[m_nNumSelectDown] == NOT_EXIST)
-                    {
-                        m_nNumSelectDown = 0;
-                    }
-                }
-                else
-                {
-                    m_nNumSelectDown--;
+    //                // 右端
+    //                if (m_anPartsDown[m_nNumSelectDown] == NOT_EXIST)
+    //                {
+    //                    m_nNumSelectDown = 0;
+    //                }
+    //            }
+    //            else
+    //            {
+    //                m_nNumSelectDown--;
 
-                    // 左端（存在する一番右のパーツに切り替える）
-                    if (m_nNumSelectDown < 0)
-                    {
-                        for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-                        {
-                            if (m_anPartsDown[nCnt] == NOT_EXIST)
-                            {
-                                m_nNumSelectDown = nCnt - 1;
+    //                // 左端（存在する一番右のパーツに切り替える）
+    //                if (m_nNumSelectDown < 0)
+    //                {
+    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
+    //                    {
+    //                        if (m_anPartsDown[nCnt] == NOT_EXIST)
+    //                        {
+    //                            m_nNumSelectDown = nCnt - 1;
 
-                                if (m_nNumSelectDown < 0)
-                                {
-                                    m_nNumSelectDown = 0;
-                                }
+    //                            if (m_nNumSelectDown < 0)
+    //                            {
+    //                                m_nNumSelectDown = 0;
+    //                            }
 
-                                break;
-                            }
-                        }
-                    }
-                }
-                SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_DOWN, m_anPartsDown[m_nNumSelectDown]);
-                m_pText_Down->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_nNumSelectDown]))->cName);
-                break;
+    //                            break;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_DOWN, m_anPartsDown[m_nNumSelectDown]);
+    //            m_pText_Down->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_nNumSelectDown]))->cName);
+    //            break;
 
-            case SELECT_1P_WEP:
-                if (bRight)
-                {
-                    m_nNumSelectWep++;
+    //        case SELECT_1P_WEP:
+    //            if (bRight)
+    //            {
+    //                m_nNumSelectWep++;
 
-                    // 右端
-                    if (m_anPartsWep[m_nNumSelectWep] == NOT_EXIST)
-                    {
-                        m_nNumSelectWep = 0;
-                    }
-                }
-                else
-                {
-                    m_nNumSelectWep--;
+    //                // 右端
+    //                if (m_anPartsWep[m_nNumSelectWep] == NOT_EXIST)
+    //                {
+    //                    m_nNumSelectWep = 0;
+    //                }
+    //            }
+    //            else
+    //            {
+    //                m_nNumSelectWep--;
 
-                    // 左端（存在する一番右のパーツに切り替える）
-                    if (m_nNumSelectWep < 0)
-                    {
-                        for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-                        {
-                            if (m_anPartsWep[nCnt] == NOT_EXIST)
-                            {
-                                m_nNumSelectWep = nCnt - 1;
+    //                // 左端（存在する一番右のパーツに切り替える）
+    //                if (m_nNumSelectWep < 0)
+    //                {
+    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
+    //                    {
+    //                        if (m_anPartsWep[nCnt] == NOT_EXIST)
+    //                        {
+    //                            m_nNumSelectWep = nCnt - 1;
 
-                                if (m_nNumSelectWep < 0)
-                                {
-                                    m_nNumSelectWep = 0;
-                                }
+    //                            if (m_nNumSelectWep < 0)
+    //                            {
+    //                                m_nNumSelectWep = 0;
+    //                            }
 
-                                break;
-                            }
-                        }
-                    }
-                }
-                SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_WEP, m_anPartsWep[m_nNumSelectWep]);
-                m_pText_Wep->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_nNumSelectWep]))->cName);
-                break;
-            }
+    //                            break;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_WEP, m_anPartsWep[m_nNumSelectWep]);
+    //            m_pText_Wep->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_nNumSelectWep]))->cName);
+    //            break;
+    //        }
 
-            // 選択のクールタイムを設定
-            m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
+    //        // 選択のクールタイムを設定
+    //        m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
 
-            // プレイヤーをリロード
-            m_apPlayer[0]->LoadCustom();
-        }
-        else
-        {
-            // 上移動
-            if (pInputKeyboard->GetKeyboardTrigger(DIK_W) || bTiltedStickP1 && STICK_UP(fStickAngleP1) && m_nSelectCoolTime <= 0)
-            {
-                // 上の選択肢に
-                m_select--;
+    //        // プレイヤーをリロード
+    //        m_apPlayer[0]->LoadCustom();
+    //    }
+    //    else
+    //    {
+    //        // 上移動
+    //        if (pInputKeyboard->GetKeyboardTrigger(DIK_W) || bTiltedStickP1 && STICK_UP(fStickAngleP1) && m_nSelectCoolTime <= 0)
+    //        {
+    //            // 上の選択肢に
+    //            m_select--;
 
-                // 一番上の選択肢なら、一番下へ
-                if (m_select < SELECT_1P_HEAD)
-                {
-                    m_select = SELECT_MAX - 1;
-                }
+    //            // 一番上の選択肢なら、一番下へ
+    //            if (m_select < SELECT_1P_HEAD)
+    //            {
+    //                m_select = SELECT_MAX - 1;
+    //            }
 
-                // 選択のクールタイムを設定
-                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
-            }
+    //            // 選択のクールタイムを設定
+    //            m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
+    //        }
 
-            // 下移動
-            if (pInputKeyboard->GetKeyboardTrigger(DIK_S) || bTiltedStickP1 && m_nSelectCoolTime <= 0)
-            {
-                // STICK_DOWNの定義が、または と組み合わせが悪いため
-                bool bDown = true;
-                if (bTiltedStickP1)
-                {
-                    if (STICK_DOWN(fStickAngleP1))
-                    {
-                        bDown = true;
-                    }
-                    else
-                    {
-                        bDown = false;
-                    }
-                }
+    //        // 下移動
+    //        if (pInputKeyboard->GetKeyboardTrigger(DIK_S) || bTiltedStickP1 && m_nSelectCoolTime <= 0)
+    //        {
+    //            // STICK_DOWNの定義が、または と組み合わせが悪いため
+    //            bool bDown = true;
+    //            if (bTiltedStickP1)
+    //            {
+    //                if (STICK_DOWN(fStickAngleP1))
+    //                {
+    //                    bDown = true;
+    //                }
+    //                else
+    //                {
+    //                    bDown = false;
+    //                }
+    //            }
 
-                // ダウンするフラグがtrueなら
-                if (bDown)
-                {
-                    // 下の選択肢に
-                    m_select++;
+    //            // ダウンするフラグがtrueなら
+    //            if (bDown)
+    //            {
+    //                // 下の選択肢に
+    //                m_select++;
 
-                    // 一番下の選択肢なら、一番上へ
-                    if (m_select >= SELECT_MAX)
-                    {
-                        m_select = SELECT_1P_HEAD;
-                    }
+    //                // 一番下の選択肢なら、一番上へ
+    //                if (m_select >= SELECT_MAX)
+    //                {
+    //                    m_select = SELECT_1P_HEAD;
+    //                }
 
-                    // 選択のクールタイムを設定
-                    m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
-                }
-            }
-        }
-    }
+    //                // 選択のクールタイムを設定
+    //                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
+    //            }
+    //        }
+    //    }
+    //}
 
-    // 決定キーでタイトルへ
-    if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START))
-    {
-        // タイトルモードに移行
-        CFade::SetFade(CManager::MODE_TITLE);
-    }
+    //// 決定キーでタイトルへ
+    //if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START))
+    //{
+    //    // タイトルモードに移行
+    //    CFade::SetFade(CManager::MODE_TITLE);
+    //}
 
-    // カーソルの位置を変える
-    D3DXVECTOR3 pos = D3DXVECTOR3(167.0f, 443.0f, 0.0f);
-    float fDigitPosY = 63.0f * m_select;
-    pos.y += fDigitPosY;
-    if (m_pUI_Cursor)
-    {
-        m_pUI_Cursor->SetPosition(pos);
-    }
+    //// カーソルの位置を変える
+    //D3DXVECTOR3 pos = D3DXVECTOR3(167.0f, 443.0f, 0.0f);
+    //float fDigitPosY = 63.0f * m_select;
+    //pos.y += fDigitPosY;
+    //if (m_pUI_Cursor)
+    //{
+    //    m_pUI_Cursor->SetPosition(pos);
+    //}
 }
 
 //=============================================================================

@@ -52,7 +52,7 @@ public:
     virtual void Uninit(void);
     virtual void Update(void);
     virtual void Draw(void);
-    int BindTexture(const int nNumTexture, const BREND brend = BREND_NORMAL);                                  // テクスチャを割り当てる
+    int BindTexture(const int nNumTexture, const BREND brend = BREND_NORMAL);                                   // テクスチャを割り当てる
     void SetVertex(void);                                                                                       // 頂点座標を設定
     void SetRotVertex(float fAngle);                                                                            // 回転する頂点座標を設定
     void SetVisualVertex(D3DXVECTOR3 posVisual, D3DXVECTOR3 sizeVisual);                                        // 見かけ上の頂点座標を設定
@@ -65,7 +65,6 @@ public:
     void SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern, int nTex = 0);   // 段落のあるアニメーションから一部分を切り取る
     int CountAnimation(int nSpeed, int nPattern);                                                               // アニメーションのカウンタを利用する
     void ResetCountAnim(int nNum = 0) { m_anCounterAnim[nNum] = 0; m_anPatternAnim[nNum] = 0; }                 // アニメーションのカウンタをリセット
-    void SetColor(D3DXCOLOR col);                                                                               // 色を変える
     void SetLeftToRightGauge(float fMax, float fNow, int nTex = 0);                                             // 左から右に伸びたゲージ
     void SetShaveTex(void);                                                                                     // 端の1ピクセルが反対側に行く現象を解決する関数
 
@@ -79,6 +78,7 @@ public:
     void SetAdditiveSynthesis(void) { m_bAdditiveSynthesis = true; }
     void SetAlphaTest(void) { m_bAlphaTest = true; }
     void SetNega(void) { m_bNega = true; }
+    void SetColor(D3DXCOLOR col);
 
     /*========================================================
     // ゲッター

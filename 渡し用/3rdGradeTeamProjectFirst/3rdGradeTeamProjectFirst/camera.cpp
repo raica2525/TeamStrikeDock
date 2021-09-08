@@ -86,6 +86,11 @@ void CCamera::ResetCamera(D3DXVECTOR3 pos, float fRot, SETTING setting)
     m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
     m_fPhi = fRot;
     m_nCntState = 0;
+
+    // 位置を更新(球面座標の公式)
+    m_posV.x = m_fDistance * (sin(m_fTheta) * cos(m_fPhi)) + m_pos.x;
+    m_posV.y = (m_fDistance / 2.0f) * cos(m_fTheta) + m_pos.y;
+    m_posV.z = m_fDistance * (sin(m_fTheta) * sin(m_fPhi)) + m_pos.z;
 }
 
 //=============================================================================

@@ -38,16 +38,17 @@ public:
     static void Unload(void);	//フォントデータの破棄
 
     void SetText(char* pStr);	//テキスト変更関数
+    void SetColor(D3DCOLOR col) { m_col = col; }
 
 private:
-    LPD3DXFONT m_pFont;	//フォント保存用変数
-    D3DXVECTOR3 m_pos;	//座標
-    int m_nSize;	//文字のサイズ
-    int m_nLimWidth;	//文字列の幅の上限
-    D3DCOLOR m_col;	//色
-    ALIGN m_align;	//文字の整列の方法
-    DWORD m_format;	//整列方法変換用変数
+    LPD3DXFONT m_pFont;	    //フォント保存用変数
+    D3DXVECTOR3 m_pos;	    //座標
+    int m_nSize;	        //文字のサイズ
+    int m_nLimWidth;	    //文字列の幅の上限
+    D3DCOLOR m_col;	        //色
+    ALIGN m_align;	        //文字の整列の方法
+    DWORD m_format;	        //整列方法変換用変数
     char m_fontName[128];	//フォントの名前
-    char m_str[512];	//表示する文字列
+    char m_str[512];	    //表示する文字列
 };
 #endif

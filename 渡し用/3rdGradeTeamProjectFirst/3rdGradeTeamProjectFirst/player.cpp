@@ -900,8 +900,12 @@ void CPlayer::Draw(void)
     }
     else
     {
-        // やられた時の描画
-        CCharacter::DeathDraw();
+        // マネキンモードでないなら
+        if (!m_bMannequin)
+        {
+            // やられた時の描画
+            CCharacter::DeathDraw();
+        }
     }
 }
 
@@ -992,7 +996,7 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
 // カスタマイズ画面での生成
 // Author : 後藤慎之助
 //=============================================================================
-CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable)
+CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable, bool bDisp)
 {
     // メモリ確保
     CPlayer *pPlayer = NULL;
@@ -1011,6 +1015,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable
     // 結びつけるメンバ変数の初期化
     pPlayer->m_startPos = pos;
     pPlayer->m_startRot = rot;
+    pPlayer->m_bDisp = bDisp;
 
     // マネキンモードに
     pPlayer->m_bMannequin = true;
@@ -1034,32 +1039,57 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable
     }
     float fDigitPosY = 0.0f;
     const float fDigitValue = 30.0f;
-    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_ATK_COLOR);
+    D3DXCOLOR gaugeColor = CUSTOM_ATK_COLOR;
+    if (!bDisp)
+    {
+        gaugeColor.a = 0.0f;
+    }
+    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
     pPlayer->m_pUI_Custom_Atk->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
-    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_DEF_COLOR);
+    gaugeColor = CUSTOM_DEF_COLOR;
+    if (!bDisp)
+    {
+        gaugeColor.a = 0.0f;
+    }
+    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
     pPlayer->m_pUI_Custom_Def->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
-    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_SPD_COLOR);
+    gaugeColor = CUSTOM_SPD_COLOR;
+    if (!bDisp)
+    {
+        gaugeColor.a = 0.0f;
+    }
+    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
     pPlayer->m_pUI_Custom_Spd->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
-    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_WEI_COLOR);
+    gaugeColor = CUSTOM_WEI_COLOR;
+    if (!bDisp)
+    {
+        gaugeColor.a = 0.0f;
+    }
+    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
     pPlayer->m_pUI_Custom_Wei->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
     // テキストを生成
+    D3DCOLOR textColor = TEXT_EXIST_COLOR;
+    if (!bDisp)
+    {
+        textColor = TEXT_NOT_EXIST_COLOR;
+    }
     char cExName[256];
     pPlayer->CustomExName(cExName);
     pPlayer->m_pText_Custom_Ex = CText::Create(startPos + D3DXVECTOR3(-120.0f, -80.0f, 0.0f), 30, cExName,
-        CText::ALIGN_LEFT, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
+        CText::ALIGN_LEFT, "Reggae One", textColor);
 
     char cSpName[256];
     pPlayer->CustomSpName(cSpName);
     pPlayer->m_pText_Custom_Sp = CText::Create(startPos + D3DXVECTOR3(-120.0f, -50.0f, 0.0f), 30, cSpName,
-        CText::ALIGN_LEFT, "Reggae One", D3DCOLOR_RGBA(255, 255, 255, 255));
+        CText::ALIGN_LEFT, "Reggae One", textColor);
 
     return pPlayer;
 }
