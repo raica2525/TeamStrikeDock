@@ -16,7 +16,9 @@
 //=============================================================================
 CBg::CBg() :CScene3D(CScene::OBJTYPE_BG)
 {
-
+    m_nModelType = 0;
+    m_col = DEFAULT_COLOR;
+    m_colPhase = COLOR_PHASE_G_UP;
 }
 
 //=============================================================================
@@ -41,7 +43,7 @@ HRESULT CBg::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
     SetScale(size);
 
     // モデルデータをバインド
-    BindModelData(34);   // ステージ1は34番
+    BindModelData(m_nModelType);
 
     return S_OK;
 }
@@ -61,7 +63,62 @@ void CBg::Uninit(void)
 //=============================================================================
 void CBg::Update(void)
 {
-
+    // ステージの線なら、色を変える
+    if (m_nModelType == 83)
+    {
+        const float COLOR_CHANGE_RATE = 0.01f;
+        switch (m_colPhase)
+        {
+        case COLOR_PHASE_R_DOWN:
+            m_col.r -= COLOR_CHANGE_RATE;
+            if (m_col.r <= 0.0f)
+            {
+                m_col.r = 0.0f;
+                m_colPhase = COLOR_PHASE_B_UP;
+            }
+            break;
+        case COLOR_PHASE_G_DOWN:
+            m_col.g -= COLOR_CHANGE_RATE;
+            if (m_col.g <= 0.0f)
+            {
+                m_col.g = 0.0f;
+                m_colPhase = COLOR_PHASE_R_UP;
+            }
+            break;
+        case COLOR_PHASE_B_DOWN:
+            m_col.b -= COLOR_CHANGE_RATE;
+            if (m_col.b <= 0.0f)
+            {
+                m_col.b = 0.0f;
+                m_colPhase = COLOR_PHASE_G_UP;
+            }
+            break;
+        case COLOR_PHASE_R_UP:
+            m_col.r += COLOR_CHANGE_RATE;
+            if (m_col.r >= 1.0f)
+            {
+                m_col.r = 1.0f;
+                m_colPhase = COLOR_PHASE_B_DOWN;
+            }
+            break;
+        case COLOR_PHASE_G_UP:
+            m_col.g += COLOR_CHANGE_RATE;
+            if (m_col.g >= 1.0f)
+            {
+                m_col.g = 1.0f;
+                m_colPhase = COLOR_PHASE_R_DOWN;
+            }
+            break;
+        case COLOR_PHASE_B_UP:
+            m_col.b += COLOR_CHANGE_RATE;
+            if (m_col.b >= 1.0f)
+            {
+                m_col.b = 1.0f;
+                m_colPhase = COLOR_PHASE_G_DOWN;
+            }
+            break;
+        }
+    }
 }
 
 //=============================================================================
@@ -70,14 +127,22 @@ void CBg::Update(void)
 //=============================================================================
 void CBg::Draw(void)
 {
-    CScene3D::Draw();
+    // ステージの線なら、色を反映させる
+    if (m_nModelType == 83)
+    {
+        CScene3D::Draw(true, true, m_col);
+    }
+    else
+    {
+        CScene3D::Draw();
+    }
 }
 
 //=============================================================================
 // インスタンス生成処理
 // Author : 後藤慎之助
 //=============================================================================
-CBg * CBg::Create(void)
+CBg * CBg::Create(int nModelType, D3DXVECTOR3 pos)
 {
     // ポインタを用意
     CBg *pBg = NULL;
@@ -85,8 +150,17 @@ CBg * CBg::Create(void)
     // メモリ確保
     pBg = new CBg;
 
+    // 先に種類を結びつけておく
+    pBg->m_nModelType = nModelType;
+
+    // ステージの線の場合、最初の色を変える
+    if (nModelType == 83)
+    {
+        pBg->m_col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+    }
+
     // 初期化
-    pBg->Init(DEFAULT_VECTOR, DEFAULT_SCALE);
+    pBg->Init(pos, DEFAULT_SCALE);
 
     return pBg;
 }

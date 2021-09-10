@@ -17,7 +17,7 @@
 //========================
 
 // ゲーム内の移動範囲
-#define GAME_LIMIT_WIDTH 1000.0f    // 2倍になる
+#define GAME_LIMIT_WIDTH 1100.0f    // 2倍になる
 #define GAME_LIMIT_HEIGHT 1000.0f   // 仮でわかりやすいように本家の2倍のサイズのステージ
 
 //========================

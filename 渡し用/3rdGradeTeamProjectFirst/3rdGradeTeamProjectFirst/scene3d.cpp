@@ -16,7 +16,6 @@
 //========================
 // マクロ定義
 //========================
-#define EMISSIVE_COLOR D3DXCOLOR(0.25f, 0.25f, 0.25f, 0.25f)
 
 //========================================
 // 静的メンバ変数宣言
@@ -98,7 +97,7 @@ void CScene3D::Update(void)
 // 描画処理
 // Author : 後藤慎之助
 //=============================================================================
-void CScene3D::Draw(bool bChangeColor, D3DXCOLOR color)
+void CScene3D::Draw(bool bChangeDeffuse, bool bUseLight, D3DXCOLOR color)
 {
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
     D3DXMATRIX mtxRot, mtxTrans, mtxScale;
@@ -106,12 +105,18 @@ void CScene3D::Draw(bool bChangeColor, D3DXCOLOR color)
     D3DXMATERIAL *pMat;
 
     // 加算合成
-    if (m_bAdditiveSynthesis == true)
+    if (m_bAdditiveSynthesis)
     {
         // レンダーステート(加算合成にする)
         pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
         pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
         pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+    }
+
+    // ライトを無効に
+    if (!bUseLight)
+    {
+        pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
     }
 
     D3DXMatrixIdentity(&m_mtxWorld);
@@ -138,12 +143,12 @@ void CScene3D::Draw(bool bChangeColor, D3DXCOLOR color)
         // テクスチャを貼っているなら自己発光
         if (m_apTexMat[nCntMat])
         {
-            pMat[nCntMat].MatD3D.Emissive = EMISSIVE_COLOR;
+            pMat[nCntMat].MatD3D.Emissive = color;
         }
         pMat[nCntMat].MatD3D.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-        // 色を変えるなら、拡散光を変える
-        if (bChangeColor)
+        // 拡散光を変えるかどうか
+        if (bChangeDeffuse)
         {
             pMat[nCntMat].MatD3D.Diffuse = color;
         }
@@ -159,6 +164,12 @@ void CScene3D::Draw(bool bChangeColor, D3DXCOLOR color)
     }
 
     pDevice->SetMaterial(&matDef);
+
+    // ライトを有効化
+    if (!bUseLight)
+    {
+        pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+    }
 
     pDevice->SetTexture(0, NULL);
 

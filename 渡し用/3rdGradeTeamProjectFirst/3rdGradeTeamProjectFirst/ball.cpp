@@ -479,7 +479,7 @@ void CBall::Draw(void)
     // 表示しているか、配置中なら描画
     if (m_bDisp || m_nCntDispingTime >= BALL_DISPING_TIME)
     {
-        CScene3D::Draw();
+        CScene3D::Draw(false, false);
     }
 }
 

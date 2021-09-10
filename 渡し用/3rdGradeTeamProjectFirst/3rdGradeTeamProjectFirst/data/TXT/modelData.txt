@@ -277,7 +277,7 @@ MODEL_DATASET
 END_MODEL_DATASET
 
 #---------------------------------------
-# [34] ステージ1（仮）
+# [34] ステージ1
 #---------------------------------------
 MODEL_DATASET
 	TYPE = 34
@@ -666,6 +666,14 @@ END_MODEL_DATASET
 MODEL_DATASET
 	TYPE = 82
 	NAME = data/MODEL/knight/15_weapon.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [83] ステージ1の線
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 83
+	NAME = data/MODEL/stage1_line.x
 END_MODEL_DATASET
 
 END_SCRIPT		# この行は絶対消さないこと！

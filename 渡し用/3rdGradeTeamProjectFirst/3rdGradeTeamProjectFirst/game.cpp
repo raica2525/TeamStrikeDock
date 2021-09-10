@@ -126,8 +126,9 @@ HRESULT CGame::Init(void)
         m_nNumAllPlayer = 1; // トレーニングは1人固定
     }
 
-    // 仮ステージのモデルを生成（カスタマイズ画面の情報を元に決める）
-    CBg::Create();
+    // ステージのモデルを生成
+    CBg::Create(34, DEFAULT_VECTOR);    // ステージ1は34
+    CBg::Create(83, DEFAULT_VECTOR);    // ステージ1の線は83
 
     // UIを生成
     CUI::Place(CUI::SET_GAME);

@@ -17,6 +17,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
+#define SCENE3D_EMISSIVE_COLOR D3DXCOLOR(0.25f, 0.25f, 0.25f, 0.25f)
 
 //================================================
 // クラス宣言
@@ -32,7 +33,7 @@ public:
     virtual HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
     virtual void Uninit(void);
     virtual void Update(void);
-    virtual void Draw(bool bChangeColor = false, D3DXCOLOR color = DEFAULT_COLOR);
+    virtual void Draw(bool bChangeDiffuse = false, bool bUseLight = true, D3DXCOLOR col = SCENE3D_EMISSIVE_COLOR);
     void BindModelData(const int nNumModelData);
     void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
     void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
