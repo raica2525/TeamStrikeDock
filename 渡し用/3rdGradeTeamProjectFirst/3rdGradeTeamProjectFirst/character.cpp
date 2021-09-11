@@ -18,7 +18,6 @@
 #include "scene3d.h"
 #include "library.h"
 #include "game.h"
-#include "shadow.h"
 #include "player.h"
 #include "modelData.h"
 
@@ -43,8 +42,6 @@ CCharacter::CCharacter()
     memset(m_aPartsType, 0, sizeof(m_aPartsType));
 
     m_pAnimation = NULL;
-    m_pShadow = NULL;
-    m_pFrame = NULL;
     m_cAnimFilePass = NULL;
 
     // アニメーションはデフォルトで使うことを設定
@@ -68,8 +65,6 @@ CCharacter::CCharacter(OBJTYPE objtype) :CScene(objtype)
     memset(m_aPartsType, 0, sizeof(m_aPartsType));
 
     m_pAnimation = NULL;
-    m_pShadow = NULL;
-    m_pFrame = NULL;
     m_cAnimFilePass = NULL;
 
     // アニメーションはデフォルトで使うことを設定
@@ -122,16 +117,6 @@ HRESULT CCharacter::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
         m_pAnimation = CAnimation::Create(this, m_nPartsNum, m_cAnimFilePass);
     }
 
-    //// プレイヤーなら
-    //if (m_tribe == TRIBE_PLAYER)
-    //{
-    //    // 影を生成
-    //    m_pShadow = CShadow::Create(D3DXVECTOR3(pos.x, SHADOW_POS_Y, pos.z), DEFAULT_VECTOR, HIT_TOP, SHADOW_COLOR);
-
-    //    // ふちどりを生成
-    //    m_pFrame = CShadow::Create(pos, DEFAULT_VECTOR, D3DXVECTOR3(D3DXToRadian(45.0f), 0.0f, 0.0f), SHADOW_COLOR);
-    //}
-
     return S_OK;
 }
 
@@ -167,18 +152,6 @@ void CCharacter::Uninit(void)
         m_pAnimation = NULL;
     }
 
-    // 影を使用しない
-    if (m_pShadow != NULL)
-    {
-        m_pShadow->Unable();
-    }
-
-    // ふちどりを使用しない
-    if (m_pFrame != NULL)
-    {
-        m_pFrame->Unable();
-    }
-
     Release();
 }
 
@@ -193,26 +166,6 @@ void CCharacter::Update(void)
     {
         m_pAnimation->Update();
     }
-
-    //// 影を更新
-    //if (m_pShadow != NULL)
-    //{
-    //    m_pShadow->SetPos(D3DXVECTOR3(m_pos.x, SHADOW_POS_Y, m_pos.z));
-
-    //    // サイズはここではなく初期化で調整、ロットはカメラの向きを参考に
-    //    m_pShadow->SetSize(D3DXVECTOR3(m_activeCollisionSize.x * SHADOW_SIZE_RATE, m_activeCollisionSize.x * SHADOW_SIZE_RATE, 0.0f));
-    //    m_pShadow->SetRotAngle(m_rot.y);
-    //}
-
-    //// ふちどりを更新
-    //if (m_pShadow != NULL)
-    //{
-    //    m_pFrame->SetPos(m_pos);
-
-    //    // サイズはここではなく初期化で調整、ロットはカメラの向きを参考に
-    //    m_pFrame->SetSize(D3DXVECTOR3(m_activeCollisionSize.x * 200.0f, m_activeCollisionSize.x * 200.0f, 0.0f));
-    //    m_pFrame->SetRotAngle(m_rot.y);
-    //}
 }
 
 //=============================================================================
@@ -221,117 +174,6 @@ void CCharacter::Update(void)
 //=============================================================================
 void CCharacter::Draw(void)
 {
-    //// ステンシルバッファで影を描画
-    //if (m_pShadow != NULL)
-    //{
-    //    // ステンシルバッファを使う
-    //    LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-    //    // Zテスト有効
-    //    pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-    //    // Zテストを必ず失敗に
-    //    pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
-
-    //    // ステンシルテスト有効
-    //    pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
-    //    // ステンシルバッファへ反映する参照値
-    //    pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
-    //    // 参照値マスク
-    //    pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
-    //    // ステンシルテストを必ず成功に
-    //    pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
-    //    // ステンシルテストのテスト設定
-    //    pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
-    //    pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
-    //    pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
-
-    //    for (int nCount = 0; nCount < m_nPartsNum; nCount++)
-    //    {
-    //        // 仮
-    //        m_apModel[nCount]->SetScale(D3DXVECTOR3(0.9f, 0.9f, 0.9f));
-
-    //        if (nCount == 0)
-    //        {
-    //            // 仮（重いなら、丸い影でも十分）（もしくは、マルチターゲットレンダリングで負荷軽減）
-    //            float fRotX = D3DXToRadian(90.0f);
-    //            float fRotY = D3DXToRadian(270.0f);
-    //            if(m_rot.y == PLAYER_ROT_LEFT)
-    //            {
-    //                fRotX = D3DXToRadian(270.0f);
-    //                fRotY = D3DXToRadian(90.0f);
-    //            }
-    //            m_apModel[nCount]->Draw(D3DXVECTOR3(m_pos.x + 50.0f, SHADOW_POS_Y, m_pos.z),
-    //                D3DXVECTOR3(fRotX, fRotY, m_rot.z));
-    //        }
-    //        else
-    //        {
-    //            m_apModel[nCount]->Draw(m_apModel[m_nIndexParent[nCount]]);
-    //        }
-
-    //        m_apModel[nCount]->SetScale(DEFAULT_SCALE);
-    //    }
-
-    //    // ステンシルテスト無効
-    //    pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
-
-    //    // ZBUFFER比較設定変更 => (参照値 <= バッファ値)(戻す)
-    //    pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-
-    //    // 影を描画
-    //    m_pShadow->Draw();
-    //}
-
-    //// ステンシルバッファでふちどりを描画
-    //if (m_pFrame != NULL)
-    //{
-    //    // ステンシルバッファを使う
-    //    LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-    //    // Zテスト有効
-    //    pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-    //    // Zテストを必ず失敗に
-    //    pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
-
-    //    // ステンシルテスト有効
-    //    pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
-    //    // ステンシルバッファへ反映する参照値
-    //    pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
-    //    // 参照値マスク
-    //    pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
-    //    // ステンシルテストを必ず成功に
-    //    pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
-    //    // ステンシルテストのテスト設定
-    //    pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
-    //    pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
-    //    pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
-
-    //    for (int nCount = 0; nCount < m_nPartsNum; nCount++)
-    //    {
-    //        // 仮
-    //        m_apModel[nCount]->SetScale(D3DXVECTOR3(1.02f, 1.02f, 1.02f));
-
-    //        if (nCount == 0)
-    //        {
-    //            m_apModel[nCount]->Draw(m_pos, m_rot);
-    //        }
-    //        else
-    //        {
-    //            m_apModel[nCount]->Draw(m_apModel[m_nIndexParent[nCount]]);
-    //        }
-
-    //        m_apModel[nCount]->SetScale(DEFAULT_SCALE);
-    //    }
-
-    //    // ステンシルテスト無効
-    //    pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
-
-    //    // ZBUFFER比較設定変更 => (参照値 <= バッファ値)(戻す)
-    //    pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-
-    //    // ふちどりを描画
-    //    m_pFrame->Draw();
-    //}
-
     for (int nCount = 0; nCount < m_nPartsNum; nCount++)
     {
         if (nCount == 0)
@@ -356,6 +198,7 @@ void CCharacter::DeathDraw(void)
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
     pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 
+    // 各パーツを、白くするためのtrue
     for (int nCount = 0; nCount < m_nPartsNum; nCount++)
     {
         if (nCount == 0)

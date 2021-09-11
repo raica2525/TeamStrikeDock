@@ -69,10 +69,11 @@
 #define PLAYER_4 (3)     // プレイヤーのコントローラー番号 (4P)
 
 // 各プレイヤーの色
+#define PLAYER_COLOR_NONE D3DXCOLOR(0.584f, 0.333f, 0.96f, 1.0f)
 #define PLAYER_COLOR_1 D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)
-#define PLAYER_COLOR_2 D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f)
-#define PLAYER_COLOR_3 D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)
-#define PLAYER_COLOR_4 D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)
+#define PLAYER_COLOR_2 D3DXCOLOR(0.333f, 0.682f, 0.949f, 1.0f)
+#define PLAYER_COLOR_3 D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)
+#define PLAYER_COLOR_4 D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)
 
 // ビット演算
 #define BITON(flag,bit) (flag)=(flag)|(bit)

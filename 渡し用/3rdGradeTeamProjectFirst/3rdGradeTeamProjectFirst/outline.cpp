@@ -1,6 +1,6 @@
 //===============================================
 //
-// エフェクト3D処理 (shadow.cpp)
+// アウトライン処理 (outline.cpp)
 // Author : 後藤慎之助
 //
 //===============================================
@@ -8,10 +8,9 @@
 //========================
 // インクルードファイル
 //========================
-#include "shadow.h"
+#include "outline.h"
 #include "manager.h"
 #include "renderer.h"
-#include "library.h"
 
 //========================================
 // 静的メンバ変数宣言
@@ -21,9 +20,8 @@
 // コンストラクタ
 // Author : 後藤慎之助
 //=============================================================================
-CShadow::CShadow(CScene::OBJTYPE objtype) :CBillboard(objtype)
+COutline::COutline(CScene::OBJTYPE objtype) :CBillboard(objtype)
 {
-    m_fRotAngle = 0.0f;
     m_bUse = true;
 }
 
@@ -31,7 +29,7 @@ CShadow::CShadow(CScene::OBJTYPE objtype) :CBillboard(objtype)
 // デストラクタ
 // Author : 後藤慎之助
 //=============================================================================
-CShadow::~CShadow()
+COutline::~COutline()
 {
 
 }
@@ -40,13 +38,10 @@ CShadow::~CShadow()
 // 初期化処理
 // Author : 後藤慎之助
 //=============================================================================
-HRESULT CShadow::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+HRESULT COutline::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
     // ビルボードの初期化
     CBillboard::Init(pos, size);
-
-    //// テクスチャをバインド
-    //BindTexture(m_apTexture[m_type]);
 
     return S_OK;
 }
@@ -55,7 +50,7 @@ HRESULT CShadow::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 // 終了処理
 // Author : 後藤慎之助
 //=============================================================================
-void CShadow::Uninit(void)
+void COutline::Uninit(void)
 {
     CBillboard::Uninit();
 }
@@ -64,7 +59,7 @@ void CShadow::Uninit(void)
 // 更新処理
 // Author : 後藤慎之助
 //=============================================================================
-void CShadow::Update(void)
+void COutline::Update(void)
 {
     // ビルボードを更新
     CBillboard::Update();
@@ -80,15 +75,10 @@ void CShadow::Update(void)
 // 描画処理
 // Author : 後藤慎之助
 //=============================================================================
-void CShadow::Draw(void)
+void COutline::Draw(void)
 {
     // ステンシルバッファを使う
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-    //// Zバッファ設定 => 有効
-    //pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-    //// ZBUFFER比較設定変更 => (参照値 <= バッファ値)
-    //pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
     // ステンシルテスト => 有効
     pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
@@ -100,7 +90,7 @@ void CShadow::Draw(void)
     pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
 
     // ステンシルテストの比較方法設定 => 
-    //		この描画での参照値 == ステンシルバッファの参照値なら合格
+    // この描画での参照値 == ステンシルバッファの参照値なら合格
     pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
 
     // ステンシルテストの結果に対しての反映設定
@@ -108,6 +98,7 @@ void CShadow::Draw(void)
     pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
     pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
 
+    // ビルボードの描画
     CBillboard::Draw();
 
     // ステンシルテスト無効
@@ -118,24 +109,22 @@ void CShadow::Draw(void)
 // インスタンス生成処理
 // Author : 後藤慎之助
 //=============================================================================
-CShadow * CShadow::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+COutline * COutline::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
     // メモリの確保
-    CShadow *pShadow = NULL;
-
-    // タイプごとに、Zバッファを無効化するエフェクトかどうかを決める
-    pShadow = new CShadow(/*CScene::OBJTYPE_EFFECT3D_STENCIL*/CScene::OBJTYPE_NONE);    // 仮でなし
+    COutline *pOutline = NULL;
+    pOutline = new COutline(CScene::OBJTYPE_NONE_DRAW);
 
     // メモリを確保出来たら
-    if (pShadow != NULL)
+    if (pOutline != NULL)
     {
         // 初期化
-        pShadow->Init(pos, size);
+        pOutline->Init(pos, size);
 
         // ビルボードへ設定を反映
-        pShadow->SetRot(rot);
-        pShadow->SetCol(col);
+        pOutline->SetRot(rot);
+        pOutline->SetCol(col);
     }
 
-    return pShadow;
+    return pOutline;
 }

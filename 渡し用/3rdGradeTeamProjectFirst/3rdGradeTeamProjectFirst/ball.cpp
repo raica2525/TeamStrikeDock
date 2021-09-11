@@ -19,6 +19,7 @@
 #include "wave.h"
 #include "effect2d.h"
 #include "number_array.h"
+#include "outline.h"
 
 //=============================================================================
 // コンストラクタ
@@ -26,6 +27,10 @@
 //=============================================================================
 CBall::CBall() :CScene3D(CScene::OBJTYPE_BALL)
 {
+    // アウトラインのポインタはコンストラクタでのみリセット
+    m_pOutline = NULL;
+
+    // メンバ変数のリセット
     ResetMenberVariables();
 }
 
@@ -95,6 +100,12 @@ HRESULT CBall::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
     // モデルデータをバインド
     BindModelData(0);   // ボールは0番
 
+    // アウトラインを設定
+    if (!m_pOutline)
+    {
+        m_pOutline = COutline::Create(pos, D3DXVECTOR3(500.0f, 500.0f, 0.0f), DEFAULT_VECTOR, PLAYER_COLOR_NONE);
+    }
+
     return S_OK;
 }
 
@@ -120,6 +131,12 @@ void CBall::Reset(D3DXVECTOR3 pos)
 //=============================================================================
 void CBall::Uninit(void)
 {
+    // アウトラインを使用しない
+    if (m_pOutline != NULL)
+    {
+        m_pOutline->Unable();
+    }
+
     CScene3D::Uninit();
 }
 
@@ -259,6 +276,38 @@ void CBall::Update(void)
             }
         }
     }
+
+    // アウトラインを更新
+    if (m_pOutline != NULL)
+    {
+        // 位置を更新
+        D3DXVECTOR3 outlinePos = GetPos();
+        m_pOutline->SetPos(outlinePos);
+
+        // 色を更新
+        D3DXCOLOR outlineColor = DEFAULT_COLOR;
+        if (m_nWhoShooting == PLAYER_1 || m_nWhoAbsorbing == PLAYER_1)
+        {
+            outlineColor = PLAYER_COLOR_1;
+        }
+        else if (m_nWhoShooting == PLAYER_2 || m_nWhoAbsorbing == PLAYER_2)
+        {
+            outlineColor = PLAYER_COLOR_2;
+        }
+        else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
+        {
+            outlineColor = PLAYER_COLOR_3;
+        }
+        else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
+        {
+            outlineColor = PLAYER_COLOR_4;
+        }
+        else
+        {
+            outlineColor = PLAYER_COLOR_NONE;
+        }
+        m_pOutline->SetCol(outlineColor);
+    }
 }
 
 //=============================================================================
@@ -336,13 +385,13 @@ void CBall::AuraEffect(void)
         }
         else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
         {
-            col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
-            colChangeRate.g = 0.01f;
+            col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+            colChangeRate.r = -0.05f;
         }
         else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
         {
-            col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
-            colChangeRate.r = -0.05f;
+            col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
+            colChangeRate.g = 0.01f;
         }
         else
         {
@@ -388,13 +437,13 @@ void CBall::AppearEffect(void)
         }
         else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
         {
-            col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
-            colChangeRate.g = 0.01f;
+            col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+            colChangeRate.r = -0.05f;
         }
         else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
         {
-            col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
-            colChangeRate.r = -0.05f;
+            col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
+            colChangeRate.g = 0.01f;
         }
         else
         {
@@ -479,6 +528,47 @@ void CBall::Draw(void)
     // 表示しているか、配置中なら描画
     if (m_bDisp || m_nCntDispingTime >= BALL_DISPING_TIME)
     {
+        // ステンシルバッファでアウトラインを描画
+        if (m_pOutline != NULL)
+        {
+            // ステンシルバッファを使う
+            LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+            // Zテスト有効
+            pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+            // Zテストを必ず失敗に
+            pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
+
+            // ステンシルテスト有効
+            pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
+            // ステンシルバッファへ反映する参照値
+            pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
+            // 参照値マスク
+            pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
+            // ステンシルテストを必ず成功に
+            pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
+            // ステンシルテストのテスト設定
+            pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
+            pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
+            pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
+
+            // 通常の描画の前後で、スケールをいじる
+            D3DXVECTOR3 memoryScale = GetScale();
+            SetScale(GetScale()*BALL_OUTLINE_RATE);
+            CScene3D::Draw(false, false);
+            SetScale(memoryScale);
+
+            // ステンシルテスト無効
+            pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
+
+            // ZBUFFER比較設定変更 => (参照値 <= バッファ値)(戻す)
+            pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+
+            // アウトラインを描画
+            m_pOutline->Draw();
+        }
+
+        // 通常の描画
         CScene3D::Draw(false, false);
     }
 }

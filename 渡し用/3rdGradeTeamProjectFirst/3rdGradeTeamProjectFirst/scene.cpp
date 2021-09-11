@@ -189,7 +189,7 @@ void CScene::DrawExceptWave(void)
     for (int nCnt = 0; nCnt < OBJTYPE_MAX; nCnt++)
     {
         // 波紋エフェクト以外なら
-        if (nCnt != OBJTYPE_WAVE)
+        if (nCnt != OBJTYPE_WAVE && nCnt != OBJTYPE_NONE_DRAW)
         {
             // 先頭、最新のものがあるなら
             if (m_apTop[nCnt] != NULL && m_apCur[nCnt] != NULL)
@@ -220,7 +220,7 @@ void CScene::DrawExceptWaveAndUI(void)
     for (int nCnt = 0; nCnt < OBJTYPE_MAX; nCnt++)
     {
         // 波紋エフェクトかUI以外なら
-        if (nCnt != OBJTYPE_WAVE && nCnt != OBJTYPE_UI)
+        if (nCnt != OBJTYPE_WAVE && nCnt != OBJTYPE_UI && nCnt != OBJTYPE_NONE_DRAW)
         {
             // 先頭、最新のものがあるなら
             if (m_apTop[nCnt] != NULL && m_apCur[nCnt] != NULL)

@@ -135,9 +135,6 @@
     <ClCompile Include="bg.cpp">
       <Filter>ソース ファイル\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="shadow.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="player_sp.cpp">
       <Filter>ソース ファイル\Obj</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
       <Filter>ソース ファイル\Useful</Filter>
     </ClCompile>
     <ClCompile Include="player_custom.cpp">
+      <Filter>ソース ファイル\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="outline.cpp">
       <Filter>ソース ファイル\Obj</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,9 +263,6 @@
     <ClInclude Include="bg.h">
       <Filter>ヘッダー ファイル\Obj_h</Filter>
     </ClInclude>
-    <ClInclude Include="shadow.h">
-      <Filter>ヘッダー ファイル\Obj_h</Filter>
-    </ClInclude>
     <ClInclude Include="effect3d.h">
       <Filter>ヘッダー ファイル\Obj_h</Filter>
     </ClInclude>
@@ -298,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="text.h">
       <Filter>ヘッダー ファイル\Usehul_h</Filter>
+    </ClInclude>
+    <ClInclude Include="outline.h">
+      <Filter>ヘッダー ファイル\Obj_h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

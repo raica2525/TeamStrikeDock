@@ -170,6 +170,7 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="modelData.cpp" />
     <ClCompile Include="number.cpp" />
+    <ClCompile Include="outline.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_custom.cpp" />
@@ -181,7 +182,6 @@
     <ClCompile Include="scene2d.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="number_array.cpp" />
-    <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -214,6 +214,7 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="modelData.h" />
     <ClInclude Include="number.h" />
+    <ClInclude Include="outline.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ranking.h" />
@@ -223,7 +224,6 @@
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="number_array.h" />
-    <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="texture.h" />

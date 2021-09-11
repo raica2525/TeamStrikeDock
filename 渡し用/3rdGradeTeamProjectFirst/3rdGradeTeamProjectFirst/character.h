@@ -24,7 +24,6 @@
 //================================================
 class CModel;
 class CAnimation;
-class CShadow;
 
 //================================================
 // クラス宣言
@@ -84,8 +83,6 @@ private:
 
     CModel			*m_apModel[CHARCTER_PARTS_MAX];                     // モデルへのポインタ
     CAnimation		*m_pAnimation;                                      // アニメーションへのポインタ
-    CShadow         *m_pShadow;                                         // 影へのポインタ
-    CShadow         *m_pFrame;                                          // ふちどりへのポインタ
 
     D3DXVECTOR3		m_posOld;                                           // 1F前の位置
 

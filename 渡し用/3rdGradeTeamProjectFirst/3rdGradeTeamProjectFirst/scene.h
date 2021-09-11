@@ -28,12 +28,12 @@ public:
     typedef enum
     {
         OBJTYPE_NONE,               // なし
+        OBJTYPE_NONE_DRAW,          // 描画しない
         OBJTYPE_BG,                 // 背景
         OBJTYPE_EFFECT3D_Z_NONE,    // エフェクト3D（Zバッファを無視）
         OBJTYPE_BALL,               // ボール
         //OBJTYPE_ENEMY,            // エネミー（今回はいない、その代わりCPUがいる）
         OBJTYPE_PLAYER,             // プレイヤー
-        //OBJTYPE_EFFECT3D_STENCIL, // ステンシルエフェクト（影やアウトラインの実装途中）
         OBJTYPE_BLOCK,              // ブロック
         OBJTYPE_MODEL_EFFECT,       // モデルエフェクト
         OBJTYPE_ITEM,               // アイテム

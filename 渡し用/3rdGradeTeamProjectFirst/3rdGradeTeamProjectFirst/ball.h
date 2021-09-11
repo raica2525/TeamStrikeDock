@@ -17,6 +17,7 @@
 // 前方宣言
 //================================================
 class CPlayer;
+class COutline;
 
 //================================================
 // マクロ定義
@@ -36,6 +37,7 @@ class CPlayer;
 #define BALL_DISPING_SCALE_UP_RATE 0.05f          // 開始時のスケール拡大割合
 #define BALL_WAVE_FIRST_SIZE D3DXVECTOR3(50.0f, 50.0f, 0.0f)
 #define BALL_MOVE_Y_DONT_MOVE_BORDER 1.0f         // 動いていないとみなす縦軸の値（ボールを変形させる際に使う）
+#define BALL_OUTLINE_RATE 1.2f                    // アウトラインの拡大割合
 
 // 攻撃周り
 #define BALL_SHOOT_STOP_LEAST_FRAME 8        // 最小硬直時間（要調整）
@@ -145,6 +147,7 @@ public:
     D3DXVECTOR3 GetCollisionPos(void) { return GetPos() + BALL_COLLISION_POS_SLIDE; }
 
 private:
+    COutline *m_pOutline;       // アウトライン
     int m_shootFlag;            // シュートのフラグ
     D3DXVECTOR3 m_moveAngle;    // 移動する角度
     float m_fSpeed;             // 速さ
