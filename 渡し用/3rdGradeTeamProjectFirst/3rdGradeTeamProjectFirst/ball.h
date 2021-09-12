@@ -107,6 +107,7 @@ public:
     void UpdateCornerPos(D3DXVECTOR3 pos);                          // 斜め当たり判定用の、四つ角更新
     void AuraEffect(void);                                          // ボールのオーラエフェクト
     void AppearEffect(void);                                        // ボールの出現エフェクト
+    void LocusEffect(void);											// ボールの軌跡エフェクト
     void ChangeScaleAndRot(void);                                   // スケールと回転の変更
     void Draw(void);
     static CBall *Create(D3DXVECTOR3 pos, bool bUseCollision);

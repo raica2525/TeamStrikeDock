@@ -478,4 +478,12 @@ TEXTURESET
     NAME = data/TEXTURE/056_Cursor_Player4.png
 END_TEXTURESET
 
+#---------------------------------------
+# [57] 軌跡
+#---------------------------------------
+TEXTURESET
+    TYPE = 57
+    NAME = data/TEXTURE/057_Locus.jpg
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

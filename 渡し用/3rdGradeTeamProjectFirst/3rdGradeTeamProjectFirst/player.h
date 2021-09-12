@@ -52,7 +52,7 @@
 #define PLAYER_LUCKY_GUARD_MAX 10000                        // ラッキーガードの最大値（これ分の防御力(だいたい防御力は1000くらい？)）
 #define PLAYER_TAKE_DAMAGE_RATE_FROM_BALL 10.0f             // ボールからダメージを受けるとき、速度にかける割合
 #define PLAYER_TAKE_DAMAGE_BORDER_DAMAGE 500.0f             // 小やられか大やられの境目ダメージ
-#define PLAYER_TAKE_DAMAGE_SMALL_FRAME 20                   // 負傷小フレーム数
+#define PLAYER_TAKE_DAMAGE_SMALL_FRAME 30                   // 負傷小フレーム数
 #define PLAYER_TAKE_DAMAGE_BIG_FRAME 180                    // 負傷大フレーム数
 #define PLAYER_TAKE_DAMAGE_LUCKY_GUARD_FRAME 40             // 負傷ラッキーガードフレーム数
 #define PLAYER_KNOCK_BACK_SMALL_IN_AIR 10.0f                // ノックバック量（空中負傷小）

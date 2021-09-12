@@ -21,6 +21,7 @@
 #include "number_array.h"
 #include "outline.h"
 #include "input.h"
+#include "locus.h"
 
 //=============================================================================
 // コンストラクタ
@@ -206,8 +207,8 @@ void CBall::Update(void)
             // 四つ角の位置を更新
             UpdateCornerPos(pos);
 
-            // 位置を反映
-            SetPos(pos);
+            // 位置を反映(Z軸は固定)
+            SetPos(D3DXVECTOR3(pos.x, pos.y, 0.0f));
 
 #ifdef COLLISION_TEST
             if (m_bUseCollision)
@@ -218,6 +219,7 @@ void CBall::Update(void)
         }
 
         // エフェクト発生
+        LocusEffect();
         AuraEffect();
 
         // スケールと向きを変える
@@ -457,6 +459,54 @@ void CBall::AppearEffect(void)
         pEffect->SetCol(col);
         pEffect->SetColChangeRate(colChangeRate);
     }
+}
+
+//=============================================================================
+// ボールの軌跡の処理
+// Author : 伊藤陽梧
+//=============================================================================
+void CBall::LocusEffect(void)
+{
+    const float LOCUS_SCALE = 50.0f;    // 軌跡の大きさ
+    const float SHRINK_SPEED = 1.0f;    // 軌跡の縮む速さ
+    const float LOCUS_POS_Z = -1.0f;    // 軌跡の位置Z（他のエフェクトより手前）
+    D3DXVECTOR3 pos = GetPos();
+
+    // ボールの進む角度に合わせて出るようにする
+    D3DXVECTOR3 posOld1 = D3DXVECTOR3(m_posOld.x + (LOCUS_SCALE * m_moveAngle.x * cosf(D3DXToRadian(90.0f))) - (LOCUS_SCALE * m_moveAngle.y * sinf(D3DXToRadian(90.0f))),
+        m_posOld.y + (LOCUS_SCALE * m_moveAngle.x * sinf(D3DXToRadian(90.0f))) + (LOCUS_SCALE * m_moveAngle.y * cosf(D3DXToRadian(90.0f))), LOCUS_POS_Z);
+    D3DXVECTOR3 posOld2 = D3DXVECTOR3(m_posOld.x + (LOCUS_SCALE * m_moveAngle.x * cosf(D3DXToRadian(-90.0f))) - (LOCUS_SCALE * m_moveAngle.y * sinf(D3DXToRadian(-90.0f))),
+        m_posOld.y + (LOCUS_SCALE * m_moveAngle.x * sinf(D3DXToRadian(-90.0f))) + (LOCUS_SCALE * m_moveAngle.y * cosf(D3DXToRadian(-90.0f))), LOCUS_POS_Z);
+    D3DXVECTOR3 pos1 = D3DXVECTOR3(pos.x + (LOCUS_SCALE * m_moveAngle.x * cosf(D3DXToRadian(90.0f))) - (LOCUS_SCALE * m_moveAngle.y * sinf(D3DXToRadian(90.0f))),
+        pos.y + (LOCUS_SCALE * m_moveAngle.x * sinf(D3DXToRadian(90.0f))) + (LOCUS_SCALE * m_moveAngle.y * cosf(D3DXToRadian(90.0f))), LOCUS_POS_Z);
+    D3DXVECTOR3 pos2 = D3DXVECTOR3(pos.x + (LOCUS_SCALE * m_moveAngle.x * cosf(D3DXToRadian(-90.0f))) - (LOCUS_SCALE * m_moveAngle.y * sinf(D3DXToRadian(-90.0f))),
+        pos.y + (LOCUS_SCALE * m_moveAngle.x * sinf(D3DXToRadian(-90.0f))) + (LOCUS_SCALE * m_moveAngle.y * cosf(D3DXToRadian(-90.0f))), LOCUS_POS_Z);
+
+    // 色をプレイヤーによって変える
+    D3DXCOLOR locusColor = DEFAULT_COLOR;
+    if (m_nWhoShooting == PLAYER_1 || m_nWhoAbsorbing == PLAYER_1)
+    {
+        locusColor = PLAYER_COLOR_1;
+    }
+    else if (m_nWhoShooting == PLAYER_2 || m_nWhoAbsorbing == PLAYER_2)
+    {
+        locusColor = PLAYER_COLOR_2;
+    }
+    else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
+    {
+        locusColor = PLAYER_COLOR_3;
+    }
+    else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
+    {
+        locusColor = PLAYER_COLOR_4;
+    }
+    else
+    {
+        locusColor = PLAYER_COLOR_NONE;
+    }
+
+    // 軌跡の生成
+    CLocus::Create(pos1, pos2, posOld1, posOld2, locusColor, CLocus::TYPE_SHRINK, SHRINK_SPEED);
 }
 
 //=============================================================================

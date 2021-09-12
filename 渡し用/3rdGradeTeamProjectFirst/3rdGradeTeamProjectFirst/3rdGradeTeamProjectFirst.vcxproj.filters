@@ -177,6 +177,9 @@
     <ClCompile Include="outline.cpp">
       <Filter>ソース ファイル\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="locus.cpp">
+      <Filter>ソース ファイル\Obj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h">
@@ -297,6 +300,9 @@
       <Filter>ヘッダー ファイル\Usehul_h</Filter>
     </ClInclude>
     <ClInclude Include="outline.h">
+      <Filter>ヘッダー ファイル\Obj_h</Filter>
+    </ClInclude>
+    <ClInclude Include="locus.h">
       <Filter>ヘッダー ファイル\Obj_h</Filter>
     </ClInclude>
   </ItemGroup>
