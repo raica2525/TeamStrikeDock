@@ -32,6 +32,10 @@
 // マクロ定義
 //*****************************************************************************
 
+// ウインドウのクラス名とキャプション名
+#define CLASS_NAME		"AppClass"
+#define WINDOW_NAME		"LEATHAL"
+
 // ウインドウの位置
 #define	WINDOW_POS_X	(0)
 #define	WINDOW_POS_Y	(0)
@@ -44,10 +48,10 @@
 #define NUM_VERTEX	(4)
 #define NUM_POLYGON	(2)
 
-// テクスチャブレンドの最大数
+// テクスチャブレンドの最大数    //池田追加
 #define MAX_BREND_TEXTURE (4)
 
-// 頂点フォーマット		(頂点座標|頂点カラー|テクスチャ座標 (* テクスチャブレンドの最大数))
+// 頂点フォーマット		(頂点座標|頂点カラー|テクスチャ座標 (* テクスチャブレンドの最大数))  //池田追加
 #define FVF_VERTEX_2D	(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1 * MAX_BREND_TEXTURE)
 #define FVF_VERTEX_3D   (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1)
 

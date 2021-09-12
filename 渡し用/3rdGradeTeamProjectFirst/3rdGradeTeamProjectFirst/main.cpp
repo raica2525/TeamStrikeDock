@@ -11,8 +11,6 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define CLASS_NAME		"AppClass"			    // ウインドウのクラス名
-#define WINDOW_NAME		"LEATHAL"	                // ウインドウのキャプション名
 //#undef _DEBUG
 
 //*****************************************************************************
@@ -26,6 +24,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 #ifdef _DEBUG
 int						g_nCountFPS;
 #endif
+bool g_bDeviceChange = false;		//池田変更
 
 //=============================================================================
 // メイン関数
@@ -167,7 +166,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 //=============================================================================
 // ウインドウプロシージャ
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -187,6 +186,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             DestroyWindow(hWnd);	// ウィンドウを破棄するよう指示する
             break;
         }
+        break;
+
+    case WM_DEVICECHANGE:		//デバイスの構成が変わった時			//池田追加
+        g_bDeviceChange = true;	//コントローラーを再生成するフラグ
         break;
 
     default:

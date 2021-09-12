@@ -1,7 +1,7 @@
 //===============================================
 //
 // 生成の管理処理 (manager.cpp)
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希（コントローラの再接続対応）
 //
 //===============================================
 
@@ -280,10 +280,32 @@ void CManager::Uninit(void)
 
 //========================================
 // 生成の管理の更新処理
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //========================================
 void CManager::Update(void)
 {
+    extern bool g_bDeviceChange;					// 池田追加
+    if (g_bDeviceChange)	//デバイスが変更された時
+    {
+        //一旦破棄
+        if (m_pInputJoypad != NULL)
+        {
+            // コントローラ終了処理
+            m_pInputJoypad->Release();
+
+            // コントローラのメモリの開放
+            delete m_pInputJoypad;
+            m_pInputJoypad = NULL;
+        }
+        HWND hWnd = FindWindow(CLASS_NAME, NULL);	//ウィンドウハンドル取得
+        HINSTANCE hInstance = (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE);	//インスタンスハンドル取得
+        //再生成
+        m_pInputJoypad = new CInputJoypad;
+        m_pInputJoypad->Init(hInstance, hWnd);
+        g_bDeviceChange = false;
+    }
+    //ここまで
+
     // キーボード更新処理(最初に行う)
     if (m_pInputKeyboard != NULL)
     {
