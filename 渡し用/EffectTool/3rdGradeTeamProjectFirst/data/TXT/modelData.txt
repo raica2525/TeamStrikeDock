@@ -1,0 +1,287 @@
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# モデルの情報（リロード不可、起動前に前もって追加しておく）
+#------------------------------------------------------------------------------
+
+#---------------------------------------
+# [0] ボール
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 0
+	NAME = data/MODEL/ball.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [1] 当たり判定可視化
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 1
+	NAME = data/MODEL/debug.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [2] エックスの腰
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 2
+	NAME = data/MODEL/x/00_bodyD.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [3] エックスの胸部
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 3
+	NAME = data/MODEL/x/01_bodyU.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [4] エックスの頭
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 4
+	NAME = data/MODEL/x/02_head.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [5] エックスの右肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 5
+	NAME = data/MODEL/x/03_armUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [6] エックスの右腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 6
+	NAME = data/MODEL/x/04_armDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [7] エックスの右手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 7
+	NAME = data/MODEL/x/05_handR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [8] エックスの左肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 8
+	NAME = data/MODEL/x/06_armUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [9] エックスの左腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 9
+	NAME = data/MODEL/x/07_armDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [10] エックスの左手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 10
+	NAME = data/MODEL/x/08_handL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [11] エックスの右腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 11
+	NAME = data/MODEL/x/09_legUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [12] エックスの右脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 12
+	NAME = data/MODEL/x/10_legDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [13] エックスの右足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 13
+	NAME = data/MODEL/x/11_footR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [14] エックスの左腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 14
+	NAME = data/MODEL/x/12_legUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [15] エックスの左脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 15
+	NAME = data/MODEL/x/13_legDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [16] エックスの左足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 16
+	NAME = data/MODEL/x/14_footL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [17] エックスの武器(錆びた槍)
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 17
+	NAME = data/MODEL/x/15_weapon.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [18] クライノートの腰
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 18
+	NAME = data/MODEL/Kleinod/00_bodyD.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [19] クライノートの胸部
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 19
+	NAME = data/MODEL/Kleinod/01_bodyU.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [20] クライノートの頭
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 20
+	NAME = data/MODEL/Kleinod/02_head.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [21] クライノートの右肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 21
+	NAME = data/MODEL/Kleinod/03_armUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [22] クライノートの右腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 22
+	NAME = data/MODEL/Kleinod/04_armDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [23] クライノートの右手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 23
+	NAME = data/MODEL/Kleinod/05_handR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [24] クライノートの左肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 24
+	NAME = data/MODEL/Kleinod/06_armUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [25] クライノートの左腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 25
+	NAME = data/MODEL/Kleinod/07_armDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [26] クライノートの左手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 26
+	NAME = data/MODEL/Kleinod/08_handL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [27] クライノートの右腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 27
+	NAME = data/MODEL/Kleinod/09_legUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [28] クライノートの右脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 28
+	NAME = data/MODEL/Kleinod/10_legDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [29] クライノートの右足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 29
+	NAME = data/MODEL/Kleinod/11_footR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [30] クライノートの左腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 30
+	NAME = data/MODEL/Kleinod/12_legUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [31] クライノートの左脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 31
+	NAME = data/MODEL/Kleinod/13_legDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [32] クライノートの左足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 32
+	NAME = data/MODEL/Kleinod/14_footL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [33] クライノートの武器(剣)
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 33
+	NAME = data/MODEL/Kleinod/15_weapon.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [34] ステージ1（仮）
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 34
+	NAME = data/MODEL/stage1.x
+END_MODEL_DATASET
+
+END_SCRIPT		# この行は絶対消さないこと！

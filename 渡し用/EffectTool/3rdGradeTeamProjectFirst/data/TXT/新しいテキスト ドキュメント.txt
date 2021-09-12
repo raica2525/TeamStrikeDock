@@ -1,0 +1,242 @@
+SCRIPT		# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# エフェクトの情報（F4でリロード可能）
+#------------------------------------------------------------------------------
+
+#---------------------------------------
+# [0] ボール出現の吸収してる感じの
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 11
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 1		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1000
+	SPEED_MIN = 700
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 12000
+	SIZE_MIN = 12000
+	SIZE_CHANGE = -5.0 10.0 0.0
+	EMITRADIUS = 250
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [1] ボール出現の円
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 1
+	TEX_TYPE = 4
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 1.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = 1.0 1.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [2] 歩き始めの砂煙
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 2
+	TEX_TYPE = 6
+	ONCE = 30
+	PLANE = 0	# 0がXYで1がXZ
+	ON_CIRCLE = 1	# bool
+	EMIT_INSIDE = 0	# bool
+	SCATTER_ANGLE = 67	# 0～314
+	SCATTER_WIDTH = 50	# 0～314
+	SPEED_MAX = 900
+	SPEED_MIN = 100
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0	# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = -6.0 -6.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [0] ジャンプの砂埃
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 6
+	ONCE = 20
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 25	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 1200
+	SPEED_MIN = 800
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [0] 着地の砂埃
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 6
+	ONCE = 40
+	PLANE = 1		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 300
+	SPEED_MIN = 300
+	SPEED_AA_MAX = 500
+	SPEED_AA_MIN = 500
+	ACCEL = 0.950	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 314
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 10000
+	SIZE_CHANGE = -5.0 -5.0 0.0
+	EMITRADIUS = 120
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#---------------------------------------
+# [0] 二段ジャンプの空気の輪
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 4
+	ONCE = 30
+	PLANE = 1		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 300
+	SPEED_MIN = 300
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = -5.0 -5.0 0.0
+	EMITRADIUS = 51
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+EFFECT_DATASET
+	TYPE = 0
+	TEX_TYPE = 6
+	ONCE = 20
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 1		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 25	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 1200
+	SPEED_MIN = 800
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 314
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = -10.0 -10.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 1		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+END_SCRIPT		# この行は絶対消さないこと！
