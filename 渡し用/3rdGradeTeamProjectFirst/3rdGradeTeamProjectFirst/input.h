@@ -118,13 +118,18 @@ public:
     bool GetJoypadPress(int nController, int nButton);
     bool GetJoypadTrigger(int nController, int nButton);
     bool GetJoypadRelease(int nController, int nButton);
-    DIJOYSTATE2 GetController(int nContllre);
+    DIJOYSTATE2 GetController(int nController);
     static LPDIRECTINPUT8 GetInput(void) { return m_pInput; }
     HRESULT CreateDevice(LPDIDEVICEINSTANCE lpddi);
-
+    HRESULT StartEffect(int nController, int nFrame);	//池田追加
+    HRESULT StopEffect(int nController);				//池田追加
+    static HRESULT CALLBACK EnumObjectCallBack(const LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef);
 private:
-    CONTROLLER m_Controller[MAX_PLAYER];        // コントローラーの情報
-    static int m_nCntController;                // コントローラーの接続数
+    static CONTROLLER m_aController[MAX_PLAYER];    // コントローラーの情報	//池田修正
+    static int m_nCntController;					// コントローラーの接続数
+    LPDIRECTINPUTEFFECT m_aEffectInput[MAX_PLAYER];	// エフェクトのポインタ//池田
+    int m_anFrameEffect[MAX_PLAYER];				// 振動する残りフレーム//池田
+    DWORD m_adwNumFFBAxis[MAX_PLAYER];				// 振動の軸の数//池田
 };
 
 // マウスのクラス

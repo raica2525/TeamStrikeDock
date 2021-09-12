@@ -32,8 +32,9 @@ UISET
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 2.5
-	PARAM1 = 5
-	PARAM3 = 375.0
+	PARAM2 = 1
+	PARAM3 = 5
+	PARAM5 = 375.0
 END_UISET
 
 #---------------------------------------
@@ -64,8 +65,9 @@ UISET
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 2.5
-	PARAM1 = 5
-	PARAM3 = 375.0
+	PARAM2 = 1
+	PARAM3 = 5
+	PARAM5 = 375.0
 END_UISET
 
 #---------------------------------------

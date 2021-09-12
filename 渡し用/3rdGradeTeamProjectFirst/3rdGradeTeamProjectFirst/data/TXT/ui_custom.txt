@@ -66,7 +66,7 @@ UISET
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
 	SHAVE_TEX = 1		# bool
-	ACTION2 = 7		# 補助値はこの下に書いていく
+	ACTION0 = 7		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 46
 	PARAM1 = 0
@@ -85,7 +85,7 @@ UISET
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
 	SHAVE_TEX = 1		# bool
-	ACTION2 = 7		# 補助値はこの下に書いていく
+	ACTION0 = 7		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 46
 	PARAM1 = 0
@@ -104,7 +104,7 @@ UISET
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
 	SHAVE_TEX = 1		# bool
-	ACTION2 = 7		# 補助値はこの下に書いていく
+	ACTION0 = 7		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 46
 	PARAM1 = 0

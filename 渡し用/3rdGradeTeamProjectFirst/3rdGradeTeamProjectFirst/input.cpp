@@ -21,6 +21,7 @@
 // 静的メンバ変数宣言
 //========================================
 LPDIRECTINPUT8 CInput::m_pInput = NULL;
+CInputJoypad::CONTROLLER CInputJoypad::m_aController[MAX_PLAYER] = {};	//池田追加
 int CInputJoypad::m_nCntController = 0;
 CMouse::MSTATE CMouse::m_MState = {};
 
@@ -216,7 +217,11 @@ bool CInputKeyboard::GetKeyboardRelease(int nKey)
 CInputJoypad::CInputJoypad()
 {
     //各メンバ変数の初期化
-    memset(m_Controller, 0, sizeof(m_Controller));
+    memset(m_aController, 0, sizeof(m_aController));
+    m_nCntController = 0;
+    memset(m_aEffectInput, 0, sizeof(m_aEffectInput));
+    memset(m_anFrameEffect, 0, sizeof(m_anFrameEffect));
+    ZeroMemory(m_adwNumFFBAxis, sizeof(m_adwNumFFBAxis));
 }
 
 //========================================================
@@ -246,9 +251,46 @@ HRESULT CALLBACK GetJoystickCallback(LPDIDEVICEINSTANCE lpddi, LPVOID pvRef)
     return DIENUM_CONTINUE; // 次のデバイスを列挙
 }
 
+//=============================================================================
+// [EnumObjectCallBack] ジョイスティックのプロパティを設定（コールバック関数）
+// Author : 池田悠希
+//=============================================================================
+HRESULT CInputJoypad::EnumObjectCallBack(const LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef)
+{
+
+    // 軸の値の範囲を設定
+    // X軸、Y軸のそれぞれについて、オブジェクトが報告可能な値の範囲をセットする。
+    // (max-min)は、最大10,000(?)。(max-min)/2が中央値になる。
+    // 差を大きくすれば、アナログ値の細かな動きを捕らえられる。(パッドは、関係なし
+
+    if (lpddoi->dwType & DIDFT_AXIS)
+    {
+        DIPROPRANGE diprg;
+        ZeroMemory(&diprg, sizeof(diprg));
+        diprg.diph.dwSize = sizeof(diprg);
+        diprg.diph.dwHeaderSize = sizeof(diprg.diph);
+        diprg.diph.dwHow = DIPH_BYID;
+        diprg.diph.dwObj = lpddoi->dwType;
+        diprg.lMin = RANGE_MIN;
+        diprg.lMax = RANGE_MAX;
+        for (int nCntCntoroller = 0; nCntCntoroller < m_nCntController; nCntCntoroller++)
+        {
+            m_aController[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_RANGE, &diprg.diph);
+        }
+
+        DWORD* pdwNumForceFeedbackAxis = (DWORD*)pvRef;
+        if ((lpddoi->dwFlags & DIDOI_FFACTUATOR) != 0)
+        {
+            (*pdwNumForceFeedbackAxis)++;
+        }
+
+    }
+    return DIENUM_CONTINUE; // 次のデバイスを列挙
+}
+
 //========================================================
 // ジョイパッドクラスの初期化処理
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //========================================================
 HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 {
@@ -258,67 +300,73 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
     CInput::Init(hInstance, hWnd);
 
     // コントローラーを探す
-    hr = m_pInput->EnumDevices(DI8DEVCLASS_GAMECTRL, (LPDIENUMDEVICESCALLBACK)GetJoystickCallback, this, DIEDFL_ATTACHEDONLY);
+    hr = m_pInput->EnumDevices(DI8DEVCLASS_GAMECTRL, (LPDIENUMDEVICESCALLBACK)GetJoystickCallback, this, DIEDFL_FORCEFEEDBACK | DIEDFL_ATTACHEDONLY); //すでに接続されていてフォースフィードバック対応しているコントローラーを列挙 //池田変更 
 
-    for (int nCntCntoroller = 0; nCntCntoroller < m_nCntController; nCntCntoroller++)
+    for (int nCntCntroller = 0; nCntCntroller < m_nCntController; nCntCntroller++)
     {
         if (FAILED(hr))
         {
-            m_Controller[nCntCntoroller].State.rgdwPOV[nCntCntoroller] = BUTTON_NEUTRAL;
+            m_aController[nCntCntroller].State.rgdwPOV[nCntCntroller] = BUTTON_NEUTRAL;
         }
-        if (!m_Controller[nCntCntoroller].pDIJoypad)
+        if (!m_aController[nCntCntroller].pDIJoypad)
         {
             return false;
         }
 
         for (int nCntButton = 0; nCntButton < MAX_BUTTON; nCntButton++)
         {//ボタンの初期化
-            m_Controller[nCntCntoroller].Trigger.rgbButtons[nCntButton] = '\0';
+            m_aController[nCntCntroller].Trigger.rgbButtons[nCntButton] = '\0';
         }
 
         //十字キー　の初期化
         for (int nCnt = 0; nCnt < 3; nCnt++)
         {
-            m_Controller[nCntCntoroller].State.rgdwPOV[nCnt] = BUTTON_NEUTRAL;
+            m_aController[nCntCntroller].State.rgdwPOV[nCnt] = BUTTON_NEUTRAL;
         }
 
         // コントローラー用のデータ・フォーマットを設定
-        hr = m_Controller[nCntCntoroller].pDIJoypad->SetDataFormat(&c_dfDIJoystick2);
+        hr = m_aController[nCntCntroller].pDIJoypad->SetDataFormat(&c_dfDIJoystick2);
         if (FAILED(hr))
         {
             return false; // データフォーマットの設定に失敗
         }
 
         // モードを設定（フォアグラウンド＆非排他モード）
-        hr = m_Controller[nCntCntoroller].pDIJoypad->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
+        hr = m_aController[nCntCntroller].pDIJoypad->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
         if (FAILED(hr))
         {
             return false; // モードの設定に失敗
         }
 
-        // 軸の値の範囲を設定
-        // X軸、Y軸のそれぞれについて、オブジェクトが報告可能な値の範囲をセットする。
-        // (max-min)は、最大10,000(?)。(max-min)/2が中央値になる。
-        // 差を大きくすれば、アナログ値の細かな動きを捕らえられる。(パッドは、関係なし)
-        DIPROPRANGE diprg;
-        ZeroMemory(&diprg, sizeof(diprg));
-        diprg.diph.dwSize = sizeof(diprg);
-        diprg.diph.dwHeaderSize = sizeof(diprg.diph);
-        diprg.diph.dwHow = DIPH_BYOFFSET;
-        diprg.lMin = RANGE_MIN;
-        diprg.lMax = RANGE_MAX;
-        // X軸の範囲を設定
-        diprg.diph.dwObj = DIJOFS_X;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_RANGE, &diprg.diph);
-        // Y軸の範囲を設定
-        diprg.diph.dwObj = DIJOFS_Y;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_RANGE, &diprg.diph);
-        // Z軸の範囲を設定
-        diprg.diph.dwObj = DIJOFS_Z;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_RANGE, &diprg.diph);
-        // Z回転の範囲を設定
-        diprg.diph.dwObj = DIJOFS_RZ;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_RANGE, &diprg.diph);
+        //池田変更
+        m_aController[nCntCntroller].pDIJoypad->EnumObjects((LPDIENUMDEVICEOBJECTSCALLBACK)EnumObjectCallBack, &m_adwNumFFBAxis, DIDFT_AXIS);
+
+        //池田追加
+        //振動用
+        //エフェクトの詳細を設定
+        DWORD rgdwAxes[2] = { DIJOFS_X , DIJOFS_Y };
+        LONG  rglDirection[2] = { 1 , 1 };
+        DICONSTANTFORCE cf;
+        DIEFFECT        eff;
+
+        ZeroMemory(&eff, sizeof(eff));
+        eff.dwSize = sizeof(DIEFFECT);
+        eff.dwFlags = DIEFF_CARTESIAN | DIEFF_OBJECTOFFSETS;
+        eff.dwDuration = INFINITE;
+        eff.dwSamplePeriod = 0;
+        eff.dwGain = DI_FFNOMINALMAX;
+        eff.dwTriggerButton = DIEB_NOTRIGGER;
+        eff.dwTriggerRepeatInterval = 0;
+        eff.cAxes = m_adwNumFFBAxis[nCntCntroller];
+        eff.rgdwAxes = rgdwAxes;
+        eff.rglDirection = rglDirection;
+        eff.lpEnvelope = 0;
+        eff.cbTypeSpecificParams = sizeof(DICONSTANTFORCE);
+        eff.lpvTypeSpecificParams = &cf;
+        eff.dwStartDelay = 0;
+
+        m_aController[nCntCntroller].pDIJoypad->CreateEffect(GUID_ConstantForce, &eff, &m_aEffectInput[nCntCntroller], NULL); //エフェクトを生成
+        //ここまで
 
         // 各軸ごとに、無効のゾーン値を設定する。
         // 無効ゾーンとは、中央からの微少なジョイスティックの動きを無視する範囲のこと。
@@ -330,38 +378,44 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
         dipdw.dwData = DEADZONE;
         //X軸の無効ゾーンを設定
         dipdw.diph.dwObj = DIJOFS_X;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
+        m_aController[nCntCntroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
         //Y軸の無効ゾーンを設定
         dipdw.diph.dwObj = DIJOFS_Y;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
+        m_aController[nCntCntroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
         //Z軸の無効ゾーンを設定
         dipdw.diph.dwObj = DIJOFS_Z;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
+        m_aController[nCntCntroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
         //Z回転の無効ゾーンを設定
         dipdw.diph.dwObj = DIJOFS_RZ;
-        m_Controller[nCntCntoroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
+        m_aController[nCntCntroller].pDIJoypad->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
 
         //コントローラー入力制御開始
-        m_Controller[nCntCntoroller].pDIJoypad->Acquire();
+        m_aController[nCntCntroller].pDIJoypad->Acquire();
     }
+
     return S_OK;
 }
 
 //========================================================
 // ジョイパッドクラスのRelease処理
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //========================================================
 void CInputJoypad::Release(void)
 {
-    for (int nCntDevise = 0; nCntDevise < MAX_PLAYER; nCntDevise++)
+    for (int nCntDevice = 0; nCntDevice < MAX_PLAYER; nCntDevice++)
     {
         //入力デバイスの開放
-        if (m_Controller[nCntDevise].pDIJoypad != NULL)
+        if (m_aController[nCntDevice].pDIJoypad != NULL)
         {
             //コントローラのアクセス権を開放
-            m_Controller[nCntDevise].pDIJoypad->Unacquire();
-            m_Controller[nCntDevise].pDIJoypad->Release();
-            m_Controller[nCntDevise].pDIJoypad = NULL;
+            m_aController[nCntDevice].pDIJoypad->Unacquire();
+            m_aController[nCntDevice].pDIJoypad->Release();
+            m_aController[nCntDevice].pDIJoypad = NULL;
+        }
+        if (m_aEffectInput[nCntDevice] != NULL)	//池田追加
+        {
+            m_aEffectInput[nCntDevice]->Release();
+            m_aEffectInput[nCntDevice] = NULL;
         }
     }
 
@@ -370,37 +424,36 @@ void CInputJoypad::Release(void)
 
 //========================================================
 // ジョイパッドクラスの更新処理
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希
 //========================================================
 void CInputJoypad::Update(void)
 {
     DIJOYSTATE2 ControllerState;
     HRESULT hr;
-
     for (int nCntCntoroller = 0; nCntCntoroller < MAX_PLAYER; nCntCntoroller++)
     {
         //十字キーの入力を、何もないようにしておく
-        m_Controller[nCntCntoroller].State.rgdwPOV[0] = BUTTON_NEUTRAL;
+        m_aController[nCntCntoroller].State.rgdwPOV[0] = BUTTON_NEUTRAL;
 
-        if (m_Controller[nCntCntoroller].pDIJoypad != NULL)
+        if (m_aController[nCntCntoroller].pDIJoypad != NULL)
         {
 
-            hr = m_Controller[nCntCntoroller].pDIJoypad->Poll();
+            hr = m_aController[nCntCntoroller].pDIJoypad->Poll();
 
             //デバイスからデータを取得
-            if (SUCCEEDED(hr = m_Controller[nCntCntoroller].pDIJoypad->GetDeviceState(sizeof(DIJOYSTATE2), &ControllerState)))
+            if (SUCCEEDED(hr = m_aController[nCntCntoroller].pDIJoypad->GetDeviceState(sizeof(DIJOYSTATE2), &ControllerState)))
             {
-                m_Controller[nCntCntoroller].State.lY = ControllerState.lY;
-                m_Controller[nCntCntoroller].State.lX = ControllerState.lX;
+                m_aController[nCntCntoroller].State.lY = ControllerState.lY;
+                m_aController[nCntCntoroller].State.lX = ControllerState.lX;
 
-                m_Controller[nCntCntoroller].State.lZ = ControllerState.lZ;		    //スティックの横（Z軸）
-                m_Controller[nCntCntoroller].State.lRz = ControllerState.lRz;		//スティックの縦（Z回転）
+                m_aController[nCntCntoroller].State.lZ = ControllerState.lZ;		    //スティックの横（Z軸）
+                m_aController[nCntCntoroller].State.lRz = ControllerState.lRz;		//スティックの縦（Z回転）
 
                                                                                     //十字キーの情報
                 for (int nCnt = 0; nCnt < 3; nCnt++)
                 {
                     //十字キープレス情報を保存
-                    m_Controller[nCntCntoroller].State.rgdwPOV[nCnt] = ControllerState.rgdwPOV[nCnt];
+                    m_aController[nCntCntoroller].State.rgdwPOV[nCnt] = ControllerState.rgdwPOV[nCnt];
 
                 }
 
@@ -408,21 +461,30 @@ void CInputJoypad::Update(void)
                 for (int nCntButton = 0; nCntButton < MAX_BUTTON; nCntButton++)
                 {
                     //キートリガー情報を保存
-                    m_Controller[nCntCntoroller].Trigger.rgbButtons[nCntButton] = (m_Controller[nCntCntoroller].State.rgbButtons[nCntButton] & ControllerState.rgbButtons[nCntButton]) ^ ControllerState.rgbButtons[nCntButton];
+                    m_aController[nCntCntoroller].Trigger.rgbButtons[nCntButton] = (m_aController[nCntCntoroller].State.rgbButtons[nCntButton] & ControllerState.rgbButtons[nCntButton]) ^ ControllerState.rgbButtons[nCntButton];
 
                     //キーリリース情報を保存
-                    m_Controller[nCntCntoroller].Release.rgbButtons[nCntButton] = (m_Controller[nCntCntoroller].State.rgbButtons[nCntButton] | ControllerState.rgbButtons[nCntButton]) ^ ControllerState.rgbButtons[nCntButton];
+                    m_aController[nCntCntoroller].Release.rgbButtons[nCntButton] = (m_aController[nCntCntoroller].State.rgbButtons[nCntButton] | ControllerState.rgbButtons[nCntButton]) ^ ControllerState.rgbButtons[nCntButton];
 
                     //キープレス情報を保存
-                    m_Controller[nCntCntoroller].State.rgbButtons[nCntButton] = ControllerState.rgbButtons[nCntButton];
+                    m_aController[nCntCntoroller].State.rgbButtons[nCntButton] = ControllerState.rgbButtons[nCntButton];
 
                 }
             }
             else
             {
                 //コントローラーのアクセス権を取得
-                m_Controller[nCntCntoroller].pDIJoypad->Acquire();
+                m_aController[nCntCntoroller].pDIJoypad->Acquire();
             }
+            //池田追加
+            if (m_anFrameEffect[nCntCntoroller] >= 0)	//振動を停止するための処理
+            {
+                if (--m_anFrameEffect[nCntCntoroller] <= 0)
+                {
+                    StopEffect(nCntCntoroller);
+                }
+            }
+            //ここまで
         }
     }
 }
@@ -433,7 +495,7 @@ void CInputJoypad::Update(void)
 //========================================================
 bool CInputJoypad::GetJoypadPress(int nController, int nButton)
 {
-    return(m_Controller[nController].State.rgbButtons[nButton] & 0x80) ? true : false;
+    return(m_aController[nController].State.rgbButtons[nButton] & 0x80) ? true : false;
 }
 
 //========================================================
@@ -442,7 +504,7 @@ bool CInputJoypad::GetJoypadPress(int nController, int nButton)
 //========================================================
 bool CInputJoypad::GetJoypadTrigger(int nController, int nButton)
 {
-    return(m_Controller[nController].Trigger.rgbButtons[nButton] & 0x80) ? true : false;
+    return(m_aController[nController].Trigger.rgbButtons[nButton] & 0x80) ? true : false;
 }
 
 //========================================================
@@ -451,16 +513,16 @@ bool CInputJoypad::GetJoypadTrigger(int nController, int nButton)
 //========================================================
 bool CInputJoypad::GetJoypadRelease(int nController, int nButton)
 {
-    return(m_Controller[nController].Release.rgbButtons[nButton] & 0x80) ? true : false;
+    return(m_aController[nController].Release.rgbButtons[nButton] & 0x80) ? true : false;
 }
 
 //=============================================================================
 // ジョイパッドクラスのコントローラの状態を取得
 // Author : 後藤慎之助
 //=============================================================================
-DIJOYSTATE2 CInputJoypad::GetController(int nContllre)
+DIJOYSTATE2 CInputJoypad::GetController(int nController)
 {
-    return m_Controller[nContllre].State;
+    return m_aController[nController].State;
 }
 
 //=============================================================================
@@ -469,13 +531,43 @@ DIJOYSTATE2 CInputJoypad::GetController(int nContllre)
 //=============================================================================
 HRESULT CInputJoypad::CreateDevice(LPDIDEVICEINSTANCE lpddi)
 {
-    HRESULT hr = m_pInput->CreateDevice(lpddi->guidInstance, &m_Controller[m_nCntController].pDIJoypad, NULL);
+    HRESULT hr = m_pInput->CreateDevice(lpddi->guidInstance, &m_aController[m_nCntController].pDIJoypad, NULL);
 
     // 増えたコントローラーをカウント
     m_nCntController++;
 
     return hr;
 }
+
+//=============================================================================
+// コントローラーの振動を開始(nFrame負の値を入力するとStopEffectが呼ばれるまで）
+// Author : 池田悠希
+//=============================================================================
+HRESULT CInputJoypad::StartEffect(int nController, int nFrame)
+{
+    HRESULT hr = E_FAIL;
+    if (m_aEffectInput[nController] != NULL)
+    {
+        hr = m_aEffectInput[nController]->Start(1, DIES_SOLO);
+        m_anFrameEffect[nController] = nFrame;
+    }
+    return hr;
+}
+
+//=============================================================================
+// コントローラーの振動を終了
+// Author : 池田悠希
+//=============================================================================
+HRESULT CInputJoypad::StopEffect(int nController)
+{
+    HRESULT hr = E_FAIL;
+    if (m_aEffectInput[nController] != NULL)
+    {
+        hr = m_aEffectInput[nController]->Stop();
+    }
+    return hr;
+}
+
 
 //========================================================
 // マウスクラスのコンストラクタ

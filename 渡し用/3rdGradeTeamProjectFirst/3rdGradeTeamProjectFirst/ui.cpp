@@ -22,6 +22,7 @@
 //=======================================
 // 静的メンバ変数宣言
 //=======================================
+CUI *CUI::m_apAccessUI[] = {};
 
 //=========================================================
 // UIのコンストラクタ
@@ -48,6 +49,9 @@ CUI::CUI() :CScene2D(OBJTYPE::OBJTYPE_UI)
     m_nAnimPattern = 0;
     m_nAnimSpeed = 0;
     m_bRepeat = false;
+
+    m_collisionSize = DEFAULT_VECTOR;
+    m_nAccessNum = NOT_EXIST;
 }
 
 //=========================================================
@@ -80,6 +84,12 @@ HRESULT CUI::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 //=========================================================
 void CUI::Uninit(void)
 {
+    // アクセス権を持っているUIは、それを破棄する
+    if (m_nAccessNum > NOT_EXIST && m_nAccessNum < MAX_ACCESS_NUM)
+    {
+        m_apAccessUI[m_nAccessNum] = NULL;
+    }
+
     // 終了処理
     CScene2D::Uninit();
 }
@@ -156,7 +166,7 @@ void CUI::Draw(void)
 // UIの作成
 // Author : 後藤慎之助
 //=========================================================
-CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col, bool bUseAddiveSynthesis, int nAlphaTestBorder, bool bUseZBuffer)
+CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col, bool bUseAddiveSynthesis, int nAlphaTestBorder, bool bUseZBuffer, D3DXVECTOR3 collisionSize)
 {
     CUI *pUI = NULL;
 
@@ -178,13 +188,14 @@ CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle,
     // 親元に設定を反映
     pUI->CScene2D::SetAlphaTestBorder(nAlphaTestBorder);
 
-    // メンバ変数を結びつける
+    // 引数をメンバ変数に結びつける
     if (nRotAngle != 0)
     {
         pUI->m_fRotAngle = D3DXToRadian((float)nRotAngle);
     }
     pUI->m_col = col;
     pUI->m_bUseAdditiveSynthesis = bUseAddiveSynthesis;
+    pUI->m_collisionSize = collisionSize;
 
     // 記憶用も結びつける
     pUI->m_memoryPos = pos;
@@ -263,8 +274,10 @@ void CUI::Place(SET set)
                 {
                     // 生成時に結びつけるもの
                     int nTexType = 0;                                   // 画像番号
+                    int nAccessNum = NOT_EXIST;                         // アクセスナンバー
                     D3DXVECTOR3 pos = DEFAULT_VECTOR;                   // 位置
                     D3DXVECTOR3 size = DEFAULT_VECTOR;                  // 大きさ
+                    D3DXVECTOR3 collisionSize = DEFAULT_VECTOR;         // 当たり判定の大きさ
                     int nRot = 0;                                       // 角度
                     D3DXCOLOR col = DEFAULT_COLOR;                      // 色
                     bool bAddBrend = false;                             // 加算合成
@@ -292,6 +305,16 @@ void CUI::Place(SET set)
                                 nTexType = 0;
                             }
                         }
+                        else if (strcmp(cHeadText, "ACCESS_NUM") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nAccessNum);
+
+                            // 不正な値は全てデフォルトを呼び出す
+                            if (nAccessNum < 0 || nAccessNum >= MAX_ACCESS_NUM)
+                            {
+                                nAccessNum = NOT_EXIST;
+                            }
+                        }
                         else if (strcmp(cHeadText, "POS") == 0)
                         {
                             sscanf(cReadText, "%s %s %f %f", &cDie, &cDie, &pos.x, &pos.y);
@@ -299,6 +322,10 @@ void CUI::Place(SET set)
                         else if (strcmp(cHeadText, "SIZE") == 0)
                         {
                             sscanf(cReadText, "%s %s %f %f", &cDie, &cDie, &size.x, &size.y);
+                        }
+                        else if (strcmp(cHeadText, "COLLISION_SIZE") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %f %f", &cDie, &cDie, &collisionSize.x, &collisionSize.y);
                         }
                         else if (strcmp(cHeadText, "ROT") == 0)
                         {
@@ -443,12 +470,18 @@ void CUI::Place(SET set)
                     }
 
                     // 生成（アクションの情報も結びつける）
-                    CUI* pUI = Create(nTexType, pos, size, nRot, col, bAddBrend, nAlphaTestBorder, bUseZBuffer);
+                    CUI* pUI = Create(nTexType, pos, size, nRot, col, bAddBrend, nAlphaTestBorder, bUseZBuffer, collisionSize);
                     for (int nCnt = 0; nCnt < MAX_ACTION; nCnt++)
                     {
                         pUI->SetActionInfo(nCnt, aActionInfo[nCnt].action, aActionInfo[nCnt].bLock,
                             aActionInfo[nCnt].afParam[0], aActionInfo[nCnt].afParam[1], aActionInfo[nCnt].afParam[2], aActionInfo[nCnt].afParam[3],
                             aActionInfo[nCnt].afParam[4], aActionInfo[nCnt].afParam[5], aActionInfo[nCnt].afParam[6], aActionInfo[nCnt].afParam[7]);
+                    }
+
+                    // アクセス権を取得する
+                    if (nAccessNum > NOT_EXIST && nAccessNum < MAX_ACCESS_NUM)
+                    {
+                        pUI->SetAccessUI(nAccessNum);
                     }
 
                     // 端の1ピクセルを削るかどうか
@@ -469,6 +502,33 @@ void CUI::Place(SET set)
     else
     {
         printf("開けれませんでした\n");
+    }
+}
+
+//=========================================================
+// UIのアクセス権を取得
+// Author : 後藤慎之助
+//=========================================================
+CUI * CUI::GetAccessUI(int nNum)
+{
+    if (nNum > NOT_EXIST && nNum < MAX_ACCESS_NUM)
+    {
+        return m_apAccessUI[nNum];
+    }
+
+    return NULL;
+}
+
+//=========================================================
+// UIのアクセス権を設定
+// Author : 後藤慎之助
+//=========================================================
+void CUI::SetAccessUI(int nNum)
+{
+    if (nNum > NOT_EXIST && nNum < MAX_ACCESS_NUM)
+    {
+        m_nAccessNum = nNum;
+        m_apAccessUI[nNum] = this;
     }
 }
 
@@ -530,6 +590,7 @@ void CUI::SetActionInfo(int nNum, int action, bool bLock, float fParam0, float f
 //=========================================================
 void CUI::SetActionLock(int nNum, bool bLock)
 {
+    // 範囲内なら
     if (nNum >= 0 && nNum < MAX_ACTION)
     {
         m_aActionInfo[nNum].bLock = bLock;
@@ -542,38 +603,46 @@ void CUI::SetActionLock(int nNum, bool bLock)
 //=========================================================
 void CUI::SetActionReset(int nNum)
 {
-    // アクションによって、リセットするものを変える
-    switch (m_aActionInfo[nNum].action)
+    // 範囲内なら
+    if (nNum >= 0 && nNum < MAX_ACTION)
     {
-    case ACTION_SIZE:
-        CScene2D::SetSize(m_memorySize);
-        break;
-    case ACTION_POS:
-        CScene2D::SetPosition(m_memoryPos);
-        break;
-    case ACTION_ALPHA:
-        m_col.a = m_memoryCol.a;
-        break;
-    case ACTION_COLOR:
-        m_col = m_memoryCol;
-        break;
-    case ACTION_ROT:
-        m_fRotAngle = m_fMemoryRotAngle;
-        break;
-    case ACTION_TEX_BREND:
-        CScene2D::ResetCountAnim((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]);
-        break;
-    case ACTION_LOOP_ANIM:
-        CScene2D::ResetCountAnim();
-        break;
-    }
+        // アクションによって、リセットするものを変える
+        switch (m_aActionInfo[nNum].action)
+        {
+        case ACTION_NONE:
+            // アクションが設定されていないなら、関数を抜ける
+            return;
+            break;
+        case ACTION_SIZE:
+            CScene2D::SetSize(m_memorySize);
+            break;
+        case ACTION_POS:
+            CScene2D::SetPosition(m_memoryPos);
+            break;
+        case ACTION_ALPHA:
+            m_col.a = m_memoryCol.a;
+            break;
+        case ACTION_COLOR:
+            m_col = m_memoryCol;
+            break;
+        case ACTION_ROT:
+            m_fRotAngle = m_fMemoryRotAngle;
+            break;
+        case ACTION_TEX_BREND:
+            CScene2D::ResetCountAnim((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]);
+            break;
+        case ACTION_LOOP_ANIM:
+            CScene2D::ResetCountAnim();
+            break;
+        }
 
-    // 構造体の内容をリセット
-    m_aActionInfo[nNum].nCntTime = 0;
-    m_aActionInfo[nNum].bLock = m_aActionInfo[nNum].bMemoryLock;
-    for (int nCntParam = 0; nCntParam < MAX_ACTION_PARAM; nCntParam++)
-    {
-        m_aActionInfo[nNum].afParam[nCntParam] = m_aActionInfo[nNum].afMemoryParam[nCntParam];
+        // 構造体の内容をリセット
+        m_aActionInfo[nNum].nCntTime = 0;
+        m_aActionInfo[nNum].bLock = m_aActionInfo[nNum].bMemoryLock;
+        for (int nCntParam = 0; nCntParam < MAX_ACTION_PARAM; nCntParam++)
+        {
+            m_aActionInfo[nNum].afParam[nCntParam] = m_aActionInfo[nNum].afMemoryParam[nCntParam];
+        }
     }
 }
 
@@ -636,11 +705,13 @@ void CUI::PlayActionSize(int nNum)
     D3DXVECTOR3 size = CScene2D::GetSize();
 
     // 制限を考慮
-    bool bUpdate = false;   // 更新するかどうか
+    bool bUpdateX = false;   // Xを更新するかどうか
+    bool bUpdateY = false;   // Yを更新するかどうか
     switch ((int)m_aActionInfo[nNum].afParam[PARAM_SIZE_RIMIT])
     {
     case RIMIT_NONE:
-        bUpdate = true;
+        bUpdateX = true;
+        bUpdateY = true;
         break;
 
     case RIMIT_TO_FRAME:
@@ -648,14 +719,16 @@ void CUI::PlayActionSize(int nNum)
         {
             // カウンタ加算
             m_aActionInfo[nNum].nCntTime++;
-            bUpdate = true;
+            bUpdateX = true;
+            bUpdateY = true;
         }
         break;
 
     case RIMIT_FROM_FRAME:
         if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_SIZE_FRAME])
         {
-            bUpdate = true;
+            bUpdateX = true;
+            bUpdateY = true;
         }
         else
         {
@@ -666,7 +739,9 @@ void CUI::PlayActionSize(int nNum)
 
     case RIMIT_TO_VALUE:
         RimitToValue(m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X],
-            size.x, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE], bUpdate);
+            size.x, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X], bUpdateX);
+        RimitToValue(m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_Y],
+            size.y, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_Y], bUpdateY);
         break;
 
     case RIMIT_REPEAT_FRAME:
@@ -674,36 +749,77 @@ void CUI::PlayActionSize(int nNum)
         {
             // カウンタ加算
             m_aActionInfo[nNum].nCntTime++;
-            bUpdate = true;
+            bUpdateX = true;
+            bUpdateY = true;
         }
         else
         {
             // カウンタリセットし、変化量を反転させる
             m_aActionInfo[nNum].nCntTime = 0;
             m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X] *= -1;
+            m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_Y] *= -1;
         }
         break;
 
     case RIMIT_REPEAT_VALUE:
         RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X],
-            m_memorySize.x, size.y, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE], bUpdate);
+            m_memorySize.x, size.x, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X], bUpdateX);
+        RimitRepeatValue(m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_Y],
+            m_memorySize.y, size.y, m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_Y], bUpdateY);
         break;
 
-    case RIMIT_EQUAL_VALUE:
-        size.y = (size.x / size.y) * m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE];
-        size.x = m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE];
+    case RIMIT_EQUAL_VALUE_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_SIZE_FRAME])
+        {
+            // 等比変形かどうか
+            if ((int)m_aActionInfo[nNum].afParam[PARAM_SIZE_EQUAL_RATIO] == 0)
+            {
+                size.x = m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X];
+                size.y = m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_Y];
+            }
+            else if ((int)m_aActionInfo[nNum].afParam[PARAM_SIZE_EQUAL_RATIO] == 1)
+            {
+                if (size.y != 0.0f)
+                {
+                    size.y = (size.x / size.y) * m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X];
+                }
+                size.x = m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X];
+            }
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
         break;
     }
 
-    // 更新
-    if (bUpdate)
+    // 等比変形かどうか
+    if ((int)m_aActionInfo[nNum].afParam[PARAM_SIZE_EQUAL_RATIO] == 0)
     {
-        // 大きさの変化量を加算（x基準で加算しているため、yを先に計算しないとリピートでずれる）
-        if (size.y != 0.0f)
+        // X更新
+        if (bUpdateX)
         {
-            size.y += (size.x / size.y) * m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
+            size.x += m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
         }
-        size.x += m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
+
+        // Y更新
+        if (bUpdateY)
+        {
+            size.y += m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_Y];
+        }
+    }
+    else if ((int)m_aActionInfo[nNum].afParam[PARAM_SIZE_EQUAL_RATIO] == 1)
+    {
+        // 等比変形はx基準で加算しているため、yを先に計算しないとリピートでずれる
+        if (bUpdateX)
+        {
+            if (size.y != 0.0f)
+            {
+                size.y += (size.x / size.y) * m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
+            }
+            size.x += m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
+        }
     }
 
     // 大きさを設定
@@ -787,9 +903,17 @@ void CUI::PlayActionPos(int nNum)
             m_memoryPos.y, pos.y, m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y], bUpdateY);
         break;
 
-    case RIMIT_EQUAL_VALUE:
-        pos.x = m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X];
-        pos.y = m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y];
+    case RIMIT_EQUAL_VALUE_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_POS_FRAME])
+        {
+            pos.x = m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_X];
+            pos.y = m_aActionInfo[nNum].afParam[PARAM_POS_VALUE_Y];
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
         break;
     }
 
@@ -871,8 +995,16 @@ void CUI::PlayActionAlpha(int nNum)
             m_memoryCol.a, m_col.a, m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE], bUpdate);
         break;
 
-    case RIMIT_EQUAL_VALUE:
-        m_col.a = m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE];
+    case RIMIT_EQUAL_VALUE_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_ALPHA_FRAME])
+        {
+            m_col.a = m_aActionInfo[nNum].afParam[PARAM_ALPHA_VALUE];
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
         break;
     }
 
@@ -969,10 +1101,18 @@ void CUI::PlayActionColor(int nNum)
             m_memoryCol.b, m_col.b, m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_B], bUpdateB);
         break;
 
-    case RIMIT_EQUAL_VALUE:
-        m_col.r = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_R];
-        m_col.g = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_G];
-        m_col.b = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_B];
+    case RIMIT_EQUAL_VALUE_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_COLOR_FRAME])
+        {
+            m_col.r = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_R];
+            m_col.g = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_G];
+            m_col.b = m_aActionInfo[nNum].afParam[PARAM_COLOR_VALUE_B];
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
         break;
     }
 
@@ -1058,8 +1198,16 @@ void CUI::PlayActionRot(int nNum)
             m_fMemoryRotAngle, m_fRotAngle, m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE] - ANGLE_ADJUST, bUpdate);
         break;
 
-    case RIMIT_EQUAL_VALUE:
-        m_fRotAngle = m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE];
+    case RIMIT_EQUAL_VALUE_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_ROT_FRAME])
+        {
+            m_fRotAngle = m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE];
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
         break;
     }
 

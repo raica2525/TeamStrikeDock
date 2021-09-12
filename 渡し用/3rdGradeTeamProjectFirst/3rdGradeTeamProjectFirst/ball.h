@@ -57,6 +57,7 @@ class COutline;
 #define BALL_ABSORB_SPEED 20.0f              // 吸収速度
 #define BALL_ABSORB_CLOSE_PLAYER 150.0f      // 吸収でプレイヤーに近いとみなす値
 #define BALL_ABSORB_MAX_TIME 300             // 吸収時間の最大カウンタ
+#define BALL_SHOOT_EFFECT_LEAST_FRAME 10     // 最小コントローラの振動フレーム数
 
 //================================================
 // クラス宣言

@@ -65,6 +65,9 @@
 #define PLAYER_TAKE_DAMAGE_STAND_UP_FRAME 18                // 起き上がりのフレーム数
 #define PLAYER_TAKE_DAMAGE_STAND_UP_INVINCIBLE_FRAME (PLAYER_TAKE_DAMAGE_STAND_UP_FRAME - 13) // 起き上がり中の無敵フレーム
 #define PLAYER_TAKE_DAMAGE_START_QUICK_STAND_UP (PLAYER_TAKE_DAMAGE_BIG_FRAME - 60) // 即座に起き上がるのが可能になるフレーム
+#define PLAYER_TAKE_DAMAGE_SMALL_EFFECT_FRAME 30            // 負傷小コントローラの振動フレーム数
+#define PLAYER_TAKE_DAMAGE_BIG_EFFECT_FRAME 60              // 負傷大コントローラの振動フレーム数
+#define PLAYER_TAKE_DAMAGE_DEATH_EFFECT_FRAME 90            // 負傷死亡コントローラの振動フレーム数
 
 // プレイヤーの攻撃周り(全て右向き想定)
 //==========================
@@ -120,6 +123,8 @@
 // 全体フレーム、攻撃終了フレーム
 #define ATTACK_CATCH_READY_WHOLE_FRAME 21
 #define ATTACK_CATCH_READY_END_FRAME (ATTACK_SWING_WHOLE_FRAME - 11)
+// その他
+#define ATTACK_CATCH_READY_EFFECT_FRAME 15  // コントローラの振動フレーム数
 
 //==========================
 // 投げ
@@ -417,6 +422,7 @@ public:
     D3DXVECTOR3 GetCollisionSizeDeffence(void) { return m_collisionSizeDeffence; }
     AI_LEVEL GetAILevel(void) { return m_AIlevel; }
     int GetCustomPartsNum(int nParts) { return m_anNumCustomParts[nParts]; }
+    bool GetUseControllerEffect(void);       // コントローラの振動を使用するかどうか
 
 private:
     bool m_bMannequin;                       // マネキンかどうか

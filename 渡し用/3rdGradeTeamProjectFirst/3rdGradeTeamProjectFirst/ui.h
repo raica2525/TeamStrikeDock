@@ -20,6 +20,8 @@
 #define MAX_ACTION 4        // アクションの最大数
 #define MAX_ACTION_PARAM 8  // アクションの補助値の最大数
 
+#define MAX_ACCESS_NUM 32   // アクセスできるUIの最大数
+
 //================================================
 // クラス宣言
 //================================================
@@ -70,22 +72,25 @@ public:
     // 動き制限の種類
     typedef enum
     {
-        RIMIT_NONE = 0,     // 制限なし
-        RIMIT_TO_FRAME,     // 指定フレームまで
-        RIMIT_FROM_FRAME,   // 指定フレームから
-        RIMIT_TO_VALUE,     // 指定値まで
-        RIMIT_REPEAT_FRAME, // 指定フレームを繰り返す
-        RIMIT_REPEAT_VALUE, // 指定値を繰り返す
-        RIMIT_EQUAL_VALUE,  // 指定値にする
+        RIMIT_NONE = 0,                // 制限なし
+        RIMIT_TO_FRAME,                // 指定フレームまで
+        RIMIT_FROM_FRAME,              // 指定フレームから
+        RIMIT_TO_VALUE,                // 指定値まで
+        RIMIT_REPEAT_FRAME,            // 指定フレームを繰り返す
+        RIMIT_REPEAT_VALUE,            // 指定値を繰り返す
+        RIMIT_EQUAL_VALUE_FROM_FRAME,  // (指定フレームから)指定値にする
     }RIMIT;
 
     // 補助値の内訳（サイズ編）
     typedef enum
     {
-        PARAM_SIZE_CHANGE_RATE_X = 0,    // X軸変更割合（YもXの変更幅を参考に変わっていく）
+        PARAM_SIZE_CHANGE_RATE_X = 0,    // X軸変更割合
+        PARAM_SIZE_CHANGE_RATE_Y,        // (Y軸変更割合)
+        PARAM_SIZE_EQUAL_RATIO,          // 等比変形かどうか
         PARAM_SIZE_RIMIT,                // 制限
         PARAM_SIZE_FRAME,                // フレーム数
-        PARAM_SIZE_VALUE,                // 指定値
+        PARAM_SIZE_VALUE_X,               // X指定値
+        PARAM_SIZE_VALUE_Y,               // X指定値
     }PARAM_SIZE;
 
     // 補助値の内訳（位置編）
@@ -159,17 +164,20 @@ public:
     void Update(void);
     void Draw(void);
     static CUI *Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col,
-        bool bUseAddiveSynthesis = false, int nAlphaTestBorder = 0, bool bUseZBuffer = false);
-    static void Place(SET set);
+        bool bUseAddiveSynthesis = false, int nAlphaTestBorder = 0, bool bUseZBuffer = false, D3DXVECTOR3 collisionSize = DEFAULT_VECTOR);
+    static void Place(SET set);     // 外部ファイルからUIの配置
 
     /*========================================================
     // ゲッター
     //======================================================*/
     D3DXCOLOR GetCol(void) { return m_col; }
+    D3DXVECTOR3 GetCollisionSize(void) { return m_collisionSize; }
+    static CUI* GetAccessUI(int nNum);
 
     /*========================================================
     // セッター
     //======================================================*/
+    void SetAccessUI(int nNum);
     void SetDontUse(void) { m_bUse = false; }
     void SetCol(D3DXCOLOR col) { m_col = col; }
     void SetAlpha(float fAlpha) { m_col.a = fAlpha; }
@@ -199,24 +207,28 @@ public:
     void RimitRepeatValue(float& fChangeRate, const float fMemoryValue, const float fCurrentValue, const float fDestValue, bool& bUpdate);
 
 private:
-    int m_nTexType;                         // 使うテクスチャの種類
-    ActionInfo m_aActionInfo[MAX_ACTION];   // 動きの状態
-    bool m_bUse;                            // 使用するかどうか
+    static CUI* m_apAccessUI[MAX_ACCESS_NUM];   // アクセスできるUI
+    int m_nTexType;                             // 使うテクスチャの種類
+    ActionInfo m_aActionInfo[MAX_ACTION];       // 動きの状態
+    bool m_bUse;                                // 使用するかどうか
 
-    float m_fRotAngle;                      // 回転角度
-    D3DXCOLOR m_col;                        // 色
-    bool m_bUseAdditiveSynthesis;           // 加算合成にするかどうか
+    float m_fRotAngle;                          // 回転角度
+    D3DXCOLOR m_col;                            // 色
+    bool m_bUseAdditiveSynthesis;               // 加算合成にするかどうか
 
-    D3DXVECTOR3 m_memoryPos;                // 記憶用位置
-    D3DXVECTOR3 m_memorySize;               // 記憶用大きさ
-    float m_fMemoryRotAngle;                // 記憶用角度
-    D3DXCOLOR m_memoryCol;                  // 記憶用色
+    D3DXVECTOR3 m_memoryPos;                    // 記憶用位置
+    D3DXVECTOR3 m_memorySize;                   // 記憶用大きさ
+    float m_fMemoryRotAngle;                    // 記憶用角度
+    D3DXCOLOR m_memoryCol;                      // 記憶用色
 
-    //int m_nCntAnimTime;                   // アニメーション用カウンタ（effect3dから持ってきた際に削除、scene2dに元々あるため）
-    bool m_bOneRoundAnim;                   // アニメーションが一周したかどうか
-    int m_nAnimPattern;                     // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
-    int m_nAnimSpeed;                       // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
-    bool m_bRepeat;                         // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
+    //int m_nCntAnimTime;                       // アニメーション用カウンタ（effect3dから持ってきた際に削除、scene2dに元々あるため）
+    bool m_bOneRoundAnim;                       // アニメーションが一周したかどうか
+    int m_nAnimPattern;                         // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
+    int m_nAnimSpeed;                           // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
+    bool m_bRepeat;                             // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
+
+    D3DXVECTOR3 m_collisionSize;                // 当たり判定の大きさ
+    int m_nAccessNum;                           // アクセスナンバー
 };
 
 #endif

@@ -1477,6 +1477,7 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
         }
 
         // 負傷状態の判定
+        int nEffectFrame = PLAYER_TAKE_DAMAGE_SMALL_EFFECT_FRAME;   // 振動フレーム
         if (fJudgmentDamage < PLAYER_TAKE_DAMAGE_BORDER_DAMAGE)
         {
             m_damageState = DAMAGE_STATE_SMALL;
@@ -1504,6 +1505,9 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
             // 吹っ飛ばされ状態は、移動量がなくなって地面につくまで続く
             m_damageState = DAMAGE_STATE_BLOWN;
             fKnockbackValue = PLAYER_KNOCK_BACK_BIG;
+
+            // 大きい振動
+            nEffectFrame = PLAYER_TAKE_DAMAGE_BIG_EFFECT_FRAME;
         }
 
         // ダメージを受ける
@@ -1531,6 +1535,9 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
         // 体力がなくなったら
         if (m_fLife <= 0.0f)
         {
+            // 死亡時の振動
+            nEffectFrame = PLAYER_TAKE_DAMAGE_DEATH_EFFECT_FRAME;
+
             // KO音
             CManager::SoundPlay(CSound::LABEL_SE_KO);
 
@@ -1598,6 +1605,12 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
         {
             SetRot(D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f));
             m_move.x = fKnockbackValue;
+        }
+
+        // コントローラの振動
+        if (GetUseControllerEffect())
+        {
+            CManager::GetInputJoypad()->StartEffect(m_playable, nEffectFrame);
         }
     }
 }
@@ -2438,6 +2451,12 @@ void CPlayer::CatchReady(D3DXVECTOR3 playerPos)
     BITON(flag, CBall::SHOOT_FLAG_THROW);
     if (IsAttackBall(attackPos, attackSize, DEFAULT_VECTOR, 0.0f, true, flag))
     {
+        // コントローラの振動
+        if (GetUseControllerEffect())
+        {
+            CManager::GetInputJoypad()->StartEffect(m_playable, ATTACK_CATCH_READY_EFFECT_FRAME);
+        }
+
         // キャッチ音
         CManager::SoundPlay(CSound::LABEL_SE_CATCH);
 
@@ -2810,4 +2829,23 @@ void CPlayer::GainSpGauge(bool bExAdd)
     {
         m_fSpGaugeCurrent = m_fSpGaugeMax;
     }
+}
+
+//=============================================================================
+// コントローラの振動を使用するかどうか
+// Author : 後藤慎之助
+//=============================================================================
+bool CPlayer::GetUseControllerEffect(void)
+{
+    bool bUseControllerEffect = false;
+
+    // AIでないかつ、キーボード操作でないなら、振動を使う
+    if (m_AIlevel == AI_LEVEL_NONE && !m_bUseKeyboard)
+    {
+        bUseControllerEffect = true;
+    }
+
+    // いずれオプションで強制OFFできるようにここに書く
+
+    return bUseControllerEffect;
 }

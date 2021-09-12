@@ -20,6 +20,7 @@
 #include "effect2d.h"
 #include "number_array.h"
 #include "outline.h"
+#include "input.h"
 
 //=============================================================================
 // コンストラクタ
@@ -1127,6 +1128,21 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
                 if (bQuickShoot)
                 {
                     m_nCntStopTime = BALL_SHOOT_STOP_LEAST_FRAME / 2;
+                }
+            }
+
+            // コントローラの振動
+            if (m_pPlayer)
+            {
+                if (m_pPlayer->GetUseControllerEffect())
+                {
+                    // 硬直時間の半分揺らす（最低保証あり）
+                    int nEffectFrame = m_nCntStopTime / 2;
+                    if (nEffectFrame < BALL_SHOOT_EFFECT_LEAST_FRAME)
+                    {
+                        nEffectFrame = BALL_SHOOT_EFFECT_LEAST_FRAME;
+                    }
+                    CManager::GetInputJoypad()->StartEffect(m_nWhoShooting, nEffectFrame);
                 }
             }
         }

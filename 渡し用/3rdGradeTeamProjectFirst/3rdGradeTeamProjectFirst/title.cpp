@@ -84,31 +84,50 @@ void CTitle::Update(void)
     // タイトルの時間をカウント
     m_nCntTime++;
 
-    // タイトルの最大時間
-    if (m_nCntTime > TITLE_MAX_TIME)
-    {
-        m_nCntTime = TITLE_MAX_TIME;
-    }
-
     // 一定時間経過で遷移可能に
     if (m_nCntTime >= TITLE_SHOW_TIME)
     {
-        //キーボードの確保したメモリを取得
-        CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+        // カウンタストップ
+        m_nCntTime = TITLE_SHOW_TIME;
 
-        // コントローラを取得
-        CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
-        DIJOYSTATE2 Controller = pInputJoypad->GetController(PLAYER_1);
-
-        // エンター、または何かボタンを押したら
-        if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START)
-            || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_A)
-            || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_B)
-            || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_X)
-            || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_Y))
+        // プレスボタンのUIを出現させる
+        CUI *pPressButton = CUI::GetAccessUI(0);
+        if (pPressButton)
         {
-            // 仮にゲームモードに移行
-            CFade::SetFade(CManager::MODE_GAME);
+            pPressButton->SetActionLock(1, false);
+        }
+
+        // フェードしていないなら、遷移可能
+        if (CFade::GetFade() == CFade::FADE_NONE)
+        {
+            //キーボードの確保したメモリを取得
+            CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+
+            // コントローラを取得
+            CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
+            DIJOYSTATE2 Controller = pInputJoypad->GetController(PLAYER_1);
+
+            // エンター、または何かボタンを押したら
+            if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START)
+                || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_A)
+                || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_B)
+                || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_X)
+                || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_Y))
+            {
+                // 仮にゲームモードに移行
+                CFade::SetFade(CManager::MODE_GAME);
+
+                // プレスボタンを点滅させる
+                if (pPressButton)
+                {
+                    // 色変えをリセットしてロックする
+                    pPressButton->SetActionReset(0);
+                    pPressButton->SetActionLock(0, true);
+
+                    // 点滅をアンロック
+                    pPressButton->SetActionLock(2, false);
+                }
+            }
         }
     }
 }
