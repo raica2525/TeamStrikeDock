@@ -399,6 +399,7 @@ public:
     void SetStopTime(int nStopTime) { m_nCntStopTime = nStopTime; }
     void SetSpGaugeCurrent(float fSpGauge) { m_fSpGaugeCurrent = fSpGauge; }
     void SetDisp(bool bDisp) { m_bDisp = bDisp; }
+    void ResetStatusEveryRound(void);   // 毎ラウンドリセットするステータス
 
     /*========================================================
     // ゲッター

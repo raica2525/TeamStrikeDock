@@ -55,6 +55,7 @@ public:
         CText *pText_Up;        // 上半身パーツの名前
         CText *pText_Down;      // 下半身パーツの名前
         CText *pText_Wep;       // 武器パーツの名前
+        bool bUseCursor;        // カーソルを使っているかどうか
     }ENTRY_INFO;
 
     CCustom();
@@ -63,6 +64,8 @@ public:
     void BindHaveParts(void);                                                  // 所持しているパーツ情報を結びつける
     void Uninit(void);
     void Update(void);
+
+    void MoveCursor(void);  // カーソル移動
 
     void SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts);    // 誰のどこを何のパーツにして保存するか
 

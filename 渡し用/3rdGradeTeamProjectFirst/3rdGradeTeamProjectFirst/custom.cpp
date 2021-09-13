@@ -61,18 +61,18 @@ HRESULT CCustom::Init(void)
     // UIを外部ファイルから生成
     CUI::Place(CUI::SET_CUSTOM);
 
+    // プレイヤー(マネキン)の生成
+    m_apPlayer[PLAYER_1] = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001, true);
+    m_apPlayer[PLAYER_2] = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_002, false);
+    m_apPlayer[PLAYER_3] = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_003, false);
+    m_apPlayer[PLAYER_4] = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_004, false);
+
     // カーソル生成
     const D3DXVECTOR3 cursorFirstPos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
     m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR);
     m_aEntryInfo[PLAYER_2].pUI_Cursor = CUI::Create(54, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
     m_aEntryInfo[PLAYER_3].pUI_Cursor = CUI::Create(55, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
     m_aEntryInfo[PLAYER_4].pUI_Cursor = CUI::Create(56, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
-
-    // プレイヤー(マネキン)の生成
-    m_apPlayer[PLAYER_1] = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001, true);
-    m_apPlayer[PLAYER_2] = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_002, false);
-    m_apPlayer[PLAYER_3] = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_003, false);
-    m_apPlayer[PLAYER_4] = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_004, false);
 
     // パーツ選択情報の初期化
     float fTextPosX = 167.0f;
@@ -139,6 +139,9 @@ HRESULT CCustom::Init(void)
 
     // カメラのロックオン場所を変える
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
+
+    // 1Pのカーソルは必ず使う
+    m_aEntryInfo[PLAYER_1].bUseCursor = true;
 
     //// BGMを再生
     //CSound *pSound = CManager::GetSound();
@@ -229,23 +232,8 @@ void CCustom::Uninit(void)
 //=============================================================================
 void CCustom::Update(void)
 {
-    //キーボードの確保したメモリを取得
-    CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
-
-    // コントローラを取得
-    CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
-    DIJOYSTATE2 ControllerP1 = pInputJoypad->GetController(PLAYER_1);
-    float fStickAngleP1 = 0.0f;
-    bool bTiltedStickP1 = false;
-
-    // 左スティックが傾いているかどうか
-    if (ControllerP1.lY != 0 || ControllerP1.lX != 0)
-    {
-        bTiltedStickP1 = true;
-
-        // 角度を求める
-        fStickAngleP1 = atan2(ControllerP1.lX, ControllerP1.lY*-1);
-    }
+    // カーソル移動
+    MoveCursor();
 
     //// フェードしていないなら、選択可能
     //if (CFade::GetFade() == CFade::FADE_NONE)
@@ -492,6 +480,68 @@ void CCustom::Update(void)
     //{
     //    m_pUI_Cursor->SetPosition(pos);
     //}
+}
+
+//=============================================================================
+// カーソル移動
+// Author : 後藤慎之助
+//=============================================================================
+void CCustom::MoveCursor(void)
+{
+    for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+    {
+        // カーソルを使うなら
+        if (m_aEntryInfo[nCntPlayer].bUseCursor)
+        {
+            // カーソルがあるなら
+            if (m_aEntryInfo[nCntPlayer].pUI_Cursor)
+            {
+                ////キーボードの確保したメモリを取得
+                //CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+
+                // コントローラを取得
+                CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
+                DIJOYSTATE2 Controller = pInputJoypad->GetController(nCntPlayer);
+                float fStickAngle = 0.0f;
+                bool bTiltedStick = false;
+                float fTiltedStickValue = 0.0f;
+
+                // 左スティックが傾いているかどうか
+                if (Controller.lY != 0 || Controller.lX != 0)
+                {
+                    bTiltedStick = true;
+
+                    // 角度を求める
+                    fStickAngle = atan2(Controller.lX, Controller.lY*-1);
+
+                    // 大きさを求める
+                    fTiltedStickValue = sqrtf(
+                        powf(float(Controller.lX), 2) +
+                        powf((float(Controller.lY)*-1), 2));
+
+                    // 最大傾きより大きいなら、制限（正方形の対角線は、各辺よりも長いため）
+                    if (fTiltedStickValue > STICK_MAX_TILT)
+                    {
+                        fTiltedStickValue = STICK_MAX_TILT;
+                    }
+                }
+
+                // 位置を取得
+                D3DXVECTOR3 pos = m_aEntryInfo[nCntPlayer].pUI_Cursor->GetPosition();
+
+                // 移動
+                if (bTiltedStick)
+                {
+                    const float ADJUST_RATE = 0.0008f;   // スティックの傾きの値を、位置に足せるよう調整
+                    pos.x += sinf(fStickAngle)* fTiltedStickValue * ADJUST_RATE;
+                    pos.y += -cosf(fStickAngle)* fTiltedStickValue * ADJUST_RATE;
+                }
+
+                // 位置を設定
+                m_aEntryInfo[nCntPlayer].pUI_Cursor->SetPosition(pos);
+            }
+        }
+    }
 }
 
 //=============================================================================

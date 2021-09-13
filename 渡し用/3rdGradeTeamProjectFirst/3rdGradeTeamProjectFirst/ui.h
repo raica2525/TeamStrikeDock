@@ -164,7 +164,8 @@ public:
     void Update(void);
     void Draw(void);
     static CUI *Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col,
-        bool bUseAddiveSynthesis = false, int nAlphaTestBorder = 0, bool bUseZBuffer = false, D3DXVECTOR3 collisionSize = DEFAULT_VECTOR);
+        bool bUseAddiveSynthesis = false, int nAlphaTestBorder = 0, bool bUseZBuffer = false,
+        D3DXVECTOR3 collisionPos = DEFAULT_VECTOR, D3DXVECTOR3 collisionSize = DEFAULT_VECTOR);
     static void Place(SET set);     // 外部ファイルからUIの配置
 
     /*========================================================
@@ -203,7 +204,7 @@ public:
     /*========================================================
     // アクション用の共通処理
     //======================================================*/
-    void RimitToValue(const float fChangeRate, const float fCurrentValue, const float fDestValue, bool& bUpdate);
+    void RimitToValue(const float fChangeRate, float& fCurrentValue, const float fDestValue, bool& bUpdate);
     void RimitRepeatValue(float& fChangeRate, const float fMemoryValue, const float fCurrentValue, const float fDestValue, bool& bUpdate);
 
 private:
@@ -227,6 +228,7 @@ private:
     int m_nAnimSpeed;                           // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     bool m_bRepeat;                             // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
 
+    D3DXVECTOR3 m_collisionPos;                 // 当たり判定の位置
     D3DXVECTOR3 m_collisionSize;                // 当たり判定の大きさ
     int m_nAccessNum;                           // アクセスナンバー
 };

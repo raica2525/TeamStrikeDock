@@ -309,8 +309,8 @@ void CGame::RoundStart(void)
             m_apPlayer[nCntPlayer]->Respawn();
         }
 
-        // 全員SPゲージはリセット
-        m_apPlayer[nCntPlayer]->SetSpGaugeCurrent(0.0f);
+        // 毎ラウンドリセットするステータス
+        m_apPlayer[nCntPlayer]->ResetStatusEveryRound();
     }
 
     // ボールスピード表示をリセット

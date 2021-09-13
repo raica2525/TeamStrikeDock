@@ -1028,13 +1028,13 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable
         startPos = D3DXVECTOR3(150.0f, 290.0f, 0.0f);
         break;
     case PLAYER_2:
-
+        startPos = D3DXVECTOR3(465.0f, 290.0f, 0.0f);
         break;
     case PLAYER_3:
-
+        startPos = D3DXVECTOR3(780.0f, 290.0f, 0.0f);
         break;
     case PLAYER_4:
-
+        startPos = D3DXVECTOR3(1095.0f, 290.0f, 0.0f);
         break;
     }
     float fDigitPosY = 0.0f;
@@ -2828,6 +2828,22 @@ void CPlayer::GainSpGauge(bool bExAdd)
     if (m_fSpGaugeCurrent > m_fSpGaugeMax)
     {
         m_fSpGaugeCurrent = m_fSpGaugeMax;
+    }
+}
+
+//=============================================================================
+// 毎ラウンドリセットするステータス
+// Author : 後藤慎之助
+//=============================================================================
+void CPlayer::ResetStatusEveryRound(void)
+{
+    // 必殺ゲージ
+    m_fSpGaugeCurrent = 0.0f;
+
+    // ラッキーガード（ファーストヒットガードのキャラのみリセット）
+    if (IS_BITON(m_exFlag, EX_FLAG_FIRST_HIT_GUARD))
+    {
+        m_bUsedLuckyGuard = false;
     }
 }
 

@@ -50,6 +50,7 @@ CUI::CUI() :CScene2D(OBJTYPE::OBJTYPE_UI)
     m_nAnimSpeed = 0;
     m_bRepeat = false;
 
+    m_collisionPos = DEFAULT_VECTOR;
     m_collisionSize = DEFAULT_VECTOR;
     m_nAccessNum = NOT_EXIST;
 }
@@ -166,7 +167,8 @@ void CUI::Draw(void)
 // UIの作成
 // Author : 後藤慎之助
 //=========================================================
-CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col, bool bUseAddiveSynthesis, int nAlphaTestBorder, bool bUseZBuffer, D3DXVECTOR3 collisionSize)
+CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col,
+    bool bUseAddiveSynthesis, int nAlphaTestBorder, bool bUseZBuffer, D3DXVECTOR3 collisionPos, D3DXVECTOR3 collisionSize)
 {
     CUI *pUI = NULL;
 
@@ -195,6 +197,7 @@ CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle,
     }
     pUI->m_col = col;
     pUI->m_bUseAdditiveSynthesis = bUseAddiveSynthesis;
+    pUI->m_collisionPos = collisionPos;
     pUI->m_collisionSize = collisionSize;
 
     // 記憶用も結びつける
@@ -208,6 +211,14 @@ CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle,
     pUI->m_nAnimPattern = pTexture->GetInfo(pUI->m_nTexType)->nPattern;
     pUI->m_nAnimSpeed = pTexture->GetInfo(pUI->m_nTexType)->nSpeed;
     pUI->m_bRepeat = pTexture->GetInfo(pUI->m_nTexType)->bRepeat;
+
+#ifdef _DEBUG
+    if (collisionSize != DEFAULT_VECTOR && CManager::GetRenderer()->GetDispFont())
+    {
+        CUI *pDebugCollision = Create(52, collisionPos, collisionSize, 0, DEFAULT_COLOR);
+        pDebugCollision->SetReloadUI();
+    }
+#endif
 
     return pUI;
 }
@@ -277,6 +288,7 @@ void CUI::Place(SET set)
                     int nAccessNum = NOT_EXIST;                         // アクセスナンバー
                     D3DXVECTOR3 pos = DEFAULT_VECTOR;                   // 位置
                     D3DXVECTOR3 size = DEFAULT_VECTOR;                  // 大きさ
+                    D3DXVECTOR3 collisionPos = DEFAULT_VECTOR;          // 当たり判定の位置
                     D3DXVECTOR3 collisionSize = DEFAULT_VECTOR;         // 当たり判定の大きさ
                     int nRot = 0;                                       // 角度
                     D3DXCOLOR col = DEFAULT_COLOR;                      // 色
@@ -322,6 +334,10 @@ void CUI::Place(SET set)
                         else if (strcmp(cHeadText, "SIZE") == 0)
                         {
                             sscanf(cReadText, "%s %s %f %f", &cDie, &cDie, &size.x, &size.y);
+                        }
+                        else if (strcmp(cHeadText, "COLLISION_POS") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %f %f", &cDie, &cDie, &collisionPos.x, &collisionPos.y);
                         }
                         else if (strcmp(cHeadText, "COLLISION_SIZE") == 0)
                         {
@@ -470,7 +486,7 @@ void CUI::Place(SET set)
                     }
 
                     // 生成（アクションの情報も結びつける）
-                    CUI* pUI = Create(nTexType, pos, size, nRot, col, bAddBrend, nAlphaTestBorder, bUseZBuffer, collisionSize);
+                    CUI* pUI = Create(nTexType, pos, size, nRot, col, bAddBrend, nAlphaTestBorder, bUseZBuffer, collisionPos, collisionSize);
                     for (int nCnt = 0; nCnt < MAX_ACTION; nCnt++)
                     {
                         pUI->SetActionInfo(nCnt, aActionInfo[nCnt].action, aActionInfo[nCnt].bLock,
@@ -779,9 +795,9 @@ void CUI::PlayActionSize(int nNum)
             }
             else if ((int)m_aActionInfo[nNum].afParam[PARAM_SIZE_EQUAL_RATIO] == 1)
             {
-                if (size.y != 0.0f)
+                if (size.x != 0.0f)
                 {
-                    size.y = (size.x / size.y) * m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X];
+                    size.y = (size.y / size.x) * m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X];
                 }
                 size.x = m_aActionInfo[nNum].afParam[PARAM_SIZE_VALUE_X];
             }
@@ -814,9 +830,9 @@ void CUI::PlayActionSize(int nNum)
         // 等比変形はx基準で加算しているため、yを先に計算しないとリピートでずれる
         if (bUpdateX)
         {
-            if (size.y != 0.0f)
+            if (size.x != 0.0f)
             {
-                size.y += (size.x / size.y) * m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
+                size.y += (size.y / size.x) * m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
             }
             size.x += m_aActionInfo[nNum].afParam[PARAM_SIZE_CHANGE_RATE_X];
         }
@@ -1337,22 +1353,35 @@ void CUI::PlayActionLoopAnim(int nNum)
 // 〇値までの共通処理
 // Author : 後藤慎之助
 //=========================================================
-void CUI::RimitToValue(const float fChangeRate, const float fCurrentValue, const float fDestValue, bool& bUpdate)
+void CUI::RimitToValue(const float fChangeRate, float& fCurrentValue, const float fDestValue, bool& bUpdate)
 {
     // 加算中なら
     if (fChangeRate > 0)
     {
-        // 現在の値が目的値より小さいなら更新
-        if (fCurrentValue < fDestValue)
+        // 今回のフレームで指定した値をオーバーしないなら、更新
+        float fThisFrameValue = fCurrentValue + fChangeRate;
+        if (fThisFrameValue < fDestValue)
         {
             bUpdate = true;
+        }
+        else
+        {
+            // 指定した値で止めておく
+            fCurrentValue = fDestValue;
         }
     }
     else if (fChangeRate < 0)
     {
-        if (fCurrentValue > fDestValue)
+        // 今回のフレームで指定した値をオーバーしないなら、更新
+        float fThisFrameValue = fCurrentValue + fChangeRate;
+        if (fThisFrameValue > fDestValue)
         {
             bUpdate = true;
+        }
+        else
+        {
+            // 指定した値で止めておく
+            fCurrentValue = fDestValue;
         }
     }
 }

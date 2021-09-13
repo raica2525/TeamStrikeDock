@@ -439,11 +439,11 @@ TEXTURESET
 END_TEXTURESET
 
 #---------------------------------------
-# [52] カスタマイズ画面の選択枠
+# [52] デバッグコリジョン
 #---------------------------------------
 TEXTURESET
     TYPE = 52
-    NAME = data/TEXTURE/052_select.png
+    NAME = data/TEXTURE/052_DebugCollision.png
 END_TEXTURESET
 
 #---------------------------------------
@@ -484,6 +484,22 @@ END_TEXTURESET
 TEXTURESET
     TYPE = 57
     NAME = data/TEXTURE/057_Locus.jpg
+END_TEXTURESET
+
+#---------------------------------------
+# [58] 左選択
+#---------------------------------------
+TEXTURESET
+    TYPE = 58
+    NAME = data/TEXTURE/058_Select_Left.png
+END_TEXTURESET
+
+#---------------------------------------
+# [59] 右選択
+#---------------------------------------
+TEXTURESET
+    TYPE = 59
+    NAME = data/TEXTURE/059_Select_Right.png
 END_TEXTURESET
 
 END_SCRIPT		# この行は絶対消さないこと！
