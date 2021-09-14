@@ -20,7 +20,7 @@
 #define MAX_ACTION 4        // アクションの最大数
 #define MAX_ACTION_PARAM 8  // アクションの補助値の最大数
 
-#define MAX_ACCESS_NUM 32   // アクセスできるUIの最大数
+#define MAX_ACCESS_NUM 64   // アクセスできるUIの最大数
 
 //================================================
 // クラス宣言
@@ -46,7 +46,7 @@ public:
     // 動きの種類
     typedef enum
     {
-        ACTION_NONE = 0,    // なし
+        ACTION_NONE = 0,    // なし（補助値利用したいときに）
         ACTION_GAUGE,       // ゲージ
         ACTION_SIZE,        // サイズ変更
         ACTION_POS,         // 位置変更
@@ -172,8 +172,10 @@ public:
     // ゲッター
     //======================================================*/
     D3DXCOLOR GetCol(void) { return m_col; }
+    D3DXVECTOR3 GetCollisionPos(void) { return m_collisionPos; }
     D3DXVECTOR3 GetCollisionSize(void) { return m_collisionSize; }
     static CUI* GetAccessUI(int nNum);
+    float GetActionParam(int nNumAction, int nNumParam) { return m_aActionInfo[nNumAction].afParam[nNumParam]; }
 
     /*========================================================
     // セッター

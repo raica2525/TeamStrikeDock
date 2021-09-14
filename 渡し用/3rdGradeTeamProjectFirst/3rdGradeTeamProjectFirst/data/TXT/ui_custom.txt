@@ -269,6 +269,7 @@ END_UISET
 # [] 1p頭右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 0
 	TYPE = 59
 	POS = 292.0 442.5
 	SIZE = 64.0 64.0
@@ -280,12 +281,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 0
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 1p頭左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 1
 	TYPE = 58
 	POS = 42.0 442.5
 	SIZE = 64.0 64.0
@@ -297,12 +305,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 0
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 1p体右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 2
 	TYPE = 59
 	POS = 292.0 505.5
 	SIZE = 64.0 64.0
@@ -314,12 +329,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 1
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 1p体左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 3
 	TYPE = 58
 	POS = 42.0 505.5
 	SIZE = 64.0 64.0
@@ -331,12 +353,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 1
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 1p足右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 4
 	TYPE = 59
 	POS = 292.0 568.5
 	SIZE = 64.0 64.0
@@ -348,12 +377,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 2
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 1p足左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 5
 	TYPE = 58
 	POS = 42.0 568.5
 	SIZE = 64.0 64.0
@@ -365,12 +401,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 2
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 1p武器右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 6
 	TYPE = 59
 	POS = 292.0 631.5
 	SIZE = 64.0 64.0
@@ -382,12 +425,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 3
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 1p武器左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 7
 	TYPE = 58
 	POS = 42.0 631.5
 	SIZE = 64.0 64.0
@@ -399,12 +449,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 0
+	PARAM2 = 3
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 1p準備完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 8
 	TYPE = 51
 	POS = 167.0 684.0
 	SIZE = 170.0 37.0
@@ -416,6 +473,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 1
+	PARAM1 = 0
 END_UISET
 
 #---------------------------------------
@@ -436,6 +497,7 @@ END_UISET
 # [] 2p頭右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 9
 	TYPE = 59
 	POS = 607.0 442.5
 	SIZE = 64.0 64.0
@@ -448,12 +510,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 0
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 2p頭左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 10
 	TYPE = 58
 	POS = 357.0 442.5
 	SIZE = 64.0 64.0
@@ -466,12 +535,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 0
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 2p体右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 11
 	TYPE = 59
 	POS = 607.0 505.5
 	SIZE = 64.0 64.0
@@ -484,12 +560,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 1
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 2p体左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 12
 	TYPE = 58
 	POS = 357.0 505.5
 	SIZE = 64.0 64.0
@@ -502,12 +585,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 1
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 2p足右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 13
 	TYPE = 59
 	POS = 607.0 568.5
 	SIZE = 64.0 64.0
@@ -520,12 +610,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 2
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 2p足左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 14
 	TYPE = 58
 	POS = 357.0 568.5
 	SIZE = 64.0 64.0
@@ -538,12 +635,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 2
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 2p武器右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 15
 	TYPE = 59
 	POS = 607.0 631.5
 	SIZE = 64.0 64.0
@@ -556,12 +660,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 3
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 2p武器左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 16
 	TYPE = 58
 	POS = 357.0 631.5
 	SIZE = 64.0 64.0
@@ -574,12 +685,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 1
+	PARAM2 = 3
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 2p準備完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 17
 	TYPE = 51
 	POS = 482.0 684.0
 	SIZE = 170.0 37.0
@@ -592,6 +710,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 1
+	PARAM1 = 1
 END_UISET
 
 #---------------------------------------
@@ -612,6 +734,7 @@ END_UISET
 # [] 3p頭右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 18
 	TYPE = 59
 	POS = 922.0 442.5
 	SIZE = 64.0 64.0
@@ -624,12 +747,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 0
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 3p頭左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 19
 	TYPE = 58
 	POS = 672.0 442.5
 	SIZE = 64.0 64.0
@@ -642,12 +772,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 0
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 3p体右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 20
 	TYPE = 59
 	POS = 922.0 505.5
 	SIZE = 64.0 64.0
@@ -660,12 +797,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 1
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 3p体左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 21
 	TYPE = 58
 	POS = 672.0 505.5
 	SIZE = 64.0 64.0
@@ -678,12 +822,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 1
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 3p足右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 22
 	TYPE = 59
 	POS = 922.0 568.5
 	SIZE = 64.0 64.0
@@ -696,12 +847,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 2
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 3p足左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 23
 	TYPE = 58
 	POS = 672.0 568.5
 	SIZE = 64.0 64.0
@@ -714,12 +872,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 2
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 3p武器右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 24
 	TYPE = 59
 	POS = 922.0 631.5
 	SIZE = 64.0 64.0
@@ -732,12 +897,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 3
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 3p武器左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 25
 	TYPE = 58
 	POS = 672.0 631.5
 	SIZE = 64.0 64.0
@@ -750,12 +922,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 2
+	PARAM2 = 3
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 3p準備完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 26
 	TYPE = 51
 	POS = 797.0 684.0
 	SIZE = 170.0 37.0
@@ -768,6 +947,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 1
+	PARAM1 = 2
 END_UISET
 
 #---------------------------------------
@@ -788,6 +971,7 @@ END_UISET
 # [] 4p頭右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 27
 	TYPE = 59
 	POS = 1237.0 442.5
 	SIZE = 64.0 64.0
@@ -800,12 +984,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 0
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 4p頭左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 28
 	TYPE = 58
 	POS = 987.0 442.5
 	SIZE = 64.0 64.0
@@ -818,12 +1009,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 0
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 4p体右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 29
 	TYPE = 59
 	POS = 1237.0 505.5
 	SIZE = 64.0 64.0
@@ -836,12 +1034,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 1
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 4p体左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 30
 	TYPE = 58
 	POS = 987.0 505.5
 	SIZE = 64.0 64.0
@@ -854,12 +1059,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 1
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 4p足右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 31
 	TYPE = 59
 	POS = 1237.0 568.5
 	SIZE = 64.0 64.0
@@ -872,12 +1084,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 2
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 4p足左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 32
 	TYPE = 58
 	POS = 987.0 568.5
 	SIZE = 64.0 64.0
@@ -890,12 +1109,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 2
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 4p武器右
 #---------------------------------------
 UISET
+	ACCESS_NUM = 33
 	TYPE = 59
 	POS = 1237.0 631.5
 	SIZE = 64.0 64.0
@@ -908,12 +1134,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 3
+	PARAM3 = 1
 END_UISET
 
 #---------------------------------------
 # [] 4p武器左
 #---------------------------------------
 UISET
+	ACCESS_NUM = 34
 	TYPE = 58
 	POS = 987.0 631.5
 	SIZE = 64.0 64.0
@@ -926,12 +1159,19 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 0
+	PARAM1 = 3
+	PARAM2 = 3
+	PARAM3 = 0
 END_UISET
 
 #---------------------------------------
 # [] 4p準備完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 35
 	TYPE = 51
 	POS = 1112.0 684.0
 	SIZE = 170.0 37.0
@@ -944,6 +1184,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 1
+	PARAM1 = 3
 END_UISET
 
 #---------------------------------------

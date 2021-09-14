@@ -625,10 +625,6 @@ void CUI::SetActionReset(int nNum)
         // アクションによって、リセットするものを変える
         switch (m_aActionInfo[nNum].action)
         {
-        case ACTION_NONE:
-            // アクションが設定されていないなら、関数を抜ける
-            return;
-            break;
         case ACTION_SIZE:
             CScene2D::SetSize(m_memorySize);
             break;
