@@ -30,6 +30,7 @@
 #include "effect2d.h"
 #include "number_array.h"
 #include "text.h"
+#include "cliping_musk.h"
 
 //========================================
 // マクロ定義
@@ -128,6 +129,8 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
 
     m_collisionSizeAttack = DEFAULT_VECTOR;
     m_collisionSizeDeffence = DEFAULT_VECTOR;
+
+	m_pClipingMusk = NULL;
 
     //===================================
     // 特殊能力対応周り
@@ -383,6 +386,14 @@ void CPlayer::Uninit(void)
         delete m_pAI;
         m_pAI = NULL;
     }
+
+	if (m_pClipingMusk != NULL)
+	{
+		m_pClipingMusk->Uninit();
+		delete m_pClipingMusk;
+		m_pClipingMusk = NULL;
+	}
+	
 
     CCharacter::Uninit();
 }
@@ -896,7 +907,27 @@ void CPlayer::Draw(void)
     // 表示するなら、描画
     if (m_bDisp)
     {
+		// レンダラーからデバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		if (m_pClipingMusk != NULL)
+		{
+			m_pClipingMusk->Draw();
+			//ステンシルの設定
+			pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
+			pDevice->SetRenderState(D3DRS_STENCILREF, m_pClipingMusk->GetReferenceValue() + 1);
+			pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
+			pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
+
+			pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
+			pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
+			pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
+		}
         CCharacter::Draw();
+		if (m_pClipingMusk != NULL)
+		{
+			//ステンシル無効化
+			pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
+		}
     }
     else
     {
@@ -2864,4 +2895,23 @@ bool CPlayer::GetUseControllerEffect(void)
     // いずれオプションで強制OFFできるようにここに書く
 
     return bUseControllerEffect;
+}
+
+
+//=============================================================================
+// クリッピングマスクを適用
+// Author : 池田悠希
+//=============================================================================
+void CPlayer::ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size, int nNumTexture)
+{
+	m_pClipingMusk = CClipingMusk::Create(pos, size, nNumTexture);
+}
+
+//=============================================================================
+// テクスチャなしクリッピングマスクを適用
+// Author : 池田悠希
+//=============================================================================
+void CPlayer::ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+{
+	m_pClipingMusk = CClipingMusk::Create(pos, size);
 }

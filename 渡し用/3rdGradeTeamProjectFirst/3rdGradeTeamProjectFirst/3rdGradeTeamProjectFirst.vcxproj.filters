@@ -180,6 +180,9 @@
     <ClCompile Include="locus.cpp">
       <Filter>ソース ファイル\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="cliping_musk.cpp">
+      <Filter>ソース ファイル\Useful</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="locus.h">
       <Filter>ヘッダー ファイル\Obj_h</Filter>
+    </ClInclude>
+    <ClInclude Include="cliping_musk.h">
+      <Filter>ヘッダー ファイル\Usehul_h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
