@@ -340,7 +340,7 @@ TEXTURESET
 END_TEXTURESET
 
 #---------------------------------------
-# [40] ブレンド用縦線右
+# [40] ブレンドライン右
 #---------------------------------------
 TEXTURESET
     TYPE = 40
@@ -500,6 +500,22 @@ END_TEXTURESET
 TEXTURESET
     TYPE = 59
     NAME = data/TEXTURE/059_Select_Right.png
+END_TEXTURESET
+
+#---------------------------------------
+# [60] 内側の枠
+#---------------------------------------
+TEXTURESET
+    TYPE = 60
+    NAME = data/TEXTURE/060_In_Frame.png
+END_TEXTURESET
+
+#---------------------------------------
+# [61] ブレンドライン下
+#---------------------------------------
+TEXTURESET
+    TYPE = 61
+    NAME = data/TEXTURE/061_brendLine2.png
 END_TEXTURESET
 
 END_SCRIPT		# この行は絶対消さないこと！

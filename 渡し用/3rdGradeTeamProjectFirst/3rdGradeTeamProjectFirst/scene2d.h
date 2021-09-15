@@ -76,7 +76,6 @@ public:
     void SetSize(D3DXVECTOR3 size) { m_size = size; }
     void SetAlphaTestBorder(int nValue) { m_nAlphaTestBorder = nValue; }
     void SetAdditiveSynthesis(void) { m_bAdditiveSynthesis = true; }
-    void SetAlphaTest(void) { m_bAlphaTest = true; }
     void SetNega(void) { m_bNega = true; }
     void SetColor(D3DXCOLOR col);
 
@@ -88,7 +87,6 @@ public:
 
 private:
     static bool m_bAdditiveSynthesis;                       // 加算合成するかどうか
-    static bool m_bAlphaTest;                               // αテストするかどうか
     static bool m_bNega;                                    // 反転合成するかどうか
     LPDIRECT3DTEXTURE9		m_apTexture[MAX_BREND_TEXTURE];	// テクスチャへのポインタ
     LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		                // 頂点バッファへのポインタ

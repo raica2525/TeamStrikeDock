@@ -43,7 +43,7 @@ UISET
 	LOCK = 0		# bool
 	PARAM0 = 40
 	PARAM1 = 0
-	PARAM2 = 60
+	PARAM2 = 30
 	PARAM3 = 60
 	PARAM4 = 1
 	PARAM5 = 1

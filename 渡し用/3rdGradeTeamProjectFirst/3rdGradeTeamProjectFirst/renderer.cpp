@@ -349,6 +349,12 @@ void CRenderer::GameDebugData(void)
     CPlayer* pPlayer = CGame::GetPlayer(PLAYER_1);
     CBall* pBall = CGame::GetBall();
 
+    // プレイヤー1がいないなら関数を抜ける
+    if (!pPlayer)
+    {
+        return;
+    }
+
     // 描画内容を決める
     wsprintf(str, "FPS:%d\nOBJ:%d\n\nATK:%d\nDEF:%d\nSPD:%d\nWEI:%d\n\nLIFE:%d\nSP_GAUGE:%d\nPOINT:%d\nSTOCK:%d\n\nCHARGE:%d\n\nBALL_SPD:%d\nBALL_WHO_SHOOT:%d\nBALL_WHO_ABSORB:%d\nBALL_STOP:%d\n\nALL_PLAYERS:%d\nDEFEATED_PLAYERS:%d\nPRE_WORST_PLAYER:%d\nDEATH_PLAYERS:%d", 
         GetFPS(), CScene::GetNumObjAll(), (int)pPlayer->GetAtk(), (int)pPlayer->GetDef(), (int)pPlayer->GetSpd(), (int)pPlayer->GetWei(), (int)pPlayer->GetLife(), (int)pPlayer->GetSpGaugeCurrent(), (int)pPlayer->GetPoint(), (int)pPlayer->GetStock(),

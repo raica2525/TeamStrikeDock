@@ -90,21 +90,36 @@ public:
         CLICK_TYPE_READY,       // 準備完了
     }CLICK_TYPE;
 
+    // エントリー状態
+    typedef enum
+    {
+        ENTRY_STATUS_WAITING = 0,   // 待機中
+        ENTRY_STATUS_PLAYER,        // プレイヤー
+        ENTRY_STATUS_CP_LEVEL_1,    // CPよわい
+        ENTRY_STATUS_CP_LEVEL_2,    // CPふつう
+        ENTRY_STATUS_CP_LEVEL_3,    // CPつよい
+    }ENTRY_STATUS;
+
     // エントリー情報
     typedef struct
     {
-        CUI *pUI_Cursor;        // カーソル
-        int select;             // 選択
-        int nNumSelectHead;     // 頭パーツ選択
-        int nNumSelectUp;       // 上半身パーツ選択
-        int nNumSelectDown;     // 下半身パーツ選択
-        int nNumSelectWep;      // 武器パーツ選択
-        CText *pText_Head;      // 頭パーツの名前
-        CText *pText_Up;        // 上半身パーツの名前
-        CText *pText_Down;      // 下半身パーツの名前
-        CText *pText_Wep;       // 武器パーツの名前
-        bool bUseCursor;        // カーソルを使っているかどうか
-        int nNumSelectUIOld;    // 1F前の選択肢
+        CUI *pUI_Cursor;                // カーソル
+        CUI *pUI_Bg_Wait;               // 待機中の背景
+        CUI *pUI_Bg_Select;             // 選択中の背景
+        CUI *pUI_Bg_Select_Out_Frame;   // 外側の選択枠（色付き）
+        CUI *pUI_Bg_Select_In_Frame;    // 内側の選択枠
+        CUI *pUI_Bg_Reday;              // 準備完了の背景
+        int nNumSelectHead;             // 頭パーツ選択
+        int nNumSelectUp;               // 上半身パーツ選択
+        int nNumSelectDown;             // 下半身パーツ選択
+        int nNumSelectWep;              // 武器パーツ選択
+        CText *pText_Head;              // 頭パーツの名前表示
+        CText *pText_Up;                // 上半身パーツの名前表示
+        CText *pText_Down;              // 下半身パーツの名前表示
+        CText *pText_Wep;               // 武器パーツの名前表示
+        bool bUseCursor;                // カーソルを使っているかどうか
+        int nNumSelectUIOld;            // 1F前の選択肢
+        ENTRY_STATUS status;            // 状態
     }ENTRY_INFO;
 
     CCustom();
@@ -114,11 +129,22 @@ public:
     void Uninit(void);
     void Update(void);
 
+    /*========================================================
+    // カーソル周り
+    //======================================================*/
     void MoveCursor(void);                                                     // カーソル移動
     void CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos);                  // 選択肢との当たり判定
     void ClickSelect(int nNumWho, CUI* pSelectUI);                             // 選択肢のクリック
-    void SelectParts(int nNumWho, int nNumWhere, bool bRight);                 // カスタマイズするパーツを選択
 
+    /*========================================================
+    // エントリー周り
+    //======================================================*/
+    void ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus);         // エントリー状態のチェンジ
+
+    /*========================================================
+    // 選択肢周り
+    //======================================================*/
+    void SelectParts(int nNumWho, int nNumWhere, bool bRight);                 // カスタマイズするパーツを選択
     void SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts);    // 誰のどこを何のパーツにして保存するか
 
 private:

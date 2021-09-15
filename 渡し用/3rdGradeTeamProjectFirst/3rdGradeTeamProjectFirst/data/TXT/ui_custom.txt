@@ -257,6 +257,28 @@ END_UISET
 UISET
 	TYPE = 47
 	POS = 167.0 555.5
+	SIZE = 512.0 512.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100	# 0～255
+	ACTION0 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 61
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 0
+END_UISET
+
+#---------------------------------------
+# [] 1pカスタム内枠
+#---------------------------------------
+UISET
+	TYPE = 60
+	POS = 167.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0

@@ -146,9 +146,6 @@ HRESULT CCustom::Init(void)
     // カメラのロックオン場所を変える
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
 
-    // 1Pのカーソルは必ず使う
-    m_aEntryInfo[PLAYER_1].bUseCursor = true;
-
     //// BGMを再生
     //CSound *pSound = CManager::GetSound();
     //pSound->Play(CSound::LABEL_BGM_RESULT);
@@ -240,252 +237,6 @@ void CCustom::Update(void)
 {
     // カーソル移動
     MoveCursor();
-
-    //// フェードしていないなら、選択可能
-    //if (CFade::GetFade() == CFade::FADE_NONE)
-    //{
-    //    // 右または左が押されたら
-    //    if (pInputKeyboard->GetKeyboardTrigger(DIK_D) || pInputKeyboard->GetKeyboardTrigger(DIK_A) ||
-    //        bTiltedStickP1 && STICK_RIGHT(fStickAngleP1)
-    //        || bTiltedStickP1 && STICK_LEFT(fStickAngleP1))
-    //    {
-    //        bool bRight = false;
-    //        if (pInputKeyboard->GetKeyboardTrigger(DIK_D) || bTiltedStickP1 && STICK_RIGHT(fStickAngleP1) && m_nSelectCoolTime <= 0)
-    //        {
-    //            bRight = true;
-    //        }
-
-    //        // パーツを切り替え
-    //        switch (m_select)
-    //        {
-    //        case SELECT_1P_HEAD:
-    //            if (bRight)
-    //            {
-    //                m_nNumSelectHead++;
-
-    //                // 右端
-    //                if (m_anPartsHead[m_nNumSelectHead] == NOT_EXIST)
-    //                {
-    //                    m_nNumSelectHead = 0;
-    //                }
-    //            }
-    //            else
-    //            {
-    //                m_nNumSelectHead--;
-
-    //                // 左端（存在する一番右のパーツに切り替える）
-    //                if (m_nNumSelectHead < 0)
-    //                {
-    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-    //                    {
-    //                        if (m_anPartsHead[nCnt] == NOT_EXIST)
-    //                        {
-    //                            m_nNumSelectHead = nCnt - 1;
-
-    //                            if (m_nNumSelectHead < 0)
-    //                            {
-    //                                m_nNumSelectHead = 0;
-    //                            }
-
-    //                            break;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_HEAD, m_anPartsHead[m_nNumSelectHead]);
-    //            m_pText_Head->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsHead[m_nNumSelectHead]))->cName);
-    //            break;
-
-    //        case SELECT_1P_UP:
-    //            if (bRight)
-    //            {
-    //                m_nNumSelectUp++;
-
-    //                // 右端
-    //                if (m_anPartsUp[m_nNumSelectUp] == NOT_EXIST)
-    //                {
-    //                    m_nNumSelectUp = 0;
-    //                }
-    //            }
-    //            else
-    //            {
-    //                m_nNumSelectUp--;
-
-    //                // 左端（存在する一番右のパーツに切り替える）
-    //                if (m_nNumSelectUp < 0)
-    //                {
-    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-    //                    {
-    //                        if (m_anPartsUp[nCnt] == NOT_EXIST)
-    //                        {
-    //                            m_nNumSelectUp = nCnt - 1;
-
-    //                            if (m_nNumSelectUp < 0)
-    //                            {
-    //                                m_nNumSelectUp = 0;
-    //                            }
-
-    //                            break;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_UP, m_anPartsUp[m_nNumSelectUp]);
-    //            m_pText_Up->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsUp[m_nNumSelectUp]))->cName);
-    //            break;
-
-    //        case SELECT_1P_DOWN:
-    //            if (bRight)
-    //            {
-    //                m_nNumSelectDown++;
-
-    //                // 右端
-    //                if (m_anPartsDown[m_nNumSelectDown] == NOT_EXIST)
-    //                {
-    //                    m_nNumSelectDown = 0;
-    //                }
-    //            }
-    //            else
-    //            {
-    //                m_nNumSelectDown--;
-
-    //                // 左端（存在する一番右のパーツに切り替える）
-    //                if (m_nNumSelectDown < 0)
-    //                {
-    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-    //                    {
-    //                        if (m_anPartsDown[nCnt] == NOT_EXIST)
-    //                        {
-    //                            m_nNumSelectDown = nCnt - 1;
-
-    //                            if (m_nNumSelectDown < 0)
-    //                            {
-    //                                m_nNumSelectDown = 0;
-    //                            }
-
-    //                            break;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_DOWN, m_anPartsDown[m_nNumSelectDown]);
-    //            m_pText_Down->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsDown[m_nNumSelectDown]))->cName);
-    //            break;
-
-    //        case SELECT_1P_WEP:
-    //            if (bRight)
-    //            {
-    //                m_nNumSelectWep++;
-
-    //                // 右端
-    //                if (m_anPartsWep[m_nNumSelectWep] == NOT_EXIST)
-    //                {
-    //                    m_nNumSelectWep = 0;
-    //                }
-    //            }
-    //            else
-    //            {
-    //                m_nNumSelectWep--;
-
-    //                // 左端（存在する一番右のパーツに切り替える）
-    //                if (m_nNumSelectWep < 0)
-    //                {
-    //                    for (int nCnt = 0; nCnt < MAX_EACH_PARTS; nCnt++)
-    //                    {
-    //                        if (m_anPartsWep[nCnt] == NOT_EXIST)
-    //                        {
-    //                            m_nNumSelectWep = nCnt - 1;
-
-    //                            if (m_nNumSelectWep < 0)
-    //                            {
-    //                                m_nNumSelectWep = 0;
-    //                            }
-
-    //                            break;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            SaveCustom(PLAYER_1, CPlayer::CUSTOM_PARTS_WEP, m_anPartsWep[m_nNumSelectWep]);
-    //            m_pText_Wep->SetText(CManager::GetModelData()->CModelData::GetPartsList((m_anPartsWep[m_nNumSelectWep]))->cName);
-    //            break;
-    //        }
-
-    //        // 選択のクールタイムを設定
-    //        m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
-
-    //        // プレイヤーをリロード
-    //        m_apPlayer[0]->LoadCustom();
-    //    }
-    //    else
-    //    {
-    //        // 上移動
-    //        if (pInputKeyboard->GetKeyboardTrigger(DIK_W) || bTiltedStickP1 && STICK_UP(fStickAngleP1) && m_nSelectCoolTime <= 0)
-    //        {
-    //            // 上の選択肢に
-    //            m_select--;
-
-    //            // 一番上の選択肢なら、一番下へ
-    //            if (m_select < SELECT_1P_HEAD)
-    //            {
-    //                m_select = SELECT_MAX - 1;
-    //            }
-
-    //            // 選択のクールタイムを設定
-    //            m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
-    //        }
-
-    //        // 下移動
-    //        if (pInputKeyboard->GetKeyboardTrigger(DIK_S) || bTiltedStickP1 && m_nSelectCoolTime <= 0)
-    //        {
-    //            // STICK_DOWNの定義が、または と組み合わせが悪いため
-    //            bool bDown = true;
-    //            if (bTiltedStickP1)
-    //            {
-    //                if (STICK_DOWN(fStickAngleP1))
-    //                {
-    //                    bDown = true;
-    //                }
-    //                else
-    //                {
-    //                    bDown = false;
-    //                }
-    //            }
-
-    //            // ダウンするフラグがtrueなら
-    //            if (bDown)
-    //            {
-    //                // 下の選択肢に
-    //                m_select++;
-
-    //                // 一番下の選択肢なら、一番上へ
-    //                if (m_select >= SELECT_MAX)
-    //                {
-    //                    m_select = SELECT_1P_HEAD;
-    //                }
-
-    //                // 選択のクールタイムを設定
-    //                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
-    //            }
-    //        }
-    //    }
-    //}
-
-    //// 決定キーでタイトルへ
-    //if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START))
-    //{
-    //    // タイトルモードに移行
-    //    CFade::SetFade(CManager::MODE_TITLE);
-    //}
-
-    //// カーソルの位置を変える
-    //D3DXVECTOR3 pos = D3DXVECTOR3(167.0f, 443.0f, 0.0f);
-    //float fDigitPosY = 63.0f * m_select;
-    //pos.y += fDigitPosY;
-    //if (m_pUI_Cursor)
-    //{
-    //    m_pUI_Cursor->SetPosition(pos);
-    //}
 }
 
 //=============================================================================
@@ -496,58 +247,69 @@ void CCustom::MoveCursor(void)
 {
     for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
     {
+        ////キーボードの確保したメモリを取得
+        //CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+
+        // コントローラを取得
+        CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
+        DIJOYSTATE2 Controller = pInputJoypad->GetController(nCntPlayer);
+        float fStickAngle = 0.0f;
+        bool bTiltedStick = false;
+        float fTiltedStickValue = 0.0f;
+
+        // 左スティックが傾いているかどうか
+        if (Controller.lY != 0 || Controller.lX != 0)
+        {
+            bTiltedStick = true;
+
+            // 角度を求める
+            fStickAngle = atan2(Controller.lX, Controller.lY*-1);
+
+            // 大きさを求める
+            fTiltedStickValue = sqrtf(
+                powf(float(Controller.lX), 2) +
+                powf((float(Controller.lY)*-1), 2));
+
+            // 最大傾きより大きいなら、制限（正方形の対角線は、各辺よりも長いため）
+            if (fTiltedStickValue > STICK_MAX_TILT)
+            {
+                fTiltedStickValue = STICK_MAX_TILT;
+            }
+        }
+
         // カーソルを使うなら
         if (m_aEntryInfo[nCntPlayer].bUseCursor)
         {
             // カーソルがあるなら
             if (m_aEntryInfo[nCntPlayer].pUI_Cursor)
             {
-                ////キーボードの確保したメモリを取得
-                //CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
-
-                // コントローラを取得
-                CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
-                DIJOYSTATE2 Controller = pInputJoypad->GetController(nCntPlayer);
-                float fStickAngle = 0.0f;
-                bool bTiltedStick = false;
-                float fTiltedStickValue = 0.0f;
-
-                // 左スティックが傾いているかどうか
-                if (Controller.lY != 0 || Controller.lX != 0)
-                {
-                    bTiltedStick = true;
-
-                    // 角度を求める
-                    fStickAngle = atan2(Controller.lX, Controller.lY*-1);
-
-                    // 大きさを求める
-                    fTiltedStickValue = sqrtf(
-                        powf(float(Controller.lX), 2) +
-                        powf((float(Controller.lY)*-1), 2));
-
-                    // 最大傾きより大きいなら、制限（正方形の対角線は、各辺よりも長いため）
-                    if (fTiltedStickValue > STICK_MAX_TILT)
-                    {
-                        fTiltedStickValue = STICK_MAX_TILT;
-                    }
-                }
-
                 // 位置を取得
-                D3DXVECTOR3 pos = m_aEntryInfo[nCntPlayer].pUI_Cursor->GetPosition();
+                D3DXVECTOR3 cursorPos = m_aEntryInfo[nCntPlayer].pUI_Cursor->GetPosition();
 
                 // 移動
                 if (bTiltedStick)
                 {
                     const float ADJUST_RATE = 0.0008f;   // スティックの傾きの値を、位置に足せるよう調整
-                    pos.x += sinf(fStickAngle)* fTiltedStickValue * ADJUST_RATE;
-                    pos.y += -cosf(fStickAngle)* fTiltedStickValue * ADJUST_RATE;
+                    cursorPos.x += sinf(fStickAngle)* fTiltedStickValue * ADJUST_RATE;
+                    cursorPos.y += -cosf(fStickAngle)* fTiltedStickValue * ADJUST_RATE;
                 }
 
                 // 位置を設定
-                m_aEntryInfo[nCntPlayer].pUI_Cursor->SetPosition(pos);
+                m_aEntryInfo[nCntPlayer].pUI_Cursor->SetPosition(cursorPos);
 
                 // 選択肢との当たり判定（カーソルの当たり判定の位置は左上に微調整）
-                CollisionSelect(nCntPlayer, pos + CURSOR_ADJUST_COLLISON_POS);
+                CollisionSelect(nCntPlayer, cursorPos + CURSOR_ADJUST_COLLISON_POS);
+            }
+        }
+        else
+        {
+            // カーソルを使っていないなら、スティックが傾き次第エントリー
+            if (bTiltedStick)
+            {
+                m_aEntryInfo[nCntPlayer].bUseCursor = true;
+
+                // エントリー状態のチェンジ
+                ChangeEntryStatus(nCntPlayer, ENTRY_STATUS_PLAYER);
             }
         }
     }
@@ -609,6 +371,7 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
 //=============================================================================
 void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
 {
+    // 選んだUIが存在しないなら関数を抜ける
     if (!pSelectUI)
     {
         return;
@@ -641,6 +404,21 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
                 break;
             }
         }
+    }
+}
+
+//=============================================================================
+// エントリー状態のチェンジ
+// Author : 後藤慎之助
+//=============================================================================
+void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
+{
+    // まずは現在のエントリー状態によって場合分け
+    switch (m_aEntryInfo[nNumWho].status)
+    {
+    case ENTRY_STATUS_WAITING:
+
+        break;
     }
 }
 

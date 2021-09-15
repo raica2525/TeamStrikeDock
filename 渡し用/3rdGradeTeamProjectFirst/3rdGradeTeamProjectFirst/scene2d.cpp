@@ -17,7 +17,6 @@
 // 静的メンバ変数宣言
 //========================================
 bool CScene2D::m_bAdditiveSynthesis = false;
-bool CScene2D::m_bAlphaTest = false;
 bool CScene2D::m_bNega = false;
 
 //===========================================
@@ -184,8 +183,8 @@ void CScene2D::Draw(void)
     // 頂点フォーマットの設定
     pDevice->SetFVF(FVF_VERTEX_2D);
 
-    // アルファテスト
-    if (m_bAlphaTest)
+    // アルファテスト（やや強引）
+    if (m_nAlphaTestBorder != DEFAULT_ALPHATEST_BORDER_2D)
     {
         //アルファテストを有効化
         pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -288,13 +287,10 @@ void CScene2D::Draw(void)
     }
 
     // アルファテストを戻す
-    if (m_bAlphaTest)
+    if (m_nAlphaTestBorder != DEFAULT_ALPHATEST_BORDER_2D)
     {
         //アルファテストを無効化
         pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-        // アルファテストのフラグをfalseに戻す
-        m_bAlphaTest = false;
     }
 
     // テクスチャの設定の解除　//池田変更
