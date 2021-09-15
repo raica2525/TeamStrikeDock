@@ -13,6 +13,7 @@
 #include "main.h"
 #include "character.h"
 #include "model.h"
+#include "cliping_musk.h"
 
 //================================================
 // マクロ定義
@@ -377,6 +378,9 @@ public:
     void DamageMotion(void);                                                            // 負傷モーションの管理
     void GainSpGauge(bool bExAdd = false);                                              // 必殺ゲージ上昇
 
+	void ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size, int nNumTexture);					// クリッピングマスク適用 //池田追加
+	void ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size);									// テクスチャなしクリッピングマスク適用 //池田追加
+
     /*========================================================
     // カスタマイズの文字列周り
     //======================================================*/
@@ -494,6 +498,8 @@ private:
                                              
     D3DXVECTOR3 m_collisionSizeAttack;       // 攻撃衝突サイズ
     D3DXVECTOR3 m_collisionSizeDeffence;     // 防御衝突サイズ
+
+	CClipingMusk* m_pClipingMusk;			 // クリッピングマスク
                                              
     //===================================    
     // 特殊能力対応周り                      

@@ -184,7 +184,6 @@ HRESULT CGame::Init(void)
         m_apPlayer[3] = CPlayer::CreateInGame(player4Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_004, m_aAILevel[PLAYER_4]);
         break;
     }
-
     // カメラのロックオン場所を変える
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_GAME);
 

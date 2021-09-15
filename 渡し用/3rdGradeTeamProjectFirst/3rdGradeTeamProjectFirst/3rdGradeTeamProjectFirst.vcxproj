@@ -153,6 +153,7 @@
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="cliping_musk.cpp" />
     <ClCompile Include="custom.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="effect2d.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="billboard.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="cliping_musk.h" />
     <ClInclude Include="custom.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="effect2d.h" />
