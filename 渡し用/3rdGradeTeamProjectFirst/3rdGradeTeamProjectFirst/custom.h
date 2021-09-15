@@ -103,6 +103,7 @@ public:
     // エントリー情報
     typedef struct
     {
+        CPlayer *pPlayer;               // プレイヤー
         CUI *pUI_Cursor;                // カーソル
         CUI *pUI_Bg_Wait;               // 待機中の背景
         CUI *pUI_Bg_Select;             // 選択中の背景
@@ -148,7 +149,6 @@ public:
     void SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts);    // 誰のどこを何のパーツにして保存するか
 
 private:
-    CPlayer *m_apPlayer[MAX_PLAYER];          // プレイヤーのポインタ
     int m_anMemoryPartsHead[MAX_EACH_PARTS];  // 保持した頭パーツ
     int m_anMemoryPartsUp[MAX_EACH_PARTS];    // 保持した上半身パーツ
     int m_anMemoryPartsDown[MAX_EACH_PARTS];  // 保持した下半身パーツ

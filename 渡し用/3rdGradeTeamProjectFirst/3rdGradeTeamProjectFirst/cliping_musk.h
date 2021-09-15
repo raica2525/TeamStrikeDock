@@ -51,7 +51,7 @@ public:
 	//========================================================
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetSize(void) { return m_size; }
-	DWORD GetReferenceValue(void) { return dwReferenceValue; }
+	DWORD GetReferenceValue(void) { return m_dwReferenceValue; }
 private:
 	LPDIRECT3DTEXTURE9		m_pTexture;	// テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		                // 頂点バッファへのポインタ
@@ -59,7 +59,7 @@ private:
 	D3DXVECTOR3             m_size;                         // 大きさ
 
 	static bool m_abUsingReferenceValue[MAX_REFERENCE_VALUE];	// 参照値を使用しているかどうか
-	DWORD dwReferenceValue;										// 参照値保存用変数
+	DWORD m_dwReferenceValue;									// 参照値保存用変数
 	int m_nAlphaTestBorder;										// アルファテストの境界値
 };
 

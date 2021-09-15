@@ -36,7 +36,7 @@ CClipingMusk::CClipingMusk()
 	{
 		if (m_abUsingReferenceValue[nCount] == false)
 		{
-			dwReferenceValue = nCount;
+			m_dwReferenceValue = nCount;
 			m_abUsingReferenceValue[nCount] = true;
 			break;
 		}
@@ -112,7 +112,7 @@ void CClipingMusk::Uninit(void)
 		m_pVtxBuff = NULL;
 	}
 
-	m_abUsingReferenceValue[dwReferenceValue] = false;
+	m_abUsingReferenceValue[m_dwReferenceValue] = false;
 }
 
 //============================================================
@@ -152,7 +152,7 @@ void CClipingMusk::Draw(void)
 
 	//ƒXƒeƒ“ƒVƒ‹‚ÌÝ’è
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_STENCILREF, dwReferenceValue + 1);
+	pDevice->SetRenderState(D3DRS_STENCILREF, m_dwReferenceValue + 1);
 	pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
 	pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
 

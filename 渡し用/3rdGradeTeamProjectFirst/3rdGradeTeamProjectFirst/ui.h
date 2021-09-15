@@ -20,7 +20,7 @@
 #define MAX_ACTION 4        // アクションの最大数
 #define MAX_ACTION_PARAM 8  // アクションの補助値の最大数
 
-#define MAX_ACCESS_NUM 64   // アクセスできるUIの最大数
+#define MAX_ACCESS_NUM 128  // アクセスできるUIの最大数
 
 //================================================
 // クラス宣言

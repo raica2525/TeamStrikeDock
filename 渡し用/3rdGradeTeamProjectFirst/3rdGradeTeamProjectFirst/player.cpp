@@ -1,7 +1,7 @@
 //======================================================================================
 //
 // プレイヤー処理 (player.cpp)
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希（リザルトやカスタマイズのクリッピング対応）
 //
 //======================================================================================
 
@@ -387,6 +387,7 @@ void CPlayer::Uninit(void)
         m_pAI = NULL;
     }
 
+    // クリッピングの情報を開放
 	if (m_pClipingMusk != NULL)
 	{
 		m_pClipingMusk->Uninit();
@@ -394,7 +395,6 @@ void CPlayer::Uninit(void)
 		m_pClipingMusk = NULL;
 	}
 	
-
     CCharacter::Uninit();
 }
 
@@ -691,54 +691,70 @@ void CPlayer::Update(void)
 //=============================================================================
 void CPlayer::UpdateMannequin(void)
 {
-    // 入力処理
-    Input();
-
-    // 右スティックが倒れているなら向きを変える
-    D3DXVECTOR3 rot = GetRot();
-    const float ROT_SPEED = 3.0f;
-    if (m_controlInput.bTiltedRightStick)
-    {
-        // 右回転
-        if (STICK_RIGHT(m_controlInput.fRightStickAngle))
-        {
-            rot.y -= D3DXToRadian(ROT_SPEED);
-        }
-        else if (STICK_LEFT(m_controlInput.fRightStickAngle))
-        {
-           // 左回転
-            rot.y += D3DXToRadian(ROT_SPEED);
-        }
-    }
-
-    // 回転の制限
-    if (rot.y > D3DXToRadian(180.0f) || rot.y < D3DXToRadian(-180.0f))
-    {
-        rot.y *= -1;
-    }
-
-    // 回転の設定
-    SetRot(rot);
-
     // モーションをまずは待機にする
     GetAnimation()->SetAnimation(ANIM_IDLE);
 
+    // 表示中なら
+    if (m_bDisp)
+    {
+        // 入力処理
+        Input();
+
+        // 右スティックが倒れているなら向きを変える
+        D3DXVECTOR3 rot = GetRot();
+        const float ROT_SPEED = 3.0f;
+        if (m_controlInput.bTiltedRightStick)
+        {
+            // 右回転
+            if (STICK_RIGHT(m_controlInput.fRightStickAngle))
+            {
+                rot.y -= D3DXToRadian(ROT_SPEED);
+            }
+            else if (STICK_LEFT(m_controlInput.fRightStickAngle))
+            {
+                // 左回転
+                rot.y += D3DXToRadian(ROT_SPEED);
+            }
+        }
+
+        // 回転の制限
+        if (rot.y > D3DXToRadian(180.0f) || rot.y < D3DXToRadian(-180.0f))
+        {
+            rot.y *= -1;
+        }
+
+        // 回転の設定
+        SetRot(rot);
+
+        // カスタマイズ画面のUIの更新
+        m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, m_fAtk);
+        m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, m_fDef);
+        m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, m_fSpd);
+        m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, m_fWei);
+
+        // カスタマイズ画面のテキストを更新
+        char cExName[256];
+        CustomExName(cExName);
+        m_pText_Custom_Ex->SetText(cExName);
+        m_pText_Custom_Ex->SetColor(TEXT_EXIST_COLOR);
+        char cSpName[256];
+        CustomSpName(cSpName);
+        m_pText_Custom_Sp->SetText(cSpName);
+        m_pText_Custom_Sp->SetColor(TEXT_EXIST_COLOR);
+    }
+    else
+    {
+        // 非表示なら、各表示物も消す
+        m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, 0);
+        m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, 0);
+        m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, 0);
+        m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, 0);
+        m_pText_Custom_Ex->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_pText_Custom_Sp->SetColor(TEXT_NOT_EXIST_COLOR);
+    }
+
     // アニメーションさせる
     CCharacter::Update();
-
-    // カスタマイズ画面のUIの更新
-    m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, m_fAtk);
-    m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, m_fDef);
-    m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, m_fSpd);
-    m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, m_fWei);
-
-    // カスタマイズ画面のテキストを更新
-    char cExName[256];
-    CustomExName(cExName);
-    m_pText_Custom_Ex->SetText(cExName);
-    char cSpName[256];
-    CustomSpName(cSpName);
-    m_pText_Custom_Sp->SetText(cSpName);
 }
 
 //=============================================================================
@@ -1053,58 +1069,46 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable
 
     // UIを生成
     D3DXVECTOR3 startPos = DEFAULT_VECTOR;
+    D3DXVECTOR3 clipingPos = DEFAULT_VECTOR;
     switch (pPlayer->m_playable)
     {
     case PLAYER_1:
         startPos = D3DXVECTOR3(150.0f, 290.0f, 0.0f);
+        clipingPos = D3DXVECTOR3(167.0f, 390.0f, 0.0f);
         break;
     case PLAYER_2:
         startPos = D3DXVECTOR3(465.0f, 290.0f, 0.0f);
+        clipingPos = D3DXVECTOR3(482.0f, 390.0f, 0.0f);
         break;
     case PLAYER_3:
         startPos = D3DXVECTOR3(780.0f, 290.0f, 0.0f);
+        clipingPos = D3DXVECTOR3(797.0f, 390.0f, 0.0f);
         break;
     case PLAYER_4:
         startPos = D3DXVECTOR3(1095.0f, 290.0f, 0.0f);
+        clipingPos = D3DXVECTOR3(1112.0f, 390.0f, 0.0f);
         break;
     }
     float fDigitPosY = 0.0f;
     const float fDigitValue = 30.0f;
-    D3DXCOLOR gaugeColor = CUSTOM_ATK_COLOR;
-    if (!bDisp)
-    {
-        gaugeColor.a = 0.0f;
-    }
-    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
+    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_ATK_COLOR);
     pPlayer->m_pUI_Custom_Atk->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
-    gaugeColor = CUSTOM_DEF_COLOR;
-    if (!bDisp)
-    {
-        gaugeColor.a = 0.0f;
-    }
-    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
+    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_DEF_COLOR);
     pPlayer->m_pUI_Custom_Def->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
-    gaugeColor = CUSTOM_SPD_COLOR;
-    if (!bDisp)
-    {
-        gaugeColor.a = 0.0f;
-    }
-    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
+    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_SPD_COLOR);
     pPlayer->m_pUI_Custom_Spd->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
 
-    gaugeColor = CUSTOM_WEI_COLOR;
-    if (!bDisp)
-    {
-        gaugeColor.a = 0.0f;
-    }
-    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, gaugeColor);
+    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_WEI_COLOR);
     pPlayer->m_pUI_Custom_Wei->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += fDigitValue;
+
+    // クリッピングを生成
+    pPlayer->ApplyMusk(clipingPos, D3DXVECTOR3(298.0f, 650.0f, 0.0f));
 
     // テキストを生成
     D3DCOLOR textColor = TEXT_EXIST_COLOR;
@@ -2904,7 +2908,10 @@ bool CPlayer::GetUseControllerEffect(void)
 //=============================================================================
 void CPlayer::ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size, int nNumTexture)
 {
-	m_pClipingMusk = CClipingMusk::Create(pos, size, nNumTexture);
+    if (!m_pClipingMusk)
+    {
+        m_pClipingMusk = CClipingMusk::Create(pos, size, nNumTexture);
+    }
 }
 
 //=============================================================================
@@ -2913,5 +2920,8 @@ void CPlayer::ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size, int nNumTexture)
 //=============================================================================
 void CPlayer::ApplyMusk(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
-	m_pClipingMusk = CClipingMusk::Create(pos, size);
+    if (!m_pClipingMusk)
+    {
+        m_pClipingMusk = CClipingMusk::Create(pos, size);
+    }
 }

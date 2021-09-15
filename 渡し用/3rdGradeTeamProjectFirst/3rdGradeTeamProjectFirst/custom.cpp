@@ -35,7 +35,6 @@
 //=============================================================================
 CCustom::CCustom()
 {
-    memset(m_apPlayer, 0, sizeof(m_apPlayer));
     memset(m_anMemoryPartsHead, NOT_EXIST, sizeof(m_anMemoryPartsHead));
     memset(m_anMemoryPartsUp, NOT_EXIST, sizeof(m_anMemoryPartsUp));
     memset(m_anMemoryPartsDown, NOT_EXIST, sizeof(m_anMemoryPartsDown));
@@ -65,14 +64,14 @@ HRESULT CCustom::Init(void)
     CUI::Place(CUI::SET_CUSTOM);
 
     // プレイヤー(マネキン)の生成
-    m_apPlayer[PLAYER_1] = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001, true);
-    m_apPlayer[PLAYER_2] = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_002, false);
-    m_apPlayer[PLAYER_3] = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_003, false);
-    m_apPlayer[PLAYER_4] = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_004, false);
+    m_aEntryInfo[PLAYER_1].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001, false);
+    m_aEntryInfo[PLAYER_2].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_002, false);
+    m_aEntryInfo[PLAYER_3].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_003, false);
+    m_aEntryInfo[PLAYER_4].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_004, false);
 
     // カーソル生成
     const D3DXVECTOR3 cursorFirstPos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
-    m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR);
+    m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
     m_aEntryInfo[PLAYER_2].pUI_Cursor = CUI::Create(54, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
     m_aEntryInfo[PLAYER_3].pUI_Cursor = CUI::Create(55, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
     m_aEntryInfo[PLAYER_4].pUI_Cursor = CUI::Create(56, cursorFirstPos, D3DXVECTOR3(59.0f, 59.0f, 0.0f), 0, DEFAULT_COLOR_NONE_ALPHA);
@@ -81,7 +80,7 @@ HRESULT CCustom::Init(void)
     float fTextPosX = 167.0f;
     for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
     {
-        int nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_HEAD);
+        int nPartNum = m_aEntryInfo[nCnt].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_HEAD);
         for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
             if (m_anMemoryPartsHead[nCntEachParts] == nPartNum)
@@ -90,7 +89,7 @@ HRESULT CCustom::Init(void)
             }
         }
 
-        nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_UP);
+        nPartNum = m_aEntryInfo[nCnt].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_UP);
         for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
             if (m_anMemoryPartsUp[nCntEachParts] == nPartNum)
@@ -99,7 +98,7 @@ HRESULT CCustom::Init(void)
             }
         }
 
-        nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_DOWN);
+        nPartNum = m_aEntryInfo[nCnt].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_DOWN);
         for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
             if (m_anMemoryPartsDown[nCntEachParts] == nPartNum)
@@ -108,7 +107,7 @@ HRESULT CCustom::Init(void)
             }
         }
 
-        nPartNum = m_apPlayer[nCnt]->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_WEP);
+        nPartNum = m_aEntryInfo[nCnt].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_WEP);
         for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
         {
             if (m_anMemoryPartsWep[nCntEachParts] == nPartNum)
@@ -118,11 +117,7 @@ HRESULT CCustom::Init(void)
         }
 
         // テキストを設定
-        D3DCOLOR color = TEXT_EXIST_COLOR;
-        if (nCnt != PLAYER_1)
-        {
-            color = TEXT_NOT_EXIST_COLOR;
-        }
+        D3DCOLOR color = TEXT_NOT_EXIST_COLOR;
         m_aEntryInfo[nCnt].pText_Head = CText::Create(D3DXVECTOR3(fTextPosX, 427.0f, 0.0f), 30,
             CManager::GetModelData()->CModelData::GetPartsList((m_anMemoryPartsHead[m_aEntryInfo[nCnt].nNumSelectHead]))->cName,
             CText::ALIGN_CENTER, "Reggae One", color);
@@ -141,6 +136,13 @@ HRESULT CCustom::Init(void)
 
         // 1F前の選択肢情報を初期化
         m_aEntryInfo[nCnt].nNumSelectUIOld = NOT_EXIST;
+
+        // 各UIのアクセス権を結びつける
+        m_aEntryInfo[nCnt].pUI_Bg_Select = CUI::GetAccessUI(100 + (nCnt * 3));              // エントリー済み100
+        m_aEntryInfo[nCnt].pUI_Bg_Reday = CUI::GetAccessUI(101 + (nCnt * 3));               // 準備完了101
+        m_aEntryInfo[nCnt].pUI_Bg_Wait = CUI::GetAccessUI(102 + (nCnt * 3));                // 未エントリー102
+        m_aEntryInfo[nCnt].pUI_Bg_Select_Out_Frame = CUI::GetAccessUI(112 + (nCnt * 3));    // カスタム外枠112
+        m_aEntryInfo[nCnt].pUI_Bg_Select_In_Frame = CUI::GetAccessUI(113 + (nCnt * 3));     // カスタム外枠113
     }
 
     // カメラのロックオン場所を変える
@@ -413,13 +415,71 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
 //=============================================================================
 void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
 {
-    // まずは現在のエントリー状態によって場合分け
-    switch (m_aEntryInfo[nNumWho].status)
+    // 次のエントリー状態に合わせて、表示物を変える
+    switch (nextEntryStatus)
     {
     case ENTRY_STATUS_WAITING:
+        // 非表示
+        m_aEntryInfo[nNumWho].pPlayer->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pUI_Cursor->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pText_Head->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_aEntryInfo[nNumWho].pText_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
+        for (int nCntSelect = 0; nCntSelect < SELECT_MAX; nCntSelect++)
+        {
+            CUI *pSelectUI = CUI::GetAccessUI(nCntSelect);
+            if (pSelectUI)
+            {
+                int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
+                if (nParamWho == nNumWho)
+                {
+                    pSelectUI->SetAlpha(0.0f);
+                }
+            }
+        }
+        // 表示
+        m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetAlpha(1.0f);
+        break;
 
+    case ENTRY_STATUS_PLAYER:
+    case ENTRY_STATUS_CP_LEVEL_1:
+        // もし、待機中からの遷移なら
+        if (m_aEntryInfo[nNumWho].status == ENTRY_STATUS_WAITING)
+        {
+            // 非表示
+            m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetAlpha(0.0f);
+            // 表示
+            m_aEntryInfo[nNumWho].pPlayer->SetDisp(true);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select->SetAlpha(1.0f);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetAlpha(1.0f);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetAlpha(1.0f);
+            m_aEntryInfo[nNumWho].pUI_Cursor->SetAlpha(1.0f);
+            m_aEntryInfo[nNumWho].pText_Head->SetColor(TEXT_EXIST_COLOR);
+            m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_EXIST_COLOR);
+            m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_EXIST_COLOR);
+            m_aEntryInfo[nNumWho].pText_Wep->SetColor(TEXT_EXIST_COLOR);
+            for (int nCntSelect = 0; nCntSelect < SELECT_MAX; nCntSelect++)
+            {
+                CUI *pSelectUI = CUI::GetAccessUI(nCntSelect);
+                if (pSelectUI)
+                {
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
+                    if (nParamWho == nNumWho)
+                    {
+                        pSelectUI->SetAlpha(1.0f);
+                    }
+                }
+            }
+        }
         break;
     }
+
+    // 現在の状態を、次のエントリー状態に更新
+    m_aEntryInfo[nNumWho].status = nextEntryStatus;
 }
 
 //=============================================================================
@@ -549,7 +609,7 @@ void CCustom::SelectParts(int nNumWho, int nNumWhere, bool bRight)
     SaveCustom(nNumWho, nNumWhere, nNumSaveParts);
 
     // プレイヤーをリロード
-    m_apPlayer[nNumWho]->LoadCustom();
+    m_aEntryInfo[nNumWho].pPlayer->LoadCustom();
 }
 
 //=============================================================================
@@ -570,9 +630,9 @@ void CCustom::SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts)
         }
 
         // 今回セーブするパーツの箇所以外のものは、元の情報をそのまま書き込むため、取得
-        if (m_apPlayer[nNumSaveWho])
+        if (m_aEntryInfo[nNumSaveWho].pPlayer)
         {
-            anNumParts[nCntWhere] = m_apPlayer[nNumSaveWho]->GetCustomPartsNum(nCntWhere);
+            anNumParts[nCntWhere] = m_aEntryInfo[nNumSaveWho].pPlayer->GetCustomPartsNum(nCntWhere);
         }
     }
 

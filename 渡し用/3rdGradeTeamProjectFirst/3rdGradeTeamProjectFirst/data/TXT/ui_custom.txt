@@ -35,11 +35,12 @@ END_UISET
 # [] 1pエントリー済み
 #---------------------------------------
 UISET
+	ACCESS_NUM = 100
 	TYPE = 43
 	POS = 167.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -50,6 +51,7 @@ END_UISET
 # [] 1p完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 101
 	TYPE = 44
 	POS = 167.0 390.0
 	SIZE = 298.0 658.0
@@ -65,11 +67,12 @@ END_UISET
 # [] 1p未エントリー
 #---------------------------------------
 UISET
+	ACCESS_NUM = 102
 	TYPE = 45
 	POS = 167.0 390.0
-	SIZE = 298.0 658.0
+	SIZE = 298.0 0.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -90,6 +93,7 @@ END_UISET
 # [] 2pエントリー済み
 #---------------------------------------
 UISET
+	ACCESS_NUM = 103
 	TYPE = 43
 	POS = 482.0 390.0
 	SIZE = 298.0 658.0
@@ -105,6 +109,7 @@ END_UISET
 # [] 2p完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 104
 	TYPE = 44
 	POS = 482.0 390.0
 	SIZE = 298.0 658.0
@@ -120,6 +125,7 @@ END_UISET
 # [] 2p未エントリー
 #---------------------------------------
 UISET
+	ACCESS_NUM = 105
 	TYPE = 45
 	POS = 482.0 390.0
 	SIZE = 298.0 0.0
@@ -145,6 +151,7 @@ END_UISET
 # [] 3pエントリー済み
 #---------------------------------------
 UISET
+	ACCESS_NUM = 106
 	TYPE = 43
 	POS = 797.0 390.0
 	SIZE = 298.0 658.0
@@ -160,6 +167,7 @@ END_UISET
 # [] 3p完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 107
 	TYPE = 44
 	POS = 797.0 390.0
 	SIZE = 298.0 658.0
@@ -175,6 +183,7 @@ END_UISET
 # [] 3p未エントリー
 #---------------------------------------
 UISET
+	ACCESS_NUM = 108
 	TYPE = 45
 	POS = 797.0 390.0
 	SIZE = 298.0 0.0
@@ -200,6 +209,7 @@ END_UISET
 # [] 4pエントリー済み
 #---------------------------------------
 UISET
+	ACCESS_NUM = 109
 	TYPE = 43
 	POS = 1112.0 390.0
 	SIZE = 298.0 658.0
@@ -215,6 +225,7 @@ END_UISET
 # [] 4p完了
 #---------------------------------------
 UISET
+	ACCESS_NUM = 110
 	TYPE = 44
 	POS = 1112.0 390.0
 	SIZE = 298.0 658.0
@@ -230,6 +241,7 @@ END_UISET
 # [] 4p未エントリー
 #---------------------------------------
 UISET
+	ACCESS_NUM = 111
 	TYPE = 45
 	POS = 1112.0 390.0
 	SIZE = 298.0 0.0
@@ -255,11 +267,12 @@ END_UISET
 # [] 1pカスタム
 #---------------------------------------
 UISET
+	ACCESS_NUM = 112
 	TYPE = 47
 	POS = 167.0 555.5
 	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 100	# 0～255
@@ -277,11 +290,12 @@ END_UISET
 # [] 1pカスタム内枠
 #---------------------------------------
 UISET
+	ACCESS_NUM = 113
 	TYPE = 60
 	POS = 167.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -295,6 +309,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 442.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 247.0 442.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -319,6 +334,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 442.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 87.0 442.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -343,6 +359,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 505.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 247.0 505.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -367,6 +384,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 505.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 87.0 505.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -391,6 +409,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 568.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 247.0 568.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -415,6 +434,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 568.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 87.0 568.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -439,6 +459,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 631.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 247.0 631.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -463,6 +484,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 631.5
 	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 87.0 631.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -487,6 +509,7 @@ UISET
 	TYPE = 51
 	POS = 167.0 684.0
 	SIZE = 170.0 37.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	COLLISION_POS = 167.0 684.0
 	COLLISION_SIZE = 170.0 37.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -505,7 +528,31 @@ END_UISET
 # [] 2pカスタム
 #---------------------------------------
 UISET
+	ACCESS_NUM = 114
 	TYPE = 48
+	POS = 482.0 555.5
+	SIZE = 297.0 321.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100	# 0～255
+	ACTION0 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 61
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 0
+END_UISET
+
+#---------------------------------------
+# [] 2pカスタム内枠
+#---------------------------------------
+UISET
+	ACCESS_NUM = 115
+	TYPE = 60
 	POS = 482.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
@@ -742,7 +789,31 @@ END_UISET
 # [] 3pカスタム
 #---------------------------------------
 UISET
+	ACCESS_NUM = 116
 	TYPE = 49
+	POS = 797.0 555.5
+	SIZE = 297.0 321.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100	# 0～255
+	ACTION0 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 61
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 0
+END_UISET
+
+#---------------------------------------
+# [] 3pカスタム内枠
+#---------------------------------------
+UISET
+	ACCESS_NUM = 117
+	TYPE = 60
 	POS = 797.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
@@ -979,7 +1050,31 @@ END_UISET
 # [] 4pカスタム
 #---------------------------------------
 UISET
+	ACCESS_NUM = 118
 	TYPE = 50
+	POS = 1112.0 555.5
+	SIZE = 297.0 321.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100	# 0～255
+	ACTION0 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 61
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 0
+END_UISET
+
+#---------------------------------------
+# [] 4pカスタム内枠
+#---------------------------------------
+UISET
+	ACCESS_NUM = 119
+	TYPE = 60
 	POS = 1112.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
