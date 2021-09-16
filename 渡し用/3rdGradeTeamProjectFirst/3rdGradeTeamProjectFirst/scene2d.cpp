@@ -700,10 +700,10 @@ void CScene2D::SetTexturePlace(int nPlace, int nPattern, int nTex)
     fEqualDivision = Divide(1.0f, (float)nPattern);
 
     // テクスチャの座標を反映
-    pVtx[0].tex[nTex] = D3DXVECTOR2((fEqualDivision * (nPlace - 1)), 0.0f);
-    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivision + (fEqualDivision * (nPlace - 1)), 0.0f);
-    pVtx[2].tex[nTex] = D3DXVECTOR2((fEqualDivision * (nPlace - 1)), 1.0f);
-    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivision + (fEqualDivision * (nPlace - 1)), 1.0f);
+    pVtx[0].tex[nTex] = D3DXVECTOR2((fEqualDivision * nPlace), 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivision + (fEqualDivision * nPlace), 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2((fEqualDivision * nPlace), 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivision + (fEqualDivision * nPlace), 1.0f);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
@@ -730,10 +730,10 @@ void CScene2D::SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxPara
     fEqualDivisionY = Divide(1.0f, (float)nMaxParagraph);
 
     // テクスチャの座標を反映
-    pVtx[0].tex[nTex] = D3DXVECTOR2((fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * (nParagraph - 1));
-    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * (nParagraph - 1));
-    pVtx[2].tex[nTex] = D3DXVECTOR2((fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * nParagraph);
-    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * (nPlace - 1)), fEqualDivisionY * nParagraph);
+    pVtx[0].tex[nTex] = D3DXVECTOR2((fEqualDivisionX * nPlace), fEqualDivisionY * (nParagraph - 1));
+    pVtx[1].tex[nTex] = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * nPlace), fEqualDivisionY * (nParagraph - 1));
+    pVtx[2].tex[nTex] = D3DXVECTOR2((fEqualDivisionX * nPlace), fEqualDivisionY * nParagraph);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(fEqualDivisionX + (fEqualDivisionX * nPlace), fEqualDivisionY * nParagraph);
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();

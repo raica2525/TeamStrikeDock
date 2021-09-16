@@ -55,6 +55,7 @@ public:
         ACTION_ROT,         // 角度変更
         ACTION_TEX_BREND,   // テクスチャブレンド
         ACTION_LOOP_ANIM,   // ループアニメーション
+        ACTION_TEX_PLACE,   // テクスチャの描画場所指定
         ACTION_MAX
     }ACTION;
 
@@ -157,6 +158,13 @@ public:
         PARAM_LOOP_ANIM_DIRECT,              // 向き
     }PARAM_LOOP_ANIM;
 
+    // 補助値の内訳（テクスチャの描画場所指定編）
+    typedef enum
+    {
+        PARAM_TEX_PLACE_PATTERN = 0, // 何等分した
+        PARAM_TEX_PLACE_PLACE,       // 何番目か
+    }PARAM_TEX_PLACE;
+
     CUI();
     ~CUI();
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
@@ -190,6 +198,7 @@ public:
     void SetActionLock(int nNum, bool bLock);
     void SetActionReset(int nNum);
     void SetAllActionReset(void);
+    void SetFirstPos(void) { SetPosition(m_memoryPos); }    // アクション経由ではなく、最初の位置に戻すとき使う（例:カーソルのリセット）
 
     /*========================================================
     // アクション

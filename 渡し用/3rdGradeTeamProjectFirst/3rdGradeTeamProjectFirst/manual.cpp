@@ -88,7 +88,7 @@ void CManual::Update(void)
         case MANUAL_001:
 
             // テクスチャ座標を更新
-            m_pManualUI->SetTexturePlace(1, 4);
+            m_pManualUI->SetTexturePlace(0, 4);
 
             // 移動キーを押したら(右)
             if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputKeyboard->GetKeyboardTrigger(DIK_D) || pInputKeyboard->GetKeyboardTrigger(DIK_RIGHT) ||
@@ -108,7 +108,7 @@ void CManual::Update(void)
         case MANUAL_002:
 
             // テクスチャ座標を更新
-            m_pManualUI->SetTexturePlace(2, 4);
+            m_pManualUI->SetTexturePlace(1, 4);
 
             // 移動キーを押したら(左)
             if (pInputKeyboard->GetKeyboardTrigger(DIK_A) || pInputKeyboard->GetKeyboardTrigger(DIK_LEFT) ||
@@ -139,7 +139,7 @@ void CManual::Update(void)
         case MANUAL_003:
 
             // テクスチャ座標を更新
-            m_pManualUI->SetTexturePlace(3, 4);
+            m_pManualUI->SetTexturePlace(2, 4);
 
             // 移動キーを押したら(左)
             if (pInputKeyboard->GetKeyboardTrigger(DIK_A) || pInputKeyboard->GetKeyboardTrigger(DIK_LEFT) ||

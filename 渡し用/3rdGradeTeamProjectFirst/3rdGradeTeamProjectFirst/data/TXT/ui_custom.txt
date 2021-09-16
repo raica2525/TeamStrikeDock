@@ -518,6 +518,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 0
 	ACTION3 = 0		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 1
@@ -531,7 +535,7 @@ UISET
 	ACCESS_NUM = 114
 	TYPE = 48
 	POS = 482.0 555.5
-	SIZE = 297.0 321.0
+	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
@@ -779,6 +783,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 0
 	ACTION3 = 0		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 1
@@ -792,7 +800,7 @@ UISET
 	ACCESS_NUM = 116
 	TYPE = 49
 	POS = 797.0 555.5
-	SIZE = 297.0 321.0
+	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
@@ -1040,6 +1048,10 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 0
 	ACTION3 = 0		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 1
@@ -1053,7 +1065,7 @@ UISET
 	ACCESS_NUM = 118
 	TYPE = 50
 	POS = 1112.0 555.5
-	SIZE = 297.0 321.0
+	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
 	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
 	ADD_BLEND = 0		# bool
@@ -1301,9 +1313,141 @@ UISET
 	PARAM2 = 1
 	PARAM3 = 4
 	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 0
 	ACTION3 = 0		# 補助値はこの下に書いていく
 	LOCK = 0		# bool
 	PARAM0 = 1
+	PARAM1 = 3
+END_UISET
+
+#---------------------------------------
+# [] 1pチェンジボタン
+#---------------------------------------
+UISET
+	ACCESS_NUM = 36
+	TYPE = 62
+	POS = 101.5 90.0
+	SIZE = 150.0 50.0
+	COLLISION_POS = 101.5 90.0
+	COLLISION_SIZE = 150.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 0
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM1 = 6
+	PARAM2 = 20
+	PARAM3 = 1.0
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 0
+END_UISET
+
+#---------------------------------------
+# [] 2pチェンジボタン
+#---------------------------------------
+UISET
+	ACCESS_NUM = 37
+	TYPE = 63
+	POS = 416.5 90.0
+	SIZE = 150.0 50.0
+	COLLISION_POS = 416.5 90.0
+	COLLISION_SIZE = 150.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 0
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM1 = 6
+	PARAM2 = 20
+	PARAM3 = 1.0
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 1
+END_UISET
+
+#---------------------------------------
+# [] 3pチェンジボタン
+#---------------------------------------
+UISET
+	ACCESS_NUM = 38
+	TYPE = 64
+	POS = 731.5 90.0
+	SIZE = 150.0 50.0
+	COLLISION_POS = 731.5 90.0
+	COLLISION_SIZE = 150.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 0
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM1 = 6
+	PARAM2 = 20
+	PARAM3 = 1.0
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
+	PARAM1 = 2
+END_UISET
+
+#---------------------------------------
+# [] 4pチェンジボタン
+#---------------------------------------
+UISET
+	ACCESS_NUM = 39
+	TYPE = 65
+	POS = 1046.5 90.0
+	SIZE = 150.0 50.0
+	COLLISION_POS = 1046.5 90.0
+	COLLISION_SIZE = 150.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 0
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM1 = 6
+	PARAM2 = 20
+	PARAM3 = 1.0
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 2
 	PARAM1 = 3
 END_UISET
 

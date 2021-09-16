@@ -591,6 +591,11 @@ void CUI::SetActionInfo(int nNum, int action, bool bLock, float fParam0, float f
         m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE] = D3DXToRadian(m_aActionInfo[nNum].afParam[PARAM_ROT_CHANGE_RATE]);
         m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE] = D3DXToRadian(m_aActionInfo[nNum].afParam[PARAM_ROT_VALUE]);
     }
+    else if (m_aActionInfo[nNum].action == ACTION_TEX_PLACE)
+    {
+        // 描画するテクスチャの場所を指定
+        CScene2D::SetTexturePlace((int)m_aActionInfo[nNum].afParam[PARAM_TEX_PLACE_PLACE], (int)m_aActionInfo[nNum].afParam[PARAM_TEX_PLACE_PATTERN]);
+    }
 
     // 記憶用変数に結びつける
     m_aActionInfo[nNum].bMemoryLock = m_aActionInfo[nNum].bLock;
@@ -622,6 +627,14 @@ void CUI::SetActionReset(int nNum)
     // 範囲内なら
     if (nNum >= 0 && nNum < MAX_ACTION)
     {
+        // 構造体の内容をリセット
+        m_aActionInfo[nNum].nCntTime = 0;
+        m_aActionInfo[nNum].bLock = m_aActionInfo[nNum].bMemoryLock;
+        for (int nCntParam = 0; nCntParam < MAX_ACTION_PARAM; nCntParam++)
+        {
+            m_aActionInfo[nNum].afParam[nCntParam] = m_aActionInfo[nNum].afMemoryParam[nCntParam];
+        }
+
         // アクションによって、リセットするものを変える
         switch (m_aActionInfo[nNum].action)
         {
@@ -641,19 +654,16 @@ void CUI::SetActionReset(int nNum)
             m_fRotAngle = m_fMemoryRotAngle;
             break;
         case ACTION_TEX_BREND:
-            CScene2D::ResetCountAnim((int)m_aActionInfo[nNum].afParam[PARAM_TEX_BREND_IDX]);
+            CScene2D::ResetCountAnim((int)m_aActionInfo[nNum].afMemoryParam[PARAM_TEX_BREND_IDX]);
+            PlayActionTexBrend(nNum);   // テクスチャ座標更新
             break;
         case ACTION_LOOP_ANIM:
             CScene2D::ResetCountAnim();
+            PlayActionLoopAnim(nNum);   // テクスチャ座標更新
             break;
-        }
-
-        // 構造体の内容をリセット
-        m_aActionInfo[nNum].nCntTime = 0;
-        m_aActionInfo[nNum].bLock = m_aActionInfo[nNum].bMemoryLock;
-        for (int nCntParam = 0; nCntParam < MAX_ACTION_PARAM; nCntParam++)
-        {
-            m_aActionInfo[nNum].afParam[nCntParam] = m_aActionInfo[nNum].afMemoryParam[nCntParam];
+        case ACTION_TEX_PLACE:
+            CScene2D::SetTexturePlace((int)m_aActionInfo[nNum].afMemoryParam[PARAM_TEX_PLACE_PLACE], (int)m_aActionInfo[nNum].afMemoryParam[PARAM_TEX_PLACE_PATTERN]);
+            break;
         }
     }
 }

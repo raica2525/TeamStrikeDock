@@ -71,6 +71,14 @@ public:
         SELECT_4P_WEP_RIGHT,
         SELECT_4P_WEP_LEFT,
         SELECT_4P_REDAY,
+        SELECT_1P_CHANGE,
+        SELECT_2P_CHANGE,
+        SELECT_3P_CHANGE,
+        SELECT_4P_CHANGE,
+        //SELECT_1P_OSUSUME,
+        //SELECT_2P_OSUSUME,
+        //SELECT_3P_OSUSUME,
+        //SELECT_4P_OSUSUME,
         SELECT_MAX
     }SELECT;
 
@@ -88,6 +96,8 @@ public:
     {
         CLICK_TYPE_PARTS = 0,   // パーツ
         CLICK_TYPE_READY,       // 準備完了
+        CLICK_TYPE_CHANGE,      // チェンジ
+        CLICK_TYPE_OSUSUME,     // オススメ
     }CLICK_TYPE;
 
     // エントリー状態
@@ -120,6 +130,7 @@ public:
         CText *pText_Wep;               // 武器パーツの名前表示
         bool bUseCursor;                // カーソルを使っているかどうか
         int nNumSelectUIOld;            // 1F前の選択肢
+        bool bReady;                    // 準備完了かどうか
         ENTRY_STATUS status;            // 状態
     }ENTRY_INFO;
 
@@ -133,7 +144,9 @@ public:
     /*========================================================
     // カーソル周り
     //======================================================*/
+    void MoveCursorByKeyboard(float& fStickAngle, bool& bTiltedStick, float& fTiltedStickValue); // キーボード操作
     void MoveCursor(void);                                                     // カーソル移動
+    void RimitMoveCursor(D3DXVECTOR3& cursorPos);                              // カーソル移動の制限
     void CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos);                  // 選択肢との当たり判定
     void ClickSelect(int nNumWho, CUI* pSelectUI);                             // 選択肢のクリック
 
@@ -141,9 +154,11 @@ public:
     // エントリー周り
     //======================================================*/
     void ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus);         // エントリー状態のチェンジ
+    void ToggleReady(int nNumWho);                                             // 準備完了のトグル
+    void JudgmentReady(void);                                                  // 全員が準備完了できているかの判断
 
     /*========================================================
-    // 選択肢周り
+    // パーツ選択周り
     //======================================================*/
     void SelectParts(int nNumWho, int nNumWhere, bool bRight);                 // カスタマイズするパーツを選択
     void SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts);    // 誰のどこを何のパーツにして保存するか

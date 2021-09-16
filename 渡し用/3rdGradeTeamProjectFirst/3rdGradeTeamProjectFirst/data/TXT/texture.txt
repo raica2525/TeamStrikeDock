@@ -518,4 +518,36 @@ TEXTURESET
     NAME = data/TEXTURE/061_brendLine2.png
 END_TEXTURESET
 
+#---------------------------------------
+# [62] チェンジボタンP1
+#---------------------------------------
+TEXTURESET
+    TYPE = 62
+    NAME = data/TEXTURE/062_changeP1.png
+END_TEXTURESET
+
+#---------------------------------------
+# [63] チェンジボタンP2
+#---------------------------------------
+TEXTURESET
+    TYPE = 63
+    NAME = data/TEXTURE/063_changeP2.png
+END_TEXTURESET
+
+#---------------------------------------
+# [64] チェンジボタンP3
+#---------------------------------------
+TEXTURESET
+    TYPE = 64
+    NAME = data/TEXTURE/064_changeP3.png
+END_TEXTURESET
+
+#---------------------------------------
+# [65] チェンジボタンP4
+#---------------------------------------
+TEXTURESET
+    TYPE = 65
+    NAME = data/TEXTURE/065_changeP4.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！
