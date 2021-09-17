@@ -631,7 +631,7 @@ void CAi::GetAttackAngle(void)
         {
         case CPlayer::AI_LEVEL_1:
         case CPlayer::AI_LEVEL_2:
-            fAttackAngle = CGame::GetAngleToClosestPlayer(CGame::GetPlayable(m_pPlayer), m_pPlayer->GetPos());   //（自分と対象プレイヤーの角度）
+            fAttackAngle = CGame::GetAngleToClosestPlayer(m_pPlayer->GetIdxCreate(), m_pPlayer->GetPos());   //（自分と対象プレイヤーの角度）
             break;
         case CPlayer::AI_LEVEL_3:
             // 打ち始めなら、空中と地上で攻撃を使い分ける
@@ -673,7 +673,7 @@ void CAi::GetAttackAngle(void)
             {
                 // 飛ばすときは、近くの敵を狙う（ボールと対象プレイヤーの角度）
                 fAttackAngle = GetAngleToTarget3D2D(pBall->GetPos(), 
-                    CGame::GetPosToClosestPlayer(CGame::GetPlayable(m_pPlayer), m_pPlayer->GetPos()));
+                    CGame::GetPosToClosestPlayer(m_pPlayer->GetIdxCreate(), m_pPlayer->GetPos()));
             }
             break;
         }

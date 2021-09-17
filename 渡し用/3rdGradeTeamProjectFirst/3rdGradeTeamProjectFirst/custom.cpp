@@ -73,10 +73,10 @@ HRESULT CCustom::Init(void)
     CUI::Place(CUI::SET_CUSTOM);
 
     // プレイヤー(マネキン)の生成
-    m_aEntryInfo[PLAYER_1].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_001, false);
-    m_aEntryInfo[PLAYER_2].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_002, false);
-    m_aEntryInfo[PLAYER_3].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_003, false);
-    m_aEntryInfo[PLAYER_4].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, CPlayer::PLAYABLE_004, false);
+    m_aEntryInfo[PLAYER_1].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(-950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, PLAYER_1, false);
+    m_aEntryInfo[PLAYER_2].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(-316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, PLAYER_2, false);
+    m_aEntryInfo[PLAYER_3].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(316.6f, 650.0f, 0.0f), DEFAULT_VECTOR, PLAYER_3, false);
+    m_aEntryInfo[PLAYER_4].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, PLAYER_4, false);
 
     // カーソル生成
     m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, CURSOR_FIRST_POS_P1, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR_NONE_ALPHA);
@@ -907,7 +907,7 @@ void CCustom::JudgmentReady(void)
                     level = CPlayer::AI_LEVEL_3;
                     break;
                 }
-                CGame::SetPlayable(nIndexEntryPlayer, nCntPlayer);
+                CGame::SetIdxPlayer(nIndexEntryPlayer, nCntPlayer);
                 CGame::SetAILevel(nIndexEntryPlayer, level);
                 nIndexEntryPlayer++;
             }
@@ -1075,16 +1075,16 @@ void CCustom::SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts)
     // カスタマイズデータのファイルを開く
     switch (nNumSaveWho)
     {
-    case CPlayer::PLAYABLE_001:
+    case PLAYER_1:
         pFile = fopen("data/TXT/custom1.txt", "w");
         break;
-    case CPlayer::PLAYABLE_002:
+    case PLAYER_2:
         pFile = fopen("data/TXT/custom2.txt", "w");
         break;
-    case CPlayer::PLAYABLE_003:
+    case PLAYER_3:
         pFile = fopen("data/TXT/custom3.txt", "w");
         break;
-    case CPlayer::PLAYABLE_004:
+    case PLAYER_4:
         pFile = fopen("data/TXT/custom4.txt", "w");
         break;
     }

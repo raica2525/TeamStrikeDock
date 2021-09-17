@@ -293,7 +293,7 @@ void CBall::Update(void)
         {
             if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
             {
-                const int nWhoColor = m_pPlayer->GetControlIndex();
+                const int nWhoColor = m_pPlayer->GetIdxControlAndColor();
                 if (nWhoColor == PLAYER_1)
                 {
                     outlineColor = PLAYER_COLOR_1;
@@ -383,7 +383,7 @@ void CBall::AuraEffect(void)
         {
             if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
             {
-                const int nWhoColor = m_pPlayer->GetControlIndex();
+                const int nWhoColor = m_pPlayer->GetIdxControlAndColor();
                 if (nWhoColor == PLAYER_1)
                 {
                     col = D3DXCOLOR(1.0f, 0.99f, 0.0f, 1.0f);
@@ -448,7 +448,7 @@ void CBall::AppearEffect(void)
         {
             if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
             {
-                const int nWhoColor = m_pPlayer->GetControlIndex();
+                const int nWhoColor = m_pPlayer->GetIdxControlAndColor();
                 if (nWhoColor == PLAYER_1)
                 {
                     col = D3DXCOLOR(1.0f, 0.7f, 0.0f, 1.0f);
@@ -518,7 +518,7 @@ void CBall::LocusEffect(void)
     {
         if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
         {
-            const int nWhoColor = m_pPlayer->GetControlIndex();
+            const int nWhoColor = m_pPlayer->GetIdxControlAndColor();
             if (nWhoColor == PLAYER_1)
             {
                 locusColor = PLAYER_COLOR_1;
@@ -942,7 +942,7 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
             m_moveAngle = BALL_FIRST_MOVE_ANGLE;
             if (m_pPlayer)
             {
-                m_nWhoShooting = CGame::GetPlayable(m_pPlayer);
+                m_nWhoShooting = m_pPlayer->GetIdxCreate();
             }
         }
         else
@@ -1085,7 +1085,7 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
 
     // プレイヤーの情報を取得し、誰が放ったかを記録
     m_pPlayer = pPlayer;
-    m_nWhoShooting = CGame::GetPlayable(pPlayer);
+    m_nWhoShooting = m_pPlayer->GetIdxCreate();
 
     // 受け取ったシュートフラグの考慮
     if (IS_BITON(flag, SHOOT_FLAG_THROW))
@@ -1229,7 +1229,7 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
                     {
                         nEffectFrame = BALL_SHOOT_EFFECT_LEAST_FRAME;
                     }
-                    CManager::GetInputJoypad()->StartEffect(m_pPlayer->GetControlIndex(), nEffectFrame);
+                    CManager::GetInputJoypad()->StartEffect(m_pPlayer->GetIdxControlAndColor(), nEffectFrame);
                 }
             }
         }
@@ -1344,6 +1344,6 @@ void CBall::SetAbsorb(CPlayer *pPlayer)
     BITON(m_absorbFlag, ABSORB_FLAG_MOVING);
     m_pPlayer = pPlayer;
     m_nWhoShooting = BALL_NOT_ANYONE;           // プレイヤーへの当たり判定を消すため
-    m_nWhoAbsorbing = CGame::GetPlayable(pPlayer);   // 次その吸収したプレイヤーだけがボールに触れるようにするため
+    m_nWhoAbsorbing = m_pPlayer->GetIdxCreate();   // 次その吸収したプレイヤーだけがボールに触れるようにするため
     m_nCntAbsorbTime = BALL_ABSORB_MAX_TIME;    // 吸収時間のカウントダウンをスタート
 }

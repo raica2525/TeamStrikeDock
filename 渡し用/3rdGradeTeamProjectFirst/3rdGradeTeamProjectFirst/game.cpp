@@ -53,8 +53,8 @@ CGame::TYPE CGame::m_type = TYPE_TRAINING;
 int CGame::m_nNumAllPlayer = 0;
 int CGame::m_nNumStock = 0;
 bool CGame::m_bUseKeyboard = false;
-int CGame::m_aPlayable[] = {};
-CPlayer::AI_LEVEL CGame::m_aAILevel[] = {};
+int CGame::m_anMemoryIdxPlayer[] = {};
+CPlayer::AI_LEVEL CGame::m_aMemoryAILevel[] = {};
 CGame::STATE CGame::m_state = STATE_ROUND_START;
 CGame::MAP_LIMIT CGame::m_mapLimit = {};
 int CGame::m_nNumDefeatPlayer = 0;
@@ -82,8 +82,8 @@ CGame::CGame()
     //m_nNumAllPlayer = 0;
     //m_nNumStock = 0;
     //m_bUseKeyboard = false;
-    //memset(m_aPlayable, 0, sizeof(m_aPlayable));
-    //memset(m_aAILevel, 0, sizeof(m_aAILevel));
+    //memset(m_anMemoryIdxPlayer, 0, sizeof(m_anMemoryIdxPlayer));
+    //memset(m_aMemoryAILevel, 0, sizeof(m_aMemoryAILevel));
     m_state = STATE_ROUND_START;
     m_nNumDefeatPlayer = 0;
     m_nWhoWorstPlayer = PLAYER_1;
@@ -138,13 +138,6 @@ HRESULT CGame::Init(void)
     // ポーズの生成
     m_pPause = CPause::Create();
 
-    // 仮(8体でも重かったから、何らかの負荷軽減が必要（モデルのポリゴン数削減（2万程度）か、描画周り）)
-    //for (int nCnt = 0; nCnt < 16; nCnt++)
-    //{
-    //    // ポリゴン数を近接頂点をくっつけることでなんとか削減（32体耐え）
-    //    float fPosX = 200.0f * nCnt;
-    //    CPlayer::Create(D3DXVECTOR3(-1000.0f + fPosX, 0.0f, 0.0f), D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), CPlayer::PLAYABLE_001);
-    //}
     // プレイヤーの生成
     D3DXVECTOR3 player1Pos = D3DXVECTOR3(m_mapLimit.fWidth, m_mapLimit.fHeight * CREATE_POS_Y_RATE, 0.0f);
     D3DXVECTOR3 player2Pos = D3DXVECTOR3(m_mapLimit.fWidth, m_mapLimit.fHeight * CREATE_POS_Y_RATE, 0.0f);
@@ -156,23 +149,29 @@ HRESULT CGame::Init(void)
     case 1:
         fSplitXRate = SPLIT_RATE_UNDER_3;
         player1Pos.x *= -fSplitXRate;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, 
+            0, m_anMemoryIdxPlayer[0], m_aMemoryAILevel[0], m_bUseKeyboard);
         break;
     case 2:
         fSplitXRate = SPLIT_RATE_UNDER_3;
         player1Pos.x *= -fSplitXRate;
         player2Pos.x *= fSplitXRate;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
-        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[1], m_aAILevel[1]);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock,
+            0, m_anMemoryIdxPlayer[0], m_aMemoryAILevel[0], m_bUseKeyboard);
+        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock,
+            1, m_anMemoryIdxPlayer[1], m_aMemoryAILevel[1]);
         break;
     case 3:
         fSplitXRate = SPLIT_RATE_ABOVE_2;
         player1Pos.x *= -fSplitXRate * 2;
         player2Pos.x *= -fSplitXRate;
         player3Pos.x *= fSplitXRate;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
-        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[1], m_aAILevel[1]);
-        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[2], m_aAILevel[2]);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock,
+            0, m_anMemoryIdxPlayer[0], m_aMemoryAILevel[0], m_bUseKeyboard);
+        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock,
+            1, m_anMemoryIdxPlayer[1], m_aMemoryAILevel[1]);
+        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock,
+            2, m_anMemoryIdxPlayer[2], m_aMemoryAILevel[2]);
         break;
     case 4:
         fSplitXRate = SPLIT_RATE_ABOVE_2;
@@ -180,10 +179,14 @@ HRESULT CGame::Init(void)
         player2Pos.x *= -fSplitXRate;
         player3Pos.x *= fSplitXRate;
         player4Pos.x *= fSplitXRate * 2;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
-        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[1], m_aAILevel[1]);
-        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[2], m_aAILevel[2]);
-        m_apPlayer[3] = CPlayer::CreateInGame(player4Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[3], m_aAILevel[3]);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock,
+            0, m_anMemoryIdxPlayer[0], m_aMemoryAILevel[0], m_bUseKeyboard);
+        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, 
+            1, m_anMemoryIdxPlayer[1], m_aMemoryAILevel[1]);
+        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock,
+            2, m_anMemoryIdxPlayer[2], m_aMemoryAILevel[2]);
+        m_apPlayer[3] = CPlayer::CreateInGame(player4Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock,
+            3, m_anMemoryIdxPlayer[3], m_aMemoryAILevel[3]);
         break;
     }
     // カメラのロックオン場所を変える
@@ -443,27 +446,6 @@ void CGame::JudgmentFinish(void)
 }
 
 //========================================
-// プレイアブル番号を取得
-// Author : 後藤慎之助
-//========================================
-int CGame::GetPlayable(CPlayer* pPlayer)
-{
-    for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
-    {
-        CPlayer* pSearchPlayer = CGame::GetPlayer(nCnt);
-        if (pSearchPlayer)
-        {
-            if (pSearchPlayer == pPlayer)
-            {
-                return nCnt;
-            }
-        }
-    }
-
-    return NOT_EXIST;
-}
-
-//========================================
 // シュートの予約
 // Author : 後藤慎之助
 //========================================
@@ -600,7 +582,7 @@ void CGame::JudgmentShoot(void)
                 else
                 {
                     // 通常攻撃のエフェクト
-                    switch (m_apPlayer[nNumFirstCollisionPlayer]->GetControlIndex())
+                    switch (m_apPlayer[nNumFirstCollisionPlayer]->GetIdxControlAndColor())
                     {
                     case PLAYER_1:
                         if (m_pBall->GetSpeed() < BALL_SHOOT_BIG_HIT_SPEED)
@@ -654,7 +636,7 @@ void CGame::JudgmentShoot(void)
 //========================================
 // 一番近いプレイヤーへの角度を求める
 //========================================
-float CGame::GetAngleToClosestPlayer(int playable, D3DXVECTOR3 myPos)
+float CGame::GetAngleToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos)
 {
     // 変数宣言
     float fAngle = 0.0f;                        // 返す角度
@@ -668,7 +650,7 @@ float CGame::GetAngleToClosestPlayer(int playable, D3DXVECTOR3 myPos)
     for (int nCntPlayer = 0; nCntPlayer < m_nNumAllPlayer; nCntPlayer++)
     {
         // 自分以外で
-        if (playable == nCntPlayer)
+        if (nIdxPlayer == nCntPlayer)
         {
             continue;
         }
@@ -702,7 +684,7 @@ float CGame::GetAngleToClosestPlayer(int playable, D3DXVECTOR3 myPos)
 //========================================
 // 一番近いプレイヤーの位置を求める
 //========================================
-D3DXVECTOR3 CGame::GetPosToClosestPlayer(int playable, D3DXVECTOR3 myPos)
+D3DXVECTOR3 CGame::GetPosToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos)
 {
     // 変数宣言
     float fFirstDistance = 99999.9f;            // 距離
@@ -715,7 +697,7 @@ D3DXVECTOR3 CGame::GetPosToClosestPlayer(int playable, D3DXVECTOR3 myPos)
     for (int nCntPlayer = 0; nCntPlayer < m_nNumAllPlayer; nCntPlayer++)
     {
         // 自分以外で
-        if (playable == nCntPlayer)
+        if (nIdxPlayer == nCntPlayer)
         {
             continue;
         }

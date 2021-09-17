@@ -77,7 +77,8 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_pText_Custom_Ex = NULL;
     m_pText_Custom_Sp = NULL;
 
-    m_nControlIndex = PLAYABLE_001;
+    m_nIdxCreate = PLAYER_1;
+    m_nIdxControlAndColor = PLAYER_1;
     m_nPoint = 0;
     m_nStock = 0;
     m_startPos = DEFAULT_VECTOR;
@@ -201,18 +202,18 @@ void CPlayer::LoadCustom(void)
     m_nSwingChargeMax = ATTACK_SWING_CHARGE_MAX_FRAME_NORMAL;
 
     // カスタマイズデータのファイルを開く
-    switch (m_nControlIndex)
+    switch (m_nIdxControlAndColor)
     {
-    case CPlayer::PLAYABLE_001:
+    case PLAYER_1:
         pFile = fopen("data/TXT/custom1.txt", "r");
         break;
-    case CPlayer::PLAYABLE_002:
+    case PLAYER_2:
         pFile = fopen("data/TXT/custom2.txt", "r");
         break;
-    case CPlayer::PLAYABLE_003:
+    case PLAYER_3:
         pFile = fopen("data/TXT/custom3.txt", "r");
         break;
-    case CPlayer::PLAYABLE_004:
+    case PLAYER_4:
         pFile = fopen("data/TXT/custom4.txt", "r");
         break;
     }
@@ -498,16 +499,16 @@ void CPlayer::Input(void)
     {
         // コントローラを取得
         CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
-        DIJOYSTATE2 Controller = pInputJoypad->GetController(m_nControlIndex);
+        DIJOYSTATE2 Controller = pInputJoypad->GetController(m_nIdxControlAndColor);
 
         // ボタン情報を取得
-        m_controlInput.bTriggerA = pInputJoypad->GetJoypadTrigger(m_nControlIndex, CInputJoypad::BUTTON_A);
-        m_controlInput.bPressA = pInputJoypad->GetJoypadPress(m_nControlIndex, CInputJoypad::BUTTON_A);
-        m_controlInput.bTriggerX = pInputJoypad->GetJoypadTrigger(m_nControlIndex, CInputJoypad::BUTTON_X);
-        m_controlInput.bPressX = pInputJoypad->GetJoypadPress(m_nControlIndex, CInputJoypad::BUTTON_X);
-        m_controlInput.bReleaseX = pInputJoypad->GetJoypadRelease(m_nControlIndex, CInputJoypad::BUTTON_X);
-        m_controlInput.bTriggerY = pInputJoypad->GetJoypadTrigger(m_nControlIndex, CInputJoypad::BUTTON_Y);
-        m_controlInput.bTriggerB = pInputJoypad->GetJoypadTrigger(m_nControlIndex, CInputJoypad::BUTTON_B);
+        m_controlInput.bTriggerA = pInputJoypad->GetJoypadTrigger(m_nIdxControlAndColor, CInputJoypad::BUTTON_A);
+        m_controlInput.bPressA = pInputJoypad->GetJoypadPress(m_nIdxControlAndColor, CInputJoypad::BUTTON_A);
+        m_controlInput.bTriggerX = pInputJoypad->GetJoypadTrigger(m_nIdxControlAndColor, CInputJoypad::BUTTON_X);
+        m_controlInput.bPressX = pInputJoypad->GetJoypadPress(m_nIdxControlAndColor, CInputJoypad::BUTTON_X);
+        m_controlInput.bReleaseX = pInputJoypad->GetJoypadRelease(m_nIdxControlAndColor, CInputJoypad::BUTTON_X);
+        m_controlInput.bTriggerY = pInputJoypad->GetJoypadTrigger(m_nIdxControlAndColor, CInputJoypad::BUTTON_Y);
+        m_controlInput.bTriggerB = pInputJoypad->GetJoypadTrigger(m_nIdxControlAndColor, CInputJoypad::BUTTON_B);
 
         // 左スティックが傾いているかどうか
         if (Controller.lY != 0 || Controller.lX != 0)
@@ -960,7 +961,8 @@ void CPlayer::Draw(void)
 // インスタンス生成
 // Author : 後藤慎之助
 //=============================================================================
-CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, int nControlIndex, AI_LEVEL AIlevel, bool bUseKeyboard)
+CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, int nIdxCreate, int nIdxControlAndColor,
+    AI_LEVEL AIlevel, bool bUseKeyboard)
 {
     // メモリ確保
     CPlayer *pPlayer = NULL;
@@ -971,7 +973,7 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
     pPlayer->CCharacter::SetRot(rot);
 
     // 読み込む種類の設定
-    pPlayer->m_nControlIndex = nControlIndex;
+    pPlayer->m_nIdxControlAndColor = nIdxControlAndColor;
 
     // 初期化
     pPlayer->Init(pos, DEFAULT_SCALE);
@@ -980,6 +982,7 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
     pPlayer->m_startPos = pos;
     pPlayer->m_startRot = rot;
     pPlayer->m_nStock = nStock;
+    pPlayer->m_nIdxCreate = nIdxCreate;
     pPlayer->m_AIlevel = AIlevel;
     pPlayer->m_bUseKeyboard = bUseKeyboard;
     if (pPlayer->m_AIlevel != AI_LEVEL_NONE)
@@ -990,7 +993,7 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
     // UIを生成
     D3DXCOLOR col = DEFAULT_COLOR;
     int nTexTypePlayable = 0;
-    switch (pPlayer->m_nControlIndex)
+    switch (pPlayer->m_nIdxControlAndColor)
     {
     case PLAYER_1:
         col = PLAYER_COLOR_1;
@@ -1021,7 +1024,12 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
         nTexTypePlayable = 28;
         break;
     }
-    float fDigitPosX = (SCREEN_WIDTH / 8) + ((SCREEN_WIDTH / 4) * (float)pPlayer->m_nControlIndex);
+    const float DIGIT_BLOCK = ((float)SCREEN_WIDTH / (CGame::GetNumAllPlayer() + 1));
+    float fDigitPosX = (DIGIT_BLOCK * (float)(pPlayer->m_nIdxCreate + 1));
+    if (CGame::GetNumAllPlayer() == MAX_PLAYER)
+    {
+        fDigitPosX = (SCREEN_WIDTH / 8) + ((SCREEN_WIDTH / 4) * (float)pPlayer->m_nIdxCreate);
+    }
     CUI* pUI = CUI::Create(17, D3DXVECTOR3(fDigitPosX, 40.0f, 0.0f), D3DXVECTOR3(240.0f, 30.0f, 0.0f), 0, DEFAULT_COLOR);
     pPlayer->m_pUI_HP = CUI::Create(18, D3DXVECTOR3(fDigitPosX, 40.0f, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, col);
     pPlayer->m_pUI_HP->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
@@ -1054,7 +1062,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
     pPlayer->CCharacter::SetRot(rot);
 
     // 読み込む種類の設定
-    pPlayer->m_nControlIndex = nControlIndex;
+    pPlayer->m_nIdxControlAndColor = nControlIndex;
 
     // 初期化
     pPlayer->Init(pos, DEFAULT_SCALE);
@@ -1070,7 +1078,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
     // UIを生成
     D3DXVECTOR3 startPos = DEFAULT_VECTOR;
     D3DXVECTOR3 clipingPos = DEFAULT_VECTOR;
-    switch (pPlayer->m_nControlIndex)
+    switch (pPlayer->m_nIdxControlAndColor)
     {
     case PLAYER_1:
         startPos = D3DXVECTOR3(150.0f, 290.0f, 0.0f);
@@ -1389,7 +1397,7 @@ void CPlayer::CollisionBall(D3DXVECTOR3 playerPos)
                 D3DXVECTOR3 ballPos = pBall->GetPos();
 
                 // 自分以外の誰かが撃ったなら
-                if (pBall->GetWhoShooting() != CGame::GetPlayable(this) && pBall->GetWhoShooting() != BALL_NOT_ANYONE)
+                if (pBall->GetWhoShooting() != m_nIdxCreate && pBall->GetWhoShooting() != BALL_NOT_ANYONE)
                 {
                     // 自分の当たり判定の大きさを決定
                     D3DXVECTOR3 playerSize = m_collisionSizeDeffence;
@@ -1595,7 +1603,7 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
                 if (CGame::GetNumDefeatPlayer() == 0)
                 {
                     // 最下位のプレイヤーにする
-                    CGame::SetWorstPlayer(CGame::GetPlayable(this));
+                    CGame::SetWorstPlayer(m_nIdxCreate);
                 }
 
                 // やられたプレイヤー人数を増やす
@@ -1646,7 +1654,7 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
         // コントローラの振動
         if (GetUseControllerEffect())
         {
-            CManager::GetInputJoypad()->StartEffect(m_nControlIndex, nEffectFrame);
+            CManager::GetInputJoypad()->StartEffect(m_nIdxControlAndColor, nEffectFrame);
         }
     }
 }
@@ -2490,7 +2498,7 @@ void CPlayer::CatchReady(D3DXVECTOR3 playerPos)
         // コントローラの振動
         if (GetUseControllerEffect())
         {
-            CManager::GetInputJoypad()->StartEffect(m_nControlIndex, ATTACK_CATCH_READY_EFFECT_FRAME);
+            CManager::GetInputJoypad()->StartEffect(m_nIdxControlAndColor, ATTACK_CATCH_READY_EFFECT_FRAME);
         }
 
         // キャッチ音
@@ -2628,7 +2636,7 @@ bool CPlayer::IsAttackBall(D3DXVECTOR3 attackPos, D3DXVECTOR3 attackSize, D3DXVE
             // 当たり判定を使用するかつ、自分以外の誰かが吸収していないなら
             if (pBall->GetUseCollision())
             {
-                if (pBall->GetWhoAbsorbing() == CGame::GetPlayable(this) || pBall->GetWhoAbsorbing() == BALL_NOT_ANYONE)
+                if (pBall->GetWhoAbsorbing() == m_nIdxCreate || pBall->GetWhoAbsorbing() == BALL_NOT_ANYONE)
                 {
                     // 当たっているなら
                     if (IsCollisionToRotationRect(attackPos, attackSize,
@@ -2658,7 +2666,7 @@ bool CPlayer::IsAttackBall(D3DXVECTOR3 attackPos, D3DXVECTOR3 attackSize, D3DXVE
 
                         // ボールを飛ばすための予約をする（ここでボールの中心を渡すのは、ファーヒットの時にその位置へ持っていくため）
                         D3DXVECTOR3 attackCenterPos = attackPos + D3DXVECTOR3(0.0f, attackSize.y / 2, 0.0f);
-                        CGame::ReserveShoot(attackCenterPos, moveAngle, fPower, bFirstCollision, flag, CGame::GetPlayable(this));
+                        CGame::ReserveShoot(attackCenterPos, moveAngle, fPower, bFirstCollision, flag, m_nIdxCreate);
 
                         // 当たった
                         bHit = true;

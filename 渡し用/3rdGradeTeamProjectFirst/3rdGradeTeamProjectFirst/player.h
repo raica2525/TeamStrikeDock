@@ -207,16 +207,6 @@ public:
         ANIM_MAX,
     }ANIMATION;
 
-    // プレイアブルキャラがどのコントローラを使うか
-    typedef enum
-    {
-        PLAYABLE_001 = 0,
-        PLAYABLE_002,
-        PLAYABLE_003,
-        PLAYABLE_004,
-        PLAYABLE_MAX,
-    }PLAYABLE;
-
     // モデルの各パーツ
     typedef enum
     {
@@ -353,8 +343,9 @@ public:
     void ResetAttack(void);                                                             // 攻撃周りでリセットする変数
     void Respawn(void);                                                                 // リスポーン
     void Draw(void);                                                                    // 描画処理
-    static CPlayer *CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, int playable, AI_LEVEL AIlevel, bool bUseKeyboard = false);   // ゲーム内での生成処理
-    static CPlayer *CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int playable, bool bDisp);     // カスタマイズ画面での生成
+    static CPlayer *CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, int nIdxCreate, int nIdxControlAndColor,
+        AI_LEVEL AIlevel, bool bUseKeyboard = false);   // ゲーム内での生成処理
+    static CPlayer *CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdxControlAndColor, bool bDisp);     // カスタマイズ画面での生成
 
     void Movement(float fSpeed);                                                        // 行動
     void MoveMotion(void);                                                              // 移動モーションの管理
@@ -414,8 +405,8 @@ public:
     float GetSpd(void) { return m_fSpd; }
     float GetWei(void) { return m_fWei; }
     ControlInput *GetControlInput(void) { return &m_controlInput; }
-    //int GetPlayable(void) { return m_playable; }  // ゲームのGetPlayableを使う
-    int GetControlIndex(void) { return m_nControlIndex; }
+    int GetIdxCreate(void) { return m_nIdxCreate; }
+    int GetIdxControlAndColor(void) { return m_nIdxControlAndColor; }
     int GetStopTime(void) { return m_nCntStopTime; }
     int GetAttackTime(void) { return m_nCntAttackTime; }
     int GetSwingCharge(void) { return m_nCntSwingCharge; }
@@ -446,8 +437,9 @@ private:
     CUI *m_pUI_Custom_Wei;                   // カスタマイズ画面_重さゲージ
     CText *m_pText_Custom_Ex;                // カスタマイズ画面_特殊能力名
     CText *m_pText_Custom_Sp;                // カスタマイズ画面_必殺技名
-                                             
-    int m_nControlIndex;                     // コントロールのインデックス
+                        
+    int m_nIdxCreate;                        // 生成のインデックス
+    int m_nIdxControlAndColor;               // コントロールとカラーのインデックス
     int m_nPoint;                            // ポイント
     int m_nStock;                            // ストック数
     D3DXVECTOR3 m_startPos;                  // 開始位置を保持

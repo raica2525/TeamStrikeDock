@@ -89,8 +89,8 @@ public:
     {
         m_type = gameType;  m_nNumAllPlayer = nNumPlayer; m_nNumStock = nNumStock; m_bUseKeyboard = bUseKeyboard;
     }   // 遷移前に、次のゲームを設定
-    static void SetPlayable(int nNum, int playable) { m_aPlayable[nNum] = playable; }       // プレイアブルキャラ
-    static void SetAILevel(int nNum, CPlayer::AI_LEVEL level) { m_aAILevel[nNum] = level; } // AIレベル
+    static void SetIdxPlayer(int nNum, int nIdxPlayer) { m_anMemoryIdxPlayer[nNum] = nIdxPlayer; }  // プレイヤーのインデックス
+    static void SetAILevel(int nNum, CPlayer::AI_LEVEL level) { m_aMemoryAILevel[nNum] = level; }   // AIレベル
     static void SetAddNumDefeatPlayer(void) { m_nNumDefeatPlayer++; }                       // やられたプレイヤー人数を増やす
     static void SetWorstPlayer(int player) { m_nWhoWorstPlayer = player; }                  // ワーストのプレイヤーを決める
     static void SetAddNumDeathPlayer(void) { m_nNumDeathPlayer++; }                         // 死んだプレイヤー人数を増やす
@@ -114,40 +114,39 @@ public:
     static CEffect2D* GetPosi(void) { return m_pEffect2d_Posi; }                    // 反転合成を戻すためのエフェクトを取得
     static CNumberArray* GetNumArrayBallSpd(void) { return m_pNumArray_BallSpd; }   // ボールスピード表示を取得
     static bool GetUseKeyboard(void) { return m_bUseKeyboard; }                     // キーボードを使うかどうか取得
-    static int GetPlayable(CPlayer *pPlayer);                                       // プレイヤーのポインタから、プレイアブルキャラの番号を返す
 
     /*========================================================
     // 便利な関数
     //======================================================*/
     static void ReserveShoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPower, bool bFirstCollision, int flag, int nWho);
     void JudgmentShoot(void);                                                       // 誰がシュートを打てたかの判定
-    static float GetAngleToClosestPlayer(int playable, D3DXVECTOR3 myPos);          // 一番近いプレイヤーへの角度を求める
-    static D3DXVECTOR3  GetPosToClosestPlayer(int playable, D3DXVECTOR3 myPos);     // 一番近いプレイヤーの位置を求める
+    static float GetAngleToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos);        // 一番近いプレイヤーへの角度を求める
+    static D3DXVECTOR3  GetPosToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos);   // 一番近いプレイヤーの位置を求める
 
 private:
 
-    static bool m_bStopObjUpdate;                       // オブジェクトのアップデートを止めるかどうか
-    static CPlayer *m_apPlayer[MAX_PLAYER];             // プレイヤーのポインタ
-    static CBall *m_pBall;                              // ボールのポインタ
-    static CPause *m_pPause;                            // ポーズのポインタ
-    static CEffect2D *m_pEffect2d_Nega;                 // 反転合成へのポインタ
-    static CEffect2D *m_pEffect2d_Posi;                 // 反転合成を戻すためのポインタ
-    static CNumberArray *m_pNumArray_BallSpd;           // ボールスピード表示へのポインタ
+    static bool m_bStopObjUpdate;                          // オブジェクトのアップデートを止めるかどうか
+    static CPlayer *m_apPlayer[MAX_PLAYER];                // プレイヤーのポインタ
+    static CBall *m_pBall;                                 // ボールのポインタ
+    static CPause *m_pPause;                               // ポーズのポインタ
+    static CEffect2D *m_pEffect2d_Nega;                    // 反転合成へのポインタ
+    static CEffect2D *m_pEffect2d_Posi;                    // 反転合成を戻すためのポインタ
+    static CNumberArray *m_pNumArray_BallSpd;              // ボールスピード表示へのポインタ
 
-    static TYPE m_type;                                 // ゲーム種類
-    static int m_nNumAllPlayer;                         // 全体プレイヤー人数
-    static int m_nNumStock;                             // ストック数
-    static bool m_bUseKeyboard;                         // キーボードを使うかどうか
-    static int m_aPlayable[MAX_PLAYER];                 // プレイアブルキャラ
-    static CPlayer::AI_LEVEL m_aAILevel[MAX_PLAYER];    // AIレベル
-    static STATE m_state;                               // 状態
-    static MAP_LIMIT m_mapLimit;                        // マップ制限
-    static int m_nNumDefeatPlayer;                      // やられたプレイヤー人数
-    static int m_nWhoWorstPlayer;                       // ワーストのプレイヤー
-    static int m_nNumDeathPlayer;                       // 死んだプレイヤー人数
-    static RESERVE_SHOOT m_aReserveShoot[MAX_PLAYER];   // シュートの予約
+    static TYPE m_type;                                    // ゲーム種類
+    static int m_nNumAllPlayer;                            // 全体プレイヤー人数
+    static int m_nNumStock;                                // ストック数
+    static bool m_bUseKeyboard;                            // キーボードを使うかどうか
+    static int m_anMemoryIdxPlayer[MAX_PLAYER];            // プレイヤーのインデックスを記憶
+    static CPlayer::AI_LEVEL m_aMemoryAILevel[MAX_PLAYER]; // AIレベルを記憶
+    static STATE m_state;                                  // 状態
+    static MAP_LIMIT m_mapLimit;                           // マップ制限
+    static int m_nNumDefeatPlayer;                         // やられたプレイヤー人数
+    static int m_nWhoWorstPlayer;                          // ワーストのプレイヤー
+    static int m_nNumDeathPlayer;                          // 死んだプレイヤー人数
+    static RESERVE_SHOOT m_aReserveShoot[MAX_PLAYER];      // シュートの予約
 
-    int m_nCntGameTime;                                 // ゲーム時間のカウンタ
+    int m_nCntGameTime;                                    // ゲーム時間のカウンタ
 };
 
 #endif
