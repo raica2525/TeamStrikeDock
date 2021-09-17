@@ -89,6 +89,7 @@ public:
     {
         m_type = gameType;  m_nNumAllPlayer = nNumPlayer; m_nNumStock = nNumStock; m_bUseKeyboard = bUseKeyboard;
     }   // 遷移前に、次のゲームを設定
+    static void SetPlayable(int nNum, int playable) { m_aPlayable[nNum] = playable; }       // プレイアブルキャラ
     static void SetAILevel(int nNum, CPlayer::AI_LEVEL level) { m_aAILevel[nNum] = level; } // AIレベル
     static void SetAddNumDefeatPlayer(void) { m_nNumDefeatPlayer++; }                       // やられたプレイヤー人数を増やす
     static void SetWorstPlayer(int player) { m_nWhoWorstPlayer = player; }                  // ワーストのプレイヤーを決める
@@ -113,6 +114,7 @@ public:
     static CEffect2D* GetPosi(void) { return m_pEffect2d_Posi; }                    // 反転合成を戻すためのエフェクトを取得
     static CNumberArray* GetNumArrayBallSpd(void) { return m_pNumArray_BallSpd; }   // ボールスピード表示を取得
     static bool GetUseKeyboard(void) { return m_bUseKeyboard; }                     // キーボードを使うかどうか取得
+    static int GetPlayable(CPlayer *pPlayer);                                       // プレイヤーのポインタから、プレイアブルキャラの番号を返す
 
     /*========================================================
     // 便利な関数
@@ -136,6 +138,7 @@ private:
     static int m_nNumAllPlayer;                         // 全体プレイヤー人数
     static int m_nNumStock;                             // ストック数
     static bool m_bUseKeyboard;                         // キーボードを使うかどうか
+    static int m_aPlayable[MAX_PLAYER];                 // プレイアブルキャラ
     static CPlayer::AI_LEVEL m_aAILevel[MAX_PLAYER];    // AIレベル
     static STATE m_state;                               // 状態
     static MAP_LIMIT m_mapLimit;                        // マップ制限

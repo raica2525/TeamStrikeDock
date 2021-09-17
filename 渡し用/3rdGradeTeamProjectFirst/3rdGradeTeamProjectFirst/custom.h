@@ -170,6 +170,8 @@ private:
     int m_anMemoryPartsWep[MAX_EACH_PARTS];   // 保持した武器パーツ
 
     ENTRY_INFO m_aEntryInfo[MAX_PLAYER];      // エントリー情報
+    
+    bool m_bUseKeyboardInGame;                // ゲームでキーボード操作するかどうか
 };
 
 #endif

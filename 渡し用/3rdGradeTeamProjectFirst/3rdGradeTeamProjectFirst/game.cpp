@@ -53,6 +53,7 @@ CGame::TYPE CGame::m_type = TYPE_TRAINING;
 int CGame::m_nNumAllPlayer = 0;
 int CGame::m_nNumStock = 0;
 bool CGame::m_bUseKeyboard = false;
+int CGame::m_aPlayable[] = {};
 CPlayer::AI_LEVEL CGame::m_aAILevel[] = {};
 CGame::STATE CGame::m_state = STATE_ROUND_START;
 CGame::MAP_LIMIT CGame::m_mapLimit = {};
@@ -81,6 +82,7 @@ CGame::CGame()
     //m_nNumAllPlayer = 0;
     //m_nNumStock = 0;
     //m_bUseKeyboard = false;
+    //memset(m_aPlayable, 0, sizeof(m_aPlayable));
     //memset(m_aAILevel, 0, sizeof(m_aAILevel));
     m_state = STATE_ROUND_START;
     m_nNumDefeatPlayer = 0;
@@ -154,23 +156,23 @@ HRESULT CGame::Init(void)
     case 1:
         fSplitXRate = SPLIT_RATE_UNDER_3;
         player1Pos.x *= -fSplitXRate;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_001, m_aAILevel[PLAYER_1], m_bUseKeyboard);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
         break;
     case 2:
         fSplitXRate = SPLIT_RATE_UNDER_3;
         player1Pos.x *= -fSplitXRate;
         player2Pos.x *= fSplitXRate;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_001, m_aAILevel[PLAYER_1], m_bUseKeyboard);
-        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_002, m_aAILevel[PLAYER_2]);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
+        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[1], m_aAILevel[1]);
         break;
     case 3:
         fSplitXRate = SPLIT_RATE_ABOVE_2;
         player1Pos.x *= -fSplitXRate * 2;
         player2Pos.x *= -fSplitXRate;
         player3Pos.x *= fSplitXRate;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_001, m_aAILevel[PLAYER_1], m_bUseKeyboard);
-        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_002, m_aAILevel[PLAYER_2]);
-        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_003, m_aAILevel[PLAYER_3]);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
+        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[1], m_aAILevel[1]);
+        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[2], m_aAILevel[2]);
         break;
     case 4:
         fSplitXRate = SPLIT_RATE_ABOVE_2;
@@ -178,10 +180,10 @@ HRESULT CGame::Init(void)
         player2Pos.x *= -fSplitXRate;
         player3Pos.x *= fSplitXRate;
         player4Pos.x *= fSplitXRate * 2;
-        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_001, m_aAILevel[PLAYER_1], m_bUseKeyboard);
-        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_002, m_aAILevel[PLAYER_2]);
-        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_003, m_aAILevel[PLAYER_3]);
-        m_apPlayer[3] = CPlayer::CreateInGame(player4Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, CPlayer::PLAYABLE_004, m_aAILevel[PLAYER_4]);
+        m_apPlayer[0] = CPlayer::CreateInGame(player1Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[0], m_aAILevel[0], m_bUseKeyboard);
+        m_apPlayer[1] = CPlayer::CreateInGame(player2Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_RIGHT, 0.0f), m_nNumStock, m_aPlayable[1], m_aAILevel[1]);
+        m_apPlayer[2] = CPlayer::CreateInGame(player3Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[2], m_aAILevel[2]);
+        m_apPlayer[3] = CPlayer::CreateInGame(player4Pos, D3DXVECTOR3(0.0f, PLAYER_ROT_LEFT, 0.0f), m_nNumStock, m_aPlayable[3], m_aAILevel[3]);
         break;
     }
     // カメラのロックオン場所を変える
@@ -422,8 +424,8 @@ void CGame::JudgmentFinish(void)
         // 死んだプレイヤーが全体のプレイヤー-1に達したら
         if (m_nNumDeathPlayer >= m_nNumAllPlayer - 1)
         {
-            // 仮にデバッグメニューに移行
-            CFade::SetFade(CManager::MODE_DEBUG_MENU);
+            // 仮にタイトルに移行
+            CFade::SetFade(CManager::MODE_TITLE);
         }
         else
         {
@@ -441,7 +443,29 @@ void CGame::JudgmentFinish(void)
 }
 
 //========================================
+// プレイアブル番号を取得
+// Author : 後藤慎之助
+//========================================
+int CGame::GetPlayable(CPlayer* pPlayer)
+{
+    for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+    {
+        CPlayer* pSearchPlayer = CGame::GetPlayer(nCnt);
+        if (pSearchPlayer)
+        {
+            if (pSearchPlayer == pPlayer)
+            {
+                return nCnt;
+            }
+        }
+    }
+
+    return NOT_EXIST;
+}
+
+//========================================
 // シュートの予約
+// Author : 後藤慎之助
 //========================================
 void CGame::ReserveShoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPower, bool bFirstCollision, int flag, int nWho)
 {
@@ -576,7 +600,7 @@ void CGame::JudgmentShoot(void)
                 else
                 {
                     // 通常攻撃のエフェクト
-                    switch (nNumFirstCollisionPlayer)
+                    switch (m_apPlayer[nNumFirstCollisionPlayer]->GetControlIndex())
                     {
                     case PLAYER_1:
                         if (m_pBall->GetSpeed() < BALL_SHOOT_BIG_HIT_SPEED)

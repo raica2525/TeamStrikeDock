@@ -20,6 +20,7 @@
 #include "modelData.h"
 #include "text.h"
 #include "player.h"
+#include "game.h"
 
 //========================================
 // マクロ定義
@@ -46,6 +47,8 @@ CCustom::CCustom()
     memset(m_anMemoryPartsDown, NOT_EXIST, sizeof(m_anMemoryPartsDown));
     memset(m_anMemoryPartsWep, NOT_EXIST, sizeof(m_anMemoryPartsWep));
     memset(m_aEntryInfo, 0, sizeof(m_aEntryInfo));
+
+    m_bUseKeyboardInGame = false;
 }
 
 //=============================================================================
@@ -539,8 +542,21 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
         CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
 
         // Aボタンが押されたら
-        if (pInputJoypad->GetJoypadTrigger(nNumWho, CInputJoypad::BUTTON_A) || 
+        bool bTriggerA = false;
+        bool bTriggerReturn = false;
+        if (pInputJoypad->GetJoypadTrigger(nNumWho, CInputJoypad::BUTTON_A) ||
             pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) && nNumWho == PLAYER_1)
+        {
+            bTriggerA = true;
+
+            // P1がキーボードをゲームでも使うかどうか
+            if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) && nNumWho == PLAYER_1)
+            {
+                bTriggerReturn = true;
+            }
+        }
+
+        if (bTriggerA)
         {
             // 誰のUIかを取得
             int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
@@ -596,6 +612,10 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
 
             case CLICK_TYPE_READY:
                 ToggleReady(nParamWho);
+                if (nNumWho == PLAYER_1)
+                {
+                    m_bUseKeyboardInGame = bTriggerReturn;
+                }
                 break;
             }
         }
@@ -842,7 +862,57 @@ void CCustom::ToggleReady(int nNumWho)
 //=============================================================================
 void CCustom::JudgmentReady(void)
 {
+    // 現在のエントリー人数
+    int nNumCurrentEntryPlayer = 0;
 
+    // 待機中以外の人数を加算
+    for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+    {
+        if (m_aEntryInfo[nCntPlayer].status != ENTRY_STATUS_WAITING)
+        {
+            nNumCurrentEntryPlayer++;
+
+            // 準備完了していないなら、関数を抜ける
+            if (!m_aEntryInfo[nCntPlayer].bReady)
+            {
+                return;
+            }
+        }
+    }
+
+    // エントリー人数が2人以上（かつ準備完了している）なら、ゲームへ遷移
+    if (nNumCurrentEntryPlayer >= 2)
+    {
+        CFade::SetFade(CManager::MODE_GAME);
+        CGame::SetNextGame(CGame::TYPE_ARENA, nNumCurrentEntryPlayer, 3, m_bUseKeyboardInGame);
+
+        // プレイアブル、AIレベルを結びつけていく
+        int nIndexEntryPlayer = 0;
+        for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+        {
+            // エントリーしているキャラなら
+            if (m_aEntryInfo[nCntPlayer].status != ENTRY_STATUS_WAITING)
+            {
+                // 空いているところに、情報を結びつける
+                CPlayer::AI_LEVEL level = CPlayer::AI_LEVEL_NONE;
+                switch (m_aEntryInfo[nCntPlayer].status)
+                {
+                case ENTRY_STATUS_CP_LEVEL_1:
+                    level = CPlayer::AI_LEVEL_1;
+                    break;
+                case ENTRY_STATUS_CP_LEVEL_2:
+                    level = CPlayer::AI_LEVEL_2;
+                    break;
+                case ENTRY_STATUS_CP_LEVEL_3:
+                    level = CPlayer::AI_LEVEL_3;
+                    break;
+                }
+                CGame::SetPlayable(nIndexEntryPlayer, nCntPlayer);
+                CGame::SetAILevel(nIndexEntryPlayer, level);
+                nIndexEntryPlayer++;
+            }
+        }
+    }
 }
 
 //=============================================================================

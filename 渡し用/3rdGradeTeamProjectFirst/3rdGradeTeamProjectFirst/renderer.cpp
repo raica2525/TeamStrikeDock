@@ -22,7 +22,7 @@
 // 静的メンバ変数宣言
 //========================================
 #ifdef _DEBUG
-bool CRenderer::m_bDispFont = true;
+bool CRenderer::m_bDispFont = false;
 #endif
 
 //========================================
@@ -345,8 +345,8 @@ void CRenderer::GameDebugData(void)
     RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     char str[256];
 
-    // プレイヤー1の能力を取得
-    CPlayer* pPlayer = CGame::GetPlayer(PLAYER_1);
+    // 最初のプレイヤーの能力を取得
+    CPlayer* pPlayer = CGame::GetPlayer(0);
     CBall* pBall = CGame::GetBall();
 
     // プレイヤー1がいないなら関数を抜ける

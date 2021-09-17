@@ -162,10 +162,13 @@ void CDebug::CommonCommand(void)
                 CModelData* pModelData = CManager::GetModelData();
                 pModelData->LoadPartsList();
                 pModelData->LoadPartsRate();
-                for (int nCnt = 0; nCnt < CGame::GetNumAllPlayer(); nCnt++)
+                for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
                 {
                     CPlayer* pPlayer = CGame::GetPlayer(nCnt);
-                    pPlayer->LoadCustom();
+                    if (pPlayer)
+                    {
+                        pPlayer->LoadCustom();
+                    }
                 }
                 break;
             }

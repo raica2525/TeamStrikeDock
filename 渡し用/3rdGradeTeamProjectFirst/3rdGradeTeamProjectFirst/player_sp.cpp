@@ -93,7 +93,8 @@ void CPlayer::SpDecoy(void)
     pBall->SetMoveAngle(moveAngle);
     pBall->SetSpeed(CGame::GetBall()->GetSpeed());
     pBall->SetStartButtle(false);
-    pBall->SetWhoShooting(m_playable);
+    pBall->SetWhoShooting(CGame::GetPlayable(this));
+    pBall->SetPlayer(this);
     pBall->SetHitWallMax((int)m_afParam[PARAM_7_WEAPON_SP]);    // •â•’l‚©‚ç•Ç‚É“–‚½‚Á‚½‚çÁ‚¦‚éÅ‘å”‚ðÝ’è
 
     // ’Ç‰Á‚Å¶¬‚·‚éƒ{[ƒ‹
@@ -111,7 +112,8 @@ void CPlayer::SpDecoy(void)
             pBall->SetMoveAngle(moveAngle);
             pBall->SetSpeed(CGame::GetBall()->GetSpeed());
             pBall->SetStartButtle(false);
-            pBall->SetWhoShooting(m_playable);
+            pBall->SetWhoShooting(CGame::GetPlayable(this));
+            pBall->SetPlayer(this);
             pBall->SetHitWallMax((int)m_afParam[PARAM_7_WEAPON_SP]);
         }
     }

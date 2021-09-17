@@ -134,6 +134,7 @@ public:
     void SetHitWallMax(int nHitWallMax) { m_nCntHitWallMax = nHitWallMax; }
     void SetWallThrough(int nWallThrough) { m_bWallThrough = true; m_nCntWallThrough = nWallThrough; }
     void SetDispOff(void) { m_bDisp = false;  m_nCntDispingTime = 0; m_bUseCollision = false; }
+    void SetPlayer(CPlayer *pPlayer) { m_pPlayer = pPlayer; }
 
     /*========================================================
     // ÉQÉbÉ^Å[

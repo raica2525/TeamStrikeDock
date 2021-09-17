@@ -150,7 +150,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     CText::Load();
 
     // フェードの生成
-    m_pFade = CFade::Create(MODE_DEBUG_MENU);    // 最初はタイトル
+    m_pFade = CFade::Create(MODE_TITLE);    // 最初はタイトル
 
     return S_OK;
 }

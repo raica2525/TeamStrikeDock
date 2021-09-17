@@ -114,8 +114,8 @@ void CTitle::Update(void)
                 || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_X)
                 || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_Y))
             {
-                // 仮にゲームモードに移行
-                CFade::SetFade(CManager::MODE_GAME);
+                // 仮にカスタマイズ画面に移行
+                CFade::SetFade(CManager::MODE_CUSTOM);
 
                 // プレスボタンを点滅させる
                 if (pPressButton)

@@ -414,7 +414,8 @@ public:
     float GetSpd(void) { return m_fSpd; }
     float GetWei(void) { return m_fWei; }
     ControlInput *GetControlInput(void) { return &m_controlInput; }
-    int GetPlayable(void) { return m_playable; }
+    //int GetPlayable(void) { return m_playable; }  // ゲームのGetPlayableを使う
+    int GetControlIndex(void) { return m_nControlIndex; }
     int GetStopTime(void) { return m_nCntStopTime; }
     int GetAttackTime(void) { return m_nCntAttackTime; }
     int GetSwingCharge(void) { return m_nCntSwingCharge; }
@@ -446,7 +447,7 @@ private:
     CText *m_pText_Custom_Ex;                // カスタマイズ画面_特殊能力名
     CText *m_pText_Custom_Sp;                // カスタマイズ画面_必殺技名
                                              
-    int m_playable;                          // プレイアブルキャラ
+    int m_nControlIndex;                     // コントロールのインデックス
     int m_nPoint;                            // ポイント
     int m_nStock;                            // ストック数
     D3DXVECTOR3 m_startPos;                  // 開始位置を保持

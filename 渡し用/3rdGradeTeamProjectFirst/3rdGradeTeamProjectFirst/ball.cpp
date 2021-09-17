@@ -287,28 +287,32 @@ void CBall::Update(void)
         D3DXVECTOR3 outlinePos = GetPos();
         m_pOutline->SetPos(outlinePos);
 
-        // 色を更新
-        D3DXCOLOR outlineColor = DEFAULT_COLOR;
-        if (m_nWhoShooting == PLAYER_1 || m_nWhoAbsorbing == PLAYER_1)
+        // 色をプレイヤーによって変える
+        D3DXCOLOR outlineColor = PLAYER_COLOR_NONE;
+        if (m_pPlayer)
         {
-            outlineColor = PLAYER_COLOR_1;
+            if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
+            {
+                const int nWhoColor = m_pPlayer->GetControlIndex();
+                if (nWhoColor == PLAYER_1)
+                {
+                    outlineColor = PLAYER_COLOR_1;
+                }
+                else if (nWhoColor == PLAYER_2)
+                {
+                    outlineColor = PLAYER_COLOR_2;
+                }
+                else if (nWhoColor == PLAYER_3)
+                {
+                    outlineColor = PLAYER_COLOR_3;
+                }
+                else if (nWhoColor == PLAYER_4)
+                {
+                    outlineColor = PLAYER_COLOR_4;
+                }
+            }
         }
-        else if (m_nWhoShooting == PLAYER_2 || m_nWhoAbsorbing == PLAYER_2)
-        {
-            outlineColor = PLAYER_COLOR_2;
-        }
-        else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
-        {
-            outlineColor = PLAYER_COLOR_3;
-        }
-        else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
-        {
-            outlineColor = PLAYER_COLOR_4;
-        }
-        else
-        {
-            outlineColor = PLAYER_COLOR_NONE;
-        }
+
         m_pOutline->SetCol(outlineColor);
     }
 }
@@ -375,26 +379,39 @@ void CBall::AuraEffect(void)
         // 色を現在ボールを持っている人に合わせて変える
         D3DXCOLOR col = DEFAULT_COLOR;
         D3DXCOLOR colChangeRate = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-        if (m_nWhoShooting == PLAYER_1 || m_nWhoAbsorbing == PLAYER_1)
+        if (m_pPlayer)
         {
-            col = D3DXCOLOR(1.0f, 0.99f, 0.0f, 1.0f);
-            colChangeRate.g = -0.05f;
-        }
-        else if (m_nWhoShooting == PLAYER_2 || m_nWhoAbsorbing == PLAYER_2)
-        {
-            col = D3DXCOLOR(0.588f, 0.937f, 1.0f, 1.0f);
-            colChangeRate.g = -0.03f;
-            colChangeRate.r = -0.03f;
-        }
-        else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
-        {
-            col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
-            colChangeRate.r = -0.05f;
-        }
-        else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
-        {
-            col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
-            colChangeRate.g = 0.01f;
+            if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
+            {
+                const int nWhoColor = m_pPlayer->GetControlIndex();
+                if (nWhoColor == PLAYER_1)
+                {
+                    col = D3DXCOLOR(1.0f, 0.99f, 0.0f, 1.0f);
+                    colChangeRate.g = -0.05f;
+                }
+                else if (nWhoColor == PLAYER_2)
+                {
+                    col = D3DXCOLOR(0.588f, 0.937f, 1.0f, 1.0f);
+                    colChangeRate.g = -0.03f;
+                    colChangeRate.r = -0.03f;
+                }
+                else if (nWhoColor == PLAYER_3)
+                {
+                    col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+                    colChangeRate.r = -0.05f;
+                }
+                else if (nWhoColor == PLAYER_4)
+                {
+                    col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
+                    colChangeRate.g = 0.01f;
+                }
+            }
+            else
+            {
+                col = D3DXCOLOR(0.835f, 0.901f, 1.0f, 1.0f);
+                colChangeRate.g = -0.05f;
+                colChangeRate.r = -0.025f;
+            }
         }
         else
         {
@@ -427,26 +444,39 @@ void CBall::AppearEffect(void)
         // 色を現在ボールを持っている人に合わせて変える
         D3DXCOLOR col = DEFAULT_COLOR;
         D3DXCOLOR colChangeRate = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-        if (m_nWhoShooting == PLAYER_1 || m_nWhoAbsorbing == PLAYER_1)
+        if (m_pPlayer)
         {
-            col = D3DXCOLOR(1.0f, 0.7f, 0.0f, 1.0f);
-            colChangeRate.g = -0.05f;
-        }
-        else if (m_nWhoShooting == PLAYER_2 || m_nWhoAbsorbing == PLAYER_2)
-        {
-            col = D3DXCOLOR(0.588f, 0.937f, 1.0f, 1.0f);
-            colChangeRate.g = -0.03f;
-            colChangeRate.r = -0.03f;
-        }
-        else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
-        {
-            col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
-            colChangeRate.r = -0.05f;
-        }
-        else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
-        {
-            col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
-            colChangeRate.g = 0.01f;
+            if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
+            {
+                const int nWhoColor = m_pPlayer->GetControlIndex();
+                if (nWhoColor == PLAYER_1)
+                {
+                    col = D3DXCOLOR(1.0f, 0.7f, 0.0f, 1.0f);
+                    colChangeRate.g = -0.05f;
+                }
+                else if (nWhoColor == PLAYER_2)
+                {
+                    col = D3DXCOLOR(0.588f, 0.937f, 1.0f, 1.0f);
+                    colChangeRate.g = -0.03f;
+                    colChangeRate.r = -0.03f;
+                }
+                else if (nWhoColor == PLAYER_3)
+                {
+                    col = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+                    colChangeRate.r = -0.05f;
+                }
+                else if (nWhoColor == PLAYER_4)
+                {
+                    col = D3DXCOLOR(0.933f, 0.478f, 0.02f, 1.0f);
+                    colChangeRate.g = 0.01f;
+                }
+            }
+            else
+            {
+                col = D3DXCOLOR(0.835f, 0.901f, 1.0f, 1.0f);
+                colChangeRate.g = -0.05f;
+                colChangeRate.r = -0.025f;
+            }
         }
         else
         {
@@ -483,26 +513,29 @@ void CBall::LocusEffect(void)
         pos.y + (LOCUS_SCALE * m_moveAngle.x * sinf(D3DXToRadian(-90.0f))) + (LOCUS_SCALE * m_moveAngle.y * cosf(D3DXToRadian(-90.0f))), LOCUS_POS_Z);
 
     // 色をプレイヤーによって変える
-    D3DXCOLOR locusColor = DEFAULT_COLOR;
-    if (m_nWhoShooting == PLAYER_1 || m_nWhoAbsorbing == PLAYER_1)
+    D3DXCOLOR locusColor = PLAYER_COLOR_NONE;
+    if (m_pPlayer)
     {
-        locusColor = PLAYER_COLOR_1;
-    }
-    else if (m_nWhoShooting == PLAYER_2 || m_nWhoAbsorbing == PLAYER_2)
-    {
-        locusColor = PLAYER_COLOR_2;
-    }
-    else if (m_nWhoShooting == PLAYER_3 || m_nWhoAbsorbing == PLAYER_3)
-    {
-        locusColor = PLAYER_COLOR_3;
-    }
-    else if (m_nWhoShooting == PLAYER_4 || m_nWhoAbsorbing == PLAYER_4)
-    {
-        locusColor = PLAYER_COLOR_4;
-    }
-    else
-    {
-        locusColor = PLAYER_COLOR_NONE;
+        if (IS_BITOFF(m_shootFlag, SHOOT_FLAG_BUNT))
+        {
+            const int nWhoColor = m_pPlayer->GetControlIndex();
+            if (nWhoColor == PLAYER_1)
+            {
+                locusColor = PLAYER_COLOR_1;
+            }
+            else if (nWhoColor == PLAYER_2)
+            {
+                locusColor = PLAYER_COLOR_2;
+            }
+            else if (nWhoColor == PLAYER_3)
+            {
+                locusColor = PLAYER_COLOR_3;
+            }
+            else if (nWhoColor == PLAYER_4)
+            {
+                locusColor = PLAYER_COLOR_4;
+            }
+        }
     }
 
     // 軌跡の生成
@@ -697,8 +730,12 @@ D3DXVECTOR3 CBall::Move(D3DXVECTOR3 pos)
     else if (IS_BITON(m_shootFlag, SHOOT_FLAG_BUNT))
     {
         // バントボールは一定速度かつ重量の影響を受ける
+        if (m_nCntStopTime <= 0)
+        {
+            // 硬直中は、カウンタを加算しない
+            m_nCntBuntTime++;
+        }
         fSpeed = BALL_BUNT_SPEED;
-        m_nCntBuntTime++;
         fGravity = m_nCntBuntTime * BALL_BUNT_GRAVITY;
     }
 
@@ -905,7 +942,7 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
             m_moveAngle = BALL_FIRST_MOVE_ANGLE;
             if (m_pPlayer)
             {
-                m_nWhoShooting = m_pPlayer->GetPlayable();
+                m_nWhoShooting = CGame::GetPlayable(m_pPlayer);
             }
         }
         else
@@ -1048,7 +1085,7 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
 
     // プレイヤーの情報を取得し、誰が放ったかを記録
     m_pPlayer = pPlayer;
-    m_nWhoShooting = m_pPlayer->GetPlayable();
+    m_nWhoShooting = CGame::GetPlayable(pPlayer);
 
     // 受け取ったシュートフラグの考慮
     if (IS_BITON(flag, SHOOT_FLAG_THROW))
@@ -1192,7 +1229,7 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
                     {
                         nEffectFrame = BALL_SHOOT_EFFECT_LEAST_FRAME;
                     }
-                    CManager::GetInputJoypad()->StartEffect(m_nWhoShooting, nEffectFrame);
+                    CManager::GetInputJoypad()->StartEffect(m_pPlayer->GetControlIndex(), nEffectFrame);
                 }
             }
         }
@@ -1307,6 +1344,6 @@ void CBall::SetAbsorb(CPlayer *pPlayer)
     BITON(m_absorbFlag, ABSORB_FLAG_MOVING);
     m_pPlayer = pPlayer;
     m_nWhoShooting = BALL_NOT_ANYONE;           // プレイヤーへの当たり判定を消すため
-    m_nWhoAbsorbing = pPlayer->GetPlayable();   // 次その吸収したプレイヤーだけがボールに触れるようにするため
+    m_nWhoAbsorbing = CGame::GetPlayable(pPlayer);   // 次その吸収したプレイヤーだけがボールに触れるようにするため
     m_nCntAbsorbTime = BALL_ABSORB_MAX_TIME;    // 吸収時間のカウントダウンをスタート
 }
