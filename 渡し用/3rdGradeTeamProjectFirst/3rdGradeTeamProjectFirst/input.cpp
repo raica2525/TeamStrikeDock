@@ -339,7 +339,7 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
         }
 
         //池田変更
-        m_aController[nCntCntroller].pDIJoypad->EnumObjects((LPDIENUMDEVICEOBJECTSCALLBACK)EnumObjectCallBack, &m_adwNumFFBAxis, DIDFT_AXIS);
+        m_aController[nCntCntroller].pDIJoypad->EnumObjects((LPDIENUMDEVICEOBJECTSCALLBACK)EnumObjectCallBack, &m_adwNumFFBAxis[nCntCntroller], DIDFT_AXIS);
 
         //池田追加
         //振動用
@@ -365,9 +365,9 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
         eff.lpvTypeSpecificParams = &cf;
         eff.dwStartDelay = 0;
 
-        m_aController[nCntCntroller].pDIJoypad->CreateEffect(GUID_ConstantForce, &eff, &m_aEffectInput[nCntCntroller], NULL); //エフェクトを生成
+        HRESULT hr = m_aController[nCntCntroller].pDIJoypad->CreateEffect(GUID_ConstantForce, &eff, &m_aEffectInput[nCntCntroller], NULL); //エフェクトを生成
         //ここまで
-
+		
         // 各軸ごとに、無効のゾーン値を設定する。
         // 無効ゾーンとは、中央からの微少なジョイスティックの動きを無視する範囲のこと。
         // 指定する値は、10000に対する相対値(2000なら20パーセント)。
