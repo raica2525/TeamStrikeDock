@@ -223,7 +223,7 @@ CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle,
 #ifdef _DEBUG
     if (collisionSize != DEFAULT_VECTOR && CManager::GetRenderer()->GetDispFont())
     {
-        CUI *pDebugCollision = Create(52, collisionPos, collisionSize, 0, DEFAULT_COLOR);
+        CUI *pDebugCollision = Create(52, collisionPos, collisionSize, 0, DEFAULT_COLOR, true);
         pDebugCollision->SetReloadUI();
     }
 #endif

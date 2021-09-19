@@ -1708,6 +1708,138 @@ UISET
 END_UISET
 
 #---------------------------------------
+# [] ReadyToFightの背景
+#---------------------------------------
+UISET
+	ACCESS_NUM = 124
+	TYPE = 68
+	POS = 640.0 231.0
+	SIZE = 0.0 350.0
+	COL = 0.75 0.75 0.75 1.0	# 0.0～1.0
+	FRONT_TEXT = 1		# bool
+	ACTION1 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 75.0
+	PARAM2 = 0
+	PARAM3 = 3
+	PARAM5 = 1280.0
+	ACTION2 = 5		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 0.005
+	PARAM1 = 0.005
+	PARAM2 = 0.005
+	PARAM3 = 4
+	PARAM4 = 80
+END_UISET
+
+#---------------------------------------
+# [] ReadyToFight
+#---------------------------------------
+UISET
+	ACCESS_NUM = 48
+	TYPE = 69
+	POS = 640.0 231.0
+	SIZE = 1280.0 350.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 640.0 231.0
+	COLLISION_SIZE = 1280.0 275.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 5.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 0.05
+	PARAM1 = 1
+	PARAM2 = 21
+	ACTION2 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 40
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 1
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 5
+	PARAM1 = -1
+END_UISET
+
+#---------------------------------------
+# [] 戻る
+#---------------------------------------
+UISET
+	ACCESS_NUM = 49
+	TYPE = 70
+	POS = -50.0 33.0
+	SIZE = 100.0 100.0
+	COLLISION_POS = 50.0 25.0
+	COLLISION_SIZE = 150.0 70.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 3		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 5.0
+	PARAM2 = 1.0
+	PARAM3 = 3
+	PARAM5 = 50.0
+	ACTION2 = 3		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = -5.0
+	PARAM2 = 1.0
+	PARAM3 = 3
+	PARAM5 = -50.0
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 6
+	PARAM1 = -1
+END_UISET
+
+#---------------------------------------
+# [] ストック
+#---------------------------------------
+UISET
+	ACCESS_NUM = 50
+	TYPE = 71
+	POS = 1330.0 33.0
+	SIZE = 100.0 100.0
+	COLLISION_POS = 1230.0 25.0
+	COLLISION_SIZE = 150.0 70.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION1 = 3		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = -5.0
+	PARAM2 = 1.0
+	PARAM3 = 3
+	PARAM5 = 1230.0
+	ACTION2 = 9		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 6
+	PARAM1 = 0
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 7
+	PARAM1 = -1
+END_UISET
+
+#---------------------------------------
 # [] カスタマイズ画面のバナー
 #---------------------------------------
 UISET

@@ -47,9 +47,10 @@
 #define PLAYER_DEATH_STOP_POS_Y -99999.9f                   // 死亡時に止めておく高さ
 #define PLAYER_DEATH_STOP_FRAME 45                          // 死亡時に、止まるフレーム数
 #define PLAYER_SET_WALK_SMOKE_VALUE 6.0f                    // プレイヤーが砂煙を発生させる値
+#define PLAYER_WEAPON_LOOK_FRAME 250                        // カスタマイズ画面で武器を見るフレーム数
 
 // プレイヤーの防御周り
-#define PLAYER_MAX_STOCK 8                                  // ストックの最大数
+#define PLAYER_MAX_STOCK 6                                  // ストックの最大数
 #define PLAYER_LUCKY_GUARD_MAX 10000                        // ラッキーガードの最大値（これ分の防御力(だいたい防御力は1000くらい？)）
 #define PLAYER_TAKE_DAMAGE_RATE_FROM_BALL 10.0f             // ボールからダメージを受けるとき、速度にかける割合
 #define PLAYER_TAKE_DAMAGE_BORDER_DAMAGE 500.0f             // 小やられか大やられの境目ダメージ
@@ -204,6 +205,8 @@ public:
         ANIM_ABSORB,        // 吸収（アピール）
         ANIM_BLOWN,         // 吹き飛ばされ
         ANIM_THIRD_JUMP,    // 3段ジャンプ
+        ANIM_CUSTOM_IDLE,   // カスタマイズ画面での待機
+        ANIM_WEAPON_LOOK,   // カスタマイズ画面での武器を見る
         ANIM_MAX,
     }ANIMATION;
 
@@ -396,6 +399,7 @@ public:
     void SetDisp(bool bDisp) { m_bDisp = bDisp; }
     void ResetStatusEveryRound(void);   // 毎ラウンドリセットするステータス
     void SetDispAbility(bool bDisp) { m_bDispAbility = bDisp; }
+    void SetCustomWeaponLook(void) { if (m_nCntAttackAnimTime <= 0)m_nCntAttackAnimTime = PLAYER_WEAPON_LOOK_FRAME; }
 
     /*========================================================
     // ゲッター

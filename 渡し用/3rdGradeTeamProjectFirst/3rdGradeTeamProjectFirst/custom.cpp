@@ -48,7 +48,8 @@ CCustom::CCustom()
     memset(m_anMemoryPartsWep, NOT_EXIST, sizeof(m_anMemoryPartsWep));
     memset(m_aEntryInfo, 0, sizeof(m_aEntryInfo));
 
-    m_bUseKeyboardInGame = false;
+    m_bClickReadyToFight = false;
+    m_bDispReadyToFight = false;
 }
 
 //=============================================================================
@@ -157,6 +158,13 @@ HRESULT CCustom::Init(void)
     // カメラのロックオン場所を変える
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
 
+    // ストック数表示を更新
+    CUI *pStock = CUI::GetAccessUI(SELECT_STOCK);
+    if (pStock)
+    {
+        pStock->SetTexturePlace(CGame::GetStock() - 1, PLAYER_MAX_STOCK);
+    }
+
     //// BGMを再生
     //CSound *pSound = CManager::GetSound();
     //pSound->Play(CSound::LABEL_BGM_RESULT);
@@ -246,11 +254,14 @@ void CCustom::Uninit(void)
 //=============================================================================
 void CCustom::Update(void)
 {
+    // ReadyToFightが押されたかどうかチェックするフラグを一度初期化
+    m_bClickReadyToFight = false;
+
     // カーソル移動
     MoveCursor();
 
-    // 全員が準備完了できているかの判断
-    JudgmentReady();
+    // 準備完了できているかの判断
+    JudgmentReadyToFight();
 }
 
 //=============================================================================
@@ -471,23 +482,41 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
             int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
             int nParamType = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_TYPE);
 
-            // その人の待機中は、チェンジボタン以外押せない
-            if (m_aEntryInfo[nParamWho].status == ENTRY_STATUS_WAITING && nParamType != CLICK_TYPE_CHANGE)
+            // 特定の人のUIなら
+            if (nParamWho >= PLAYER_1 && nParamWho <= PLAYER_4)
             {
-                continue;
-            }
+                // その人の待機中は、チェンジボタン以外押せない
+                if (m_aEntryInfo[nParamWho].status == ENTRY_STATUS_WAITING && nParamType != CLICK_TYPE_CHANGE)
+                {
+                    continue;
+                }
 
-            // その人の準備完了中は、準備完了ボタン以外押せない
-            if (m_aEntryInfo[nParamWho].bReady && nParamType != CLICK_TYPE_READY)
-            {
-                continue;
-            }
+                // その人の準備完了中は、準備完了ボタンと詳細ボタン以外押せない
+                if (m_aEntryInfo[nParamWho].bReady && nParamType != CLICK_TYPE_READY && nParamType != CLICK_TYPE_DETAIL)
+                {
+                    continue;
+                }
 
-            // カーソルが表示されていているかつ、エントリー状態がプレイヤーなら
-            if (m_aEntryInfo[nParamWho].bUseCursor && m_aEntryInfo[nParamWho].status == ENTRY_STATUS_PLAYER)
+                // カーソルが表示されていているかつ、エントリー状態がプレイヤーなら
+                if (m_aEntryInfo[nParamWho].bUseCursor && m_aEntryInfo[nParamWho].status == ENTRY_STATUS_PLAYER)
+                {
+                    // 本人しか選択肢を変えられない
+                    if (nNumWho != nParamWho)
+                    {
+                        continue;
+                    }
+                }
+            }
+            else
             {
-                // 本人しか選択肢を変えられない
-                if (nNumWho != nParamWho)
+                // ReadyToFight は、表示されていないと押せない
+                if (nParamType == CLICK_TYPE_READY_TO_FIGHT && !m_bDispReadyToFight)
+                {
+                    continue;
+                }
+
+                // ストック は、表示されていないと押せない
+                if (nParamType == CLICK_TYPE_STOCK && !m_bDispReadyToFight)
                 {
                     continue;
                 }
@@ -506,6 +535,13 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
                 // 今回当たっている選択肢
                 nNumSelectUICurrent = nCntSelect;
 
+                // 種類によっては、スライドイン処理
+                if (nParamType == CLICK_TYPE_RETURN)
+                {
+                    pSelectUI->SetActionLock(1, false);
+                    pSelectUI->SetActionLock(2, true);
+                }
+
                 // forを抜ける
                 break;
             }
@@ -520,6 +556,14 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
         {
             pResetUI->SetActionReset(0);
             pResetUI->SetActionLock(0, true);
+
+            // 種類によっては、スライドイン処理
+            int nParamType = (int)pResetUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_TYPE);
+            if (nParamType == CLICK_TYPE_RETURN)
+            {
+                pResetUI->SetActionLock(1, true);
+                pResetUI->SetActionLock(2, false);
+            }
         }
     }
 
@@ -565,15 +609,13 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
 
         if (bTriggerA)
         {
-            // 誰のUIかを取得
-            int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
-
             // 種類によって反応を変える
             switch ((int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_TYPE))
             {
             case CLICK_TYPE_PARTS:
                 {
                     // 誰がどこのパーツの左右どちらを選んだか
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
                     int nParamWhere = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHERE);
                     bool bRight = false;
                     if ((int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_RIGHT) == 1)
@@ -587,6 +629,7 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
             case CLICK_TYPE_CHANGE:
                 {
                     // 今の状態に応じて、次のエントリー状態にチェンジ
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
                     ENTRY_STATUS nextEntryStatus = ENTRY_STATUS_WAITING;
                     switch (m_aEntryInfo[nParamWho].status)
                     {
@@ -618,15 +661,47 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
                 break;
 
             case CLICK_TYPE_READY:
-                ToggleReady(nParamWho);
-                if (nNumWho == PLAYER_1)
                 {
-                    m_bUseKeyboardInGame = bTriggerReturn;
+                    // 1Pが押した場合、キーボード操作をするように登録
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
+                    ToggleReady(nParamWho);
+                    if (nNumWho == PLAYER_1)
+                    {
+                        CGame::SetUseKeyboard(bTriggerReturn);
+                    }
                 }
                 break;
 
             case CLICK_TYPE_DETAIL:
-                m_aEntryInfo[nParamWho].pPlayer->SetDispAbility(!m_aEntryInfo[nParamWho].pPlayer->GetDispAbility());
+                {
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
+                    m_aEntryInfo[nParamWho].pPlayer->SetDispAbility(!m_aEntryInfo[nParamWho].pPlayer->GetDispAbility());
+                }
+                break;
+
+            case CLICK_TYPE_READY_TO_FIGHT:
+                m_bClickReadyToFight = true;
+                break;
+
+            case CLICK_TYPE_RETURN:
+                // ある程度画面に表示されたら
+                if (pSelectUI->GetPosition().x > 40.0f)
+                {
+                    CFade::SetFade(CManager::MODE_TITLE);   // 仮にタイトル
+                }
+                break;
+
+            case CLICK_TYPE_STOCK:
+                {
+                    // ストックを取得し、加算し、反映
+                    int nStock = CGame::GetStock() + 1;
+                    if (nStock > PLAYER_MAX_STOCK)
+                    {
+                        nStock = 1;
+                    }
+                    pSelectUI->SetTexturePlace(nStock - 1, PLAYER_MAX_STOCK);
+                    CGame::SetStock(nStock);
+                }
                 break;
             }
         }
@@ -706,6 +781,8 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
             m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_EXIST_COLOR);
             m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_EXIST_COLOR);
             m_aEntryInfo[nNumWho].pText_Wep->SetColor(TEXT_EXIST_COLOR);
+            // 武器を見る
+            m_aEntryInfo[nNumWho].pPlayer->SetCustomWeaponLook();
         }
 
         if (nextEntryStatus == ENTRY_STATUS_PLAYER)
@@ -870,13 +947,16 @@ void CCustom::ToggleReady(int nNumWho)
 }
 
 //=============================================================================
-// 全員が準備完了できているかの判断
+// 準備完了できているかの判断
 // Author : 後藤慎之助
 //=============================================================================
-void CCustom::JudgmentReady(void)
+void CCustom::JudgmentReadyToFight(void)
 {
-    // 現在のエントリー人数
+    // 現在のエントリー人数、各UI
     int nNumCurrentEntryPlayer = 0;
+    CUI *pReadyToFightBg = CUI::GetAccessUI(124);
+    CUI *pReadyToFightText = CUI::GetAccessUI(SELECT_READY_TO_FIGHT);
+    CUI *pStock = CUI::GetAccessUI(SELECT_STOCK);
 
     // 待機中以外の人数を加算
     for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
@@ -888,16 +968,56 @@ void CCustom::JudgmentReady(void)
             // 準備完了していないなら、関数を抜ける
             if (!m_aEntryInfo[nCntPlayer].bReady)
             {
+                m_bDispReadyToFight = false;
+                if (pReadyToFightBg)
+                {
+                    pReadyToFightBg->SetActionReset(1);
+                    pReadyToFightBg->SetActionLock(1, true);
+                    pReadyToFightBg->SetActionReset(2);
+                    pReadyToFightBg->SetActionLock(2, true);
+                }
+                if (pReadyToFightText)
+                {
+                    pReadyToFightText->SetActionReset(1);
+                    pReadyToFightText->SetActionLock(1, true);
+                    pReadyToFightText->SetActionReset(2);
+                    pReadyToFightText->SetActionLock(2, true);
+                }
+                if (pStock)
+                {
+                    pStock->SetActionReset(1);
+                    pStock->SetActionLock(1, true);
+                }
                 return;
             }
         }
     }
 
-    // エントリー人数が2人以上（かつ準備完了している）なら、ゲームへ遷移
+    // エントリー人数が2人以上（かつ準備完了している）なら、ReadyToFightとストックを表示
     if (nNumCurrentEntryPlayer >= 2)
     {
+        m_bDispReadyToFight = true;
+        if (pReadyToFightBg)
+        {
+            pReadyToFightBg->SetActionLock(1, false);
+            pReadyToFightBg->SetActionLock(2, false);
+        }
+        if (pReadyToFightText)
+        {
+            pReadyToFightText->SetActionLock(1, false);
+            pReadyToFightText->SetActionLock(2, false);
+        }
+        if (pStock)
+        {
+            pStock->SetActionLock(1, false);
+        }
+    }
+
+    // ReadyToFightが押されたなら、ゲームへ遷移
+    if (m_bClickReadyToFight)
+    {
         CFade::SetFade(CManager::MODE_GAME);
-        CGame::SetNextGame(CGame::TYPE_ARENA, nNumCurrentEntryPlayer, 3, m_bUseKeyboardInGame);
+        CGame::SetNextGameInCustom(CGame::TYPE_ARENA, nNumCurrentEntryPlayer);
 
         // プレイアブル、AIレベルを結びつけていく
         int nIndexEntryPlayer = 0;
@@ -1048,6 +1168,8 @@ void CCustom::SelectParts(int nNumWho, int nNumWhere, bool bRight)
         nNumSaveParts = m_anMemoryPartsWep[nSelectIndex];
         m_aEntryInfo[nNumWho].pText_Wep->SetText(CManager::GetModelData()->CModelData::GetPartsList(nNumSaveParts)->cName);
         m_aEntryInfo[nNumWho].nNumSelectWep = nSelectIndex;
+        // 武器を見る
+        m_aEntryInfo[nNumWho].pPlayer->SetCustomWeaponLook();
         break;
     }
 

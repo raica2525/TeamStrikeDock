@@ -85,16 +85,22 @@ public:
     /*========================================================
     // セッター
     //======================================================*/
-    static void SetNextGame(TYPE gameType, int nNumPlayer, int nNumStock, bool bUseKeyboard = false) 
+    static void SetNextGameInDebug(TYPE gameType, int nNumPlayer, int nNumStock, bool bUseKeyboard = false) 
     {
         m_type = gameType;  m_nNumAllPlayer = nNumPlayer; m_nNumStock = nNumStock; m_bUseKeyboard = bUseKeyboard;
-    }   // 遷移前に、次のゲームを設定
+    }   // デバッグメニューで、次のゲームを設定
+    static void SetNextGameInCustom(TYPE gameType, int nNumPlayer)
+    {
+        m_type = gameType;  m_nNumAllPlayer = nNumPlayer;
+    }   // カスタマイズ画面で、次のゲームを設定
     static void SetIdxPlayer(int nNum, int nIdxPlayer) { m_anMemoryIdxPlayer[nNum] = nIdxPlayer; }  // プレイヤーのインデックス
     static void SetAILevel(int nNum, CPlayer::AI_LEVEL level) { m_aMemoryAILevel[nNum] = level; }   // AIレベル
     static void SetAddNumDefeatPlayer(void) { m_nNumDefeatPlayer++; }                       // やられたプレイヤー人数を増やす
     static void SetWorstPlayer(int player) { m_nWhoWorstPlayer = player; }                  // ワーストのプレイヤーを決める
     static void SetAddNumDeathPlayer(void) { m_nNumDeathPlayer++; }                         // 死んだプレイヤー人数を増やす
     static void SetQuitPause(void) { m_state = STATE_BUTTLE; m_bStopObjUpdate = false; }    // ポーズ状態をやめる
+    static void SetStock(int nStock) { m_nNumStock = nStock; }
+    static void SetUseKeyboard(bool bUseKeyboard) { m_bUseKeyboard = bUseKeyboard; }
 
     /*========================================================
     // ゲッター
@@ -114,6 +120,7 @@ public:
     static CEffect2D* GetPosi(void) { return m_pEffect2d_Posi; }                    // 反転合成を戻すためのエフェクトを取得
     static CNumberArray* GetNumArrayBallSpd(void) { return m_pNumArray_BallSpd; }   // ボールスピード表示を取得
     static bool GetUseKeyboard(void) { return m_bUseKeyboard; }                     // キーボードを使うかどうか取得
+    static int GetStock(void) { return m_nNumStock; }                               // ストック数を取得
 
     /*========================================================
     // 便利な関数

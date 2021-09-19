@@ -83,6 +83,9 @@ public:
         SELECT_2P_DETAIL,
         SELECT_3P_DETAIL,
         SELECT_4P_DETAIL,
+        SELECT_READY_TO_FIGHT,
+        SELECT_RETURN,
+        SELECT_STOCK,
         SELECT_MAX
     }SELECT;
 
@@ -98,11 +101,14 @@ public:
     // クリックしたものの種類
     typedef enum
     {
-        CLICK_TYPE_PARTS = 0,   // パーツ
-        CLICK_TYPE_READY,       // 準備完了
-        CLICK_TYPE_CHANGE,      // チェンジ
-        CLICK_TYPE_OSUSUME,     // オススメ
-        CLICK_TYPE_DETAIL,      // 詳細
+        CLICK_TYPE_PARTS = 0,        // パーツ
+        CLICK_TYPE_READY,            // 準備完了
+        CLICK_TYPE_CHANGE,           // チェンジ
+        CLICK_TYPE_OSUSUME,          // オススメ
+        CLICK_TYPE_DETAIL,           // 詳細
+        CLICK_TYPE_READY_TO_FIGHT,   // 戦いへ
+        CLICK_TYPE_RETURN,           // 戻る
+        CLICK_TYPE_STOCK,            // ストック
     }CLICK_TYPE;
 
     // エントリー状態
@@ -161,7 +167,7 @@ public:
     //======================================================*/
     void ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus);         // エントリー状態のチェンジ
     void ToggleReady(int nNumWho);                                             // 準備完了のトグル
-    void JudgmentReady(void);                                                  // 全員が準備完了できているかの判断
+    void JudgmentReadyToFight(void);                                           // 準備完了できているかの判断
 
     /*========================================================
     // パーツ選択周り
@@ -177,7 +183,8 @@ private:
 
     ENTRY_INFO m_aEntryInfo[MAX_PLAYER];      // エントリー情報
     
-    bool m_bUseKeyboardInGame;                // ゲームでキーボード操作するかどうか
+    bool m_bClickReadyToFight;                // ReadyToFightが押されたかどうか
+    bool m_bDispReadyToFight;                 // ReadyToFightを表示するかどうか
 };
 
 #endif

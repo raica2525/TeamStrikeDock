@@ -51,7 +51,7 @@ CNumberArray *CGame::m_pNumArray_BallSpd = NULL;
 
 CGame::TYPE CGame::m_type = TYPE_TRAINING;
 int CGame::m_nNumAllPlayer = 0;
-int CGame::m_nNumStock = 0;
+int CGame::m_nNumStock = 3; // 初期のストック数は3個
 bool CGame::m_bUseKeyboard = false;
 int CGame::m_anMemoryIdxPlayer[] = {};
 CPlayer::AI_LEVEL CGame::m_aMemoryAILevel[] = {};

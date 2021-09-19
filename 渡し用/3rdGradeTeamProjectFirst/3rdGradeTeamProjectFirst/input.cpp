@@ -365,7 +365,7 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
         eff.lpvTypeSpecificParams = &cf;
         eff.dwStartDelay = 0;
 
-        HRESULT hr = m_aController[nCntCntroller].pDIJoypad->CreateEffect(GUID_ConstantForce, &eff, &m_aEffectInput[nCntCntroller], NULL); //エフェクトを生成
+        m_aController[nCntCntroller].pDIJoypad->CreateEffect(GUID_ConstantForce, &eff, &m_aEffectInput[nCntCntroller], NULL); //エフェクトを生成
         //ここまで
 		
         // 各軸ごとに、無効のゾーン値を設定する。

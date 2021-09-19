@@ -740,8 +740,16 @@ void CPlayer::Update(void)
 //=============================================================================
 void CPlayer::UpdateMannequin(void)
 {
-    // モーションをまずは待機にする
-    GetAnimation()->SetAnimation(ANIM_IDLE);
+    // カスタマイズ画面での待機
+    GetAnimation()->SetAnimation(ANIM_CUSTOM_IDLE);
+
+    // 武器を変えたら、武器を見る
+    if (m_nCntAttackAnimTime > 0)
+    {
+        // 武器を見る
+        m_nCntAttackAnimTime--;
+        GetAnimation()->SetAnimation(ANIM_WEAPON_LOOK);
+    }
 
     // 表示中なら
     if (m_bDisp)
@@ -1268,7 +1276,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
         CText::ALIGN_LEFT, "Reggae One", TEXT_NOT_EXIST_COLOR);
 
     // クリッピングを生成
-    pPlayer->ApplyMusk(clipingPos, D3DXVECTOR3(298.0f, 650.0f, 0.0f));
+    pPlayer->ApplyMusk(clipingPos, D3DXVECTOR3(298.0f, 625.0f, 0.0f));
 
     // 初期化
     pPlayer->Init(pos, DEFAULT_SCALE);

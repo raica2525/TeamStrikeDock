@@ -262,11 +262,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_TRAINING, 1, 1, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_TRAINING, 1, 1, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_TRAINING, 1, 1);
+                    CGame::SetNextGameInDebug(CGame::TYPE_TRAINING, 1, 1);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 break;
@@ -280,11 +280,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 CGame::SetAILevel(PLAYER_2, CPlayer::AI_LEVEL_NONE);
@@ -293,11 +293,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 CGame::SetAILevel(PLAYER_2, CPlayer::AI_LEVEL_1);
@@ -306,11 +306,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 CGame::SetAILevel(PLAYER_2, CPlayer::AI_LEVEL_2);
@@ -319,11 +319,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 2, 3);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 2, 3);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 CGame::SetAILevel(PLAYER_2, CPlayer::AI_LEVEL_3);
@@ -332,11 +332,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 4, 3, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 4, 3, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 4, 3);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 4, 3);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 CGame::SetAILevel(PLAYER_2, CPlayer::AI_LEVEL_1);
@@ -347,11 +347,11 @@ void CDebugMenu::Update(void)
                 CFade::SetFade(CManager::MODE_GAME);
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN))
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 4, 3, true);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 4, 3, true);
                 }
                 else
                 {
-                    CGame::SetNextGame(CGame::TYPE_ARENA, 4, 3);
+                    CGame::SetNextGameInDebug(CGame::TYPE_ARENA, 4, 3);
                 }
                 CGame::SetAILevel(PLAYER_1, CPlayer::AI_LEVEL_NONE);
                 CGame::SetAILevel(PLAYER_2, CPlayer::AI_LEVEL_NONE);
