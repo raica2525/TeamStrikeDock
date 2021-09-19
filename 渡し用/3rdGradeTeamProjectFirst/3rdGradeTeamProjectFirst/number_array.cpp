@@ -15,7 +15,7 @@
 // 数字配列のコンストラクタ
 // Author : 後藤慎之助
 //========================================
-CNumberArray::CNumberArray() :CScene(OBJTYPE::OBJTYPE_UI)
+CNumberArray::CNumberArray() :CScene(OBJTYPE::OBJTYPE_UI_FRONT_TEXT)
 {
     m_nTexType = 0;
     memset(m_apNumber, 0, sizeof(m_apNumber));

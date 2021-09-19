@@ -148,6 +148,7 @@ public:
     D3DXVECTOR3 GetPosOld(void) { return m_posOld; }
     int GetWhoAbsorbing(void) { return m_nWhoAbsorbing; }
     D3DXVECTOR3 GetCollisionPos(void) { return GetPos() + BALL_COLLISION_POS_SLIDE; }
+    int GetDisp(void) { return m_bDisp; }
 
 private:
     COutline *m_pOutline;       // アウトライン

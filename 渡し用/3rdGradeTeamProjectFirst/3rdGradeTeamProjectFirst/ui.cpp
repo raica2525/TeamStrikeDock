@@ -28,7 +28,7 @@ CUI *CUI::m_apAccessUI[] = {};
 // UIのコンストラクタ
 // Author : 後藤慎之助
 //=========================================================
-CUI::CUI() :CScene2D(OBJTYPE::OBJTYPE_UI)
+CUI::CUI(CScene::OBJTYPE objtype) :CScene2D(objtype)
 {
     m_nTexType = 0;
     memset(m_aActionInfo, 0, sizeof(m_aActionInfo));
@@ -168,12 +168,20 @@ void CUI::Draw(void)
 // Author : 後藤慎之助
 //=========================================================
 CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col,
-    bool bUseAddiveSynthesis, int nAlphaTestBorder, bool bUseZBuffer, D3DXVECTOR3 collisionPos, D3DXVECTOR3 collisionSize)
+    bool bFrontText, bool bUseAddiveSynthesis, int nAlphaTestBorder, bool bUseZBuffer,  D3DXVECTOR3 collisionPos, D3DXVECTOR3 collisionSize)
 {
+    // メモリの確保
     CUI *pUI = NULL;
 
-    // メモリを確保
-    pUI = new CUI;
+    // タイプごとに、テキストの手前か後ろのUIかどうかを決める
+    if (bFrontText)
+    {
+        pUI = new CUI(CScene::OBJTYPE_UI_FRONT_TEXT);
+    }
+    else
+    {
+        pUI = new CUI(CScene::OBJTYPE_UI_BACK_TEXT);
+    }
 
     // テクスチャのタイプは先に結びつけておく
     pUI->m_nTexType = nTexType;
@@ -294,6 +302,7 @@ void CUI::Place(SET set)
                     D3DXCOLOR col = DEFAULT_COLOR;                      // 色
                     bool bAddBrend = false;                             // 加算合成
                     bool bUseZBuffer = false;                           // 3Dモデルの後ろに出すかどうか
+                    bool bFrontText = false;                            // テキストよりも手前かどうか
                     int nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_2D; // アルファテストのボーダー
                     bool bShaveTex = false;                             // 端の1ピクセル削るかどうか
                     int nIndexAction = 0;                               // アクションのインデックス    
@@ -375,6 +384,19 @@ void CUI::Place(SET set)
                             else
                             {
                                 bUseZBuffer = true;
+                            }
+                        }
+                        else if (strcmp(cHeadText, "FRONT_TEXT") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nBool);
+
+                            if (nBool == 0)
+                            {
+                                bFrontText = false;
+                            }
+                            else
+                            {
+                                bFrontText = true;
                             }
                         }
                         else if (strcmp(cHeadText, "ALPHA_TEST_BORDER") == 0)
@@ -486,7 +508,7 @@ void CUI::Place(SET set)
                     }
 
                     // 生成（アクションの情報も結びつける）
-                    CUI* pUI = Create(nTexType, pos, size, nRot, col, bAddBrend, nAlphaTestBorder, bUseZBuffer, collisionPos, collisionSize);
+                    CUI* pUI = Create(nTexType, pos, size, nRot, col, bFrontText, bAddBrend, nAlphaTestBorder, bUseZBuffer, collisionPos, collisionSize);
                     for (int nCnt = 0; nCnt < MAX_ACTION; nCnt++)
                     {
                         pUI->SetActionInfo(nCnt, aActionInfo[nCnt].action, aActionInfo[nCnt].bLock,

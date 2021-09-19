@@ -41,25 +41,6 @@ template<class T> T Divide(const T data0, const T data1)
 }
 
 //============================================================
-// シーン上の2Dポリゴンのデフォルトコンストラクタ
-// Author : 後藤慎之助
-//============================================================
-CScene2D::CScene2D()
-{
-    ZeroMemory(m_apTexture, sizeof(m_apTexture));
-    m_pVtxBuff = NULL;
-    m_pos = DEFAULT_VECTOR;
-    m_size = DEFAULT_VECTOR;
-    memset(m_anCounterAnim, 0, sizeof(m_anCounterAnim));
-    memset(m_anPatternAnim, 0, sizeof(m_anPatternAnim));
-
-    m_nNumTexture = 0;
-    memset(m_aBrend, BREND_NORMAL, sizeof(m_aBrend));
-
-    m_nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_2D;
-}
-
-//============================================================
 // シーン上の2Dポリゴンのオーバーライドされたコンストラクタ
 // Author : 後藤慎之助
 //============================================================

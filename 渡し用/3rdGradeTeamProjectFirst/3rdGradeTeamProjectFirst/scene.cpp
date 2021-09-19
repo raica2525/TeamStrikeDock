@@ -22,62 +22,6 @@ CScene *CScene::m_apTop[CScene::OBJTYPE_MAX] = {};
 CScene *CScene::m_apCur[CScene::OBJTYPE_MAX] = {};
 
 //========================================
-// シーン上のオブジェクトのデフォルトコンストラクタ
-// Author : 後藤慎之助
-//========================================
-CScene::CScene()
-{
-    // オブジェクトの種類をNULLにする
-    m_objType = OBJTYPE_NONE;
-
-    // 先頭がないなら、先頭に
-    if (m_apTop[m_objType] == NULL)
-    {
-        m_apTop[m_objType] = this;
-    }
-
-    // 現在における最新のオブジェクトがないなら、最新に
-    if (m_apCur[m_objType] == NULL)
-    {
-        m_apCur[m_objType] = this;
-    }
-
-    // 現在のオブジェクトの次のオブジェクトを、自分にする
-    m_apCur[m_objType]->m_pNext = this;
-
-    // 現在のオブジェクトが自分の場合
-    if (m_apCur[m_objType] == this)
-    {
-        // 自分の前のオブジェクトを、NULLにする
-        m_pPrev = NULL;
-    }
-    else
-    {
-        // 自分の前のオブジェクトを、現在のオブジェクトにする
-        m_pPrev = m_apCur[m_objType];
-    }
-
-    // 現在のオブジェクトを、自分にする
-    m_apCur[m_objType] = this;
-
-    // 自分の次のオブジェクトを、NULLにする
-    m_pNext = NULL;
-
-    // 増えたオブジェクトをカウント
-    m_nNumAll[m_objType]++;
-
-    // 全体の数をインクリメント
-    m_nNumObjectAll++;
-
-    // 使用するフラグをtrueに
-    m_bUse = true;
-
-#ifdef _DEBUG
-    m_bReloadUI = false;
-#endif
-}
-
-//========================================
 // シーン上のオブジェクトのオーバーライドされたコンストラクタ
 // Author : 後藤慎之助
 //========================================
@@ -220,7 +164,7 @@ void CScene::DrawExceptWaveAndUI(void)
     for (int nCnt = 0; nCnt < OBJTYPE_MAX; nCnt++)
     {
         // 波紋エフェクトかUI以外なら
-        if (nCnt != OBJTYPE_WAVE && nCnt != OBJTYPE_UI && nCnt != OBJTYPE_NONE_DRAW)
+        if (nCnt != OBJTYPE_WAVE && nCnt != OBJTYPE_UI_BACK_TEXT && nCnt != OBJTYPE_UI_FRONT_TEXT && nCnt != OBJTYPE_NONE_DRAW)
         {
             // 先頭、最新のものがあるなら
             if (m_apTop[nCnt] != NULL && m_apCur[nCnt] != NULL)
@@ -468,7 +412,7 @@ void CScene::ReleaseReloadUI(void)
 {
     for (int nCnt = 0; nCnt < OBJTYPE_MAX; nCnt++)
     {
-        if (nCnt == OBJTYPE_UI)
+        if (nCnt == OBJTYPE_UI_BACK_TEXT || nCnt == OBJTYPE_UI_FRONT_TEXT)
         {
             // 先頭、最新のものがあるなら
             if (m_apTop[nCnt] != NULL && m_apCur[nCnt] != NULL)

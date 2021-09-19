@@ -42,28 +42,6 @@ CBillboard::CBillboard(CScene::OBJTYPE objtype) :CScene(objtype)
 }
 
 //=============================================================================
-// デフォルトコンストラクタ
-// Author : 後藤慎之助
-//=============================================================================
-CBillboard::CBillboard()
-{
-    m_pTexture = NULL;
-    m_pVtxBuff = NULL;
-    D3DXMatrixIdentity(&m_mtxWorld);
-    m_pos = DEFAULT_VECTOR;
-    m_size = DEFAULT_VECTOR;
-    m_rot = DEFAULT_VECTOR;
-    m_scale = DEFAULT_SCALE;
-    m_col = DEFAULT_COLOR;
-    m_fTexX1 = 0.0f;
-    m_fTexX2 = 1.0f;
-    m_fTexY1 = 0.0f;
-    m_fTexY2 = 1.0f;
-    m_nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_3D;
-    m_fRotAngle = 0.0f;
-}
-
-//=============================================================================
 // デストラクタ
 // Author : 後藤慎之助
 //=============================================================================

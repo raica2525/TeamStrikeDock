@@ -165,14 +165,14 @@ public:
         PARAM_TEX_PLACE_PLACE,       // 何番目か
     }PARAM_TEX_PLACE;
 
-    CUI();
+    CUI(CScene::OBJTYPE objtype);
     ~CUI();
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
     void Uninit(void);
     void Update(void);
     void Draw(void);
     static CUI *Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle, D3DXCOLOR col,
-        bool bUseAddiveSynthesis = false, int nAlphaTestBorder = 0, bool bUseZBuffer = false,
+        bool bFrontText = false, bool bUseAddiveSynthesis = false, int nAlphaTestBorder = 0, bool bUseZBuffer = false,
         D3DXVECTOR3 collisionPos = DEFAULT_VECTOR, D3DXVECTOR3 collisionSize = DEFAULT_VECTOR);
     static void Place(SET set);     // 外部ファイルからUIの配置
 

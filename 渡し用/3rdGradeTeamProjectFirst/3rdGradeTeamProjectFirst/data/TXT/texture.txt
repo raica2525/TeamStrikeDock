@@ -550,4 +550,68 @@ TEXTURESET
     NAME = data/TEXTURE/065_changeP4.png
 END_TEXTURESET
 
+#---------------------------------------
+# [66] おすすめ
+#---------------------------------------
+TEXTURESET
+    TYPE = 66
+    NAME = data/TEXTURE/066_osusume.png
+END_TEXTURESET
+
+#---------------------------------------
+# [67] 詳細
+#---------------------------------------
+TEXTURESET
+    TYPE = 67
+    NAME = data/TEXTURE/067_detail.png
+END_TEXTURESET
+
+#---------------------------------------
+# [68] ReadyToFight背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 68
+    NAME = data/TEXTURE/068_ReadyBg.png
+END_TEXTURESET
+
+#---------------------------------------
+# [69] ReadyToFight文字
+#---------------------------------------
+TEXTURESET
+    TYPE = 69
+    NAME = data/TEXTURE/069_ReadyText.png
+END_TEXTURESET
+
+#---------------------------------------
+# [70] 戻る
+#---------------------------------------
+TEXTURESET
+    TYPE = 70
+    NAME = data/TEXTURE/070_return.png
+END_TEXTURESET
+
+#---------------------------------------
+# [71] ストック変更
+#---------------------------------------
+TEXTURESET
+    TYPE = 71
+    NAME = data/TEXTURE/071_changeStock.png
+END_TEXTURESET
+
+#---------------------------------------
+# [72] ステータス
+#---------------------------------------
+TEXTURESET
+    TYPE = 72
+    NAME = data/TEXTURE/072_status.png
+END_TEXTURESET
+
+#---------------------------------------
+# [73] アビリティ
+#---------------------------------------
+TEXTURESET
+    TYPE = 73
+    NAME = data/TEXTURE/073_ability.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

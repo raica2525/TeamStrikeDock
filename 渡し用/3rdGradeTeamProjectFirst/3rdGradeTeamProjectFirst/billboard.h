@@ -21,7 +21,6 @@
 class CBillboard : public CScene
 {
 public:
-    CBillboard();
     CBillboard(OBJTYPE objtype);
     virtual ~CBillboard();
     virtual HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);

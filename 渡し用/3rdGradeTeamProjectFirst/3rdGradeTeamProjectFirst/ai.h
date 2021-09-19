@@ -98,6 +98,7 @@ public:
     void GetAvoidTime(void);                    // 避ける時間を得る
     void GetWaitTime(void);                     // 待つ時間を得る
     void DontMove(bool bUseTurn);               // 移動しない
+    bool IsFacingBall(void);                    // ボールの方を向いているか
     void RushToBall(void);                      // ボールに詰め寄る
     void RunAwayFromBall(void);                 // ボールから逃げる
     bool JumpBecauseBallUp(void);               // ボールが上にあるからジャンプする

@@ -43,7 +43,7 @@ public:
         SELECT_1P_DOWN_LEFT,
         SELECT_1P_WEP_RIGHT,
         SELECT_1P_WEP_LEFT,
-        SELECT_1P_REDAY,
+        SELECT_1P_READY,
         SELECT_2P_HEAD_RIGHT,
         SELECT_2P_HEAD_LEFT,
         SELECT_2P_UP_RIGHT,
@@ -52,7 +52,7 @@ public:
         SELECT_2P_DOWN_LEFT,
         SELECT_2P_WEP_RIGHT,
         SELECT_2P_WEP_LEFT,
-        SELECT_2P_REDAY,
+        SELECT_2P_READY,
         SELECT_3P_HEAD_RIGHT,
         SELECT_3P_HEAD_LEFT,
         SELECT_3P_UP_RIGHT,
@@ -61,7 +61,7 @@ public:
         SELECT_3P_DOWN_LEFT,
         SELECT_3P_WEP_RIGHT,
         SELECT_3P_WEP_LEFT,
-        SELECT_3P_REDAY,
+        SELECT_3P_READY,
         SELECT_4P_HEAD_RIGHT,
         SELECT_4P_HEAD_LEFT,
         SELECT_4P_UP_RIGHT,
@@ -70,15 +70,19 @@ public:
         SELECT_4P_DOWN_LEFT,
         SELECT_4P_WEP_RIGHT,
         SELECT_4P_WEP_LEFT,
-        SELECT_4P_REDAY,
+        SELECT_4P_READY,
         SELECT_1P_CHANGE,
         SELECT_2P_CHANGE,
         SELECT_3P_CHANGE,
         SELECT_4P_CHANGE,
-        //SELECT_1P_OSUSUME,
-        //SELECT_2P_OSUSUME,
-        //SELECT_3P_OSUSUME,
-        //SELECT_4P_OSUSUME,
+        SELECT_1P_OSUSUME,
+        SELECT_2P_OSUSUME,
+        SELECT_3P_OSUSUME,
+        SELECT_4P_OSUSUME,
+        SELECT_1P_DETAIL,
+        SELECT_2P_DETAIL,
+        SELECT_3P_DETAIL,
+        SELECT_4P_DETAIL,
         SELECT_MAX
     }SELECT;
 
@@ -98,6 +102,7 @@ public:
         CLICK_TYPE_READY,       // 準備完了
         CLICK_TYPE_CHANGE,      // チェンジ
         CLICK_TYPE_OSUSUME,     // オススメ
+        CLICK_TYPE_DETAIL,      // 詳細
     }CLICK_TYPE;
 
     // エントリー状態
@@ -119,7 +124,8 @@ public:
         CUI *pUI_Bg_Select;             // 選択中の背景
         CUI *pUI_Bg_Select_Out_Frame;   // 外側の選択枠（色付き）
         CUI *pUI_Bg_Select_In_Frame;    // 内側の選択枠
-        CUI *pUI_Bg_Reday;              // 準備完了の背景
+        CUI *pUI_Bg_Select_Status;      // 各ステータスの文字
+        CUI *pUI_Bg_Ready;              // 準備完了の背景
         int nNumSelectHead;             // 頭パーツ選択
         int nNumSelectUp;               // 上半身パーツ選択
         int nNumSelectDown;             // 下半身パーツ選択

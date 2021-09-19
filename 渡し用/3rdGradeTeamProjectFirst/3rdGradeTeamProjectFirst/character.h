@@ -33,7 +33,6 @@ class CAnimation;
 class CCharacter : public CScene
 {
 public:
-    CCharacter();
     CCharacter(OBJTYPE objType);
     ~CCharacter();
 

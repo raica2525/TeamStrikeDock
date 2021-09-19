@@ -52,7 +52,7 @@ CNumber *CRanking::m_apNumber[MAX_RANKING_NUMBER] = {};
 // ランキングのコンストラクタ
 // Author : 後藤慎之助
 //========================================
-CRanking::CRanking() :CScene(OBJTYPE::OBJTYPE_UI)
+CRanking::CRanking() :CScene(OBJTYPE::OBJTYPE_UI_FRONT_TEXT)
 {
     m_nCntTime = 0;
 

@@ -34,19 +34,19 @@ public:
         OBJTYPE_BALL,               // ボール
         //OBJTYPE_ENEMY,            // エネミー（今回はいない、その代わりCPUがいる）
         OBJTYPE_PLAYER,             // プレイヤー
-        OBJTYPE_BLOCK,              // ブロック
+        //OBJTYPE_BLOCK,            // ブロック（今回は使っていない）
         OBJTYPE_MODEL_EFFECT,       // モデルエフェクト
-        OBJTYPE_ITEM,               // アイテム
+        //OBJTYPE_ITEM,             // アイテム（今回は使っていない）
         OBJTYPE_EFFECT3D,           // エフェクト3D
-        OBJTYPE_EFFECT2D_BACK,      // エフェクト2D（UIより後ろ）
-        OBJTYPE_UI,                 // UI
+        OBJTYPE_EFFECT2D_BACK_UI,   // エフェクト2D（UIより後ろ）
+        OBJTYPE_UI_BACK_TEXT,       // UI（テキストより後ろ）
         OBJTYPE_TEXT,               // テキスト
-        OBJTYPE_EFFECT2D_FRONT,     // エフェクト2D（UIより手前）
+        OBJTYPE_UI_FRONT_TEXT,      // UI（テキストより手前）
+        OBJTYPE_EFFECT2D_FRONT_UI,  // エフェクト2D（UIより手前）
         OBJTYPE_WAVE,               // 画面上に出るウェーブ
         OBJTYPE_MAX                 // オブジェクトの種類の最大数
     }OBJTYPE;
 
-    CScene();
     CScene(OBJTYPE objType);    // イニシャライザでオブジェクトタイプを紐づけ
     virtual ~CScene();  // 親クラスのデストラクタにvirtualをつけることで、メモリリークを抑える
     virtual HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size) = 0;

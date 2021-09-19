@@ -386,19 +386,37 @@ void CAi::DontMove(bool bUseTurn)
     // 移動しない程度にボールのほうを振り向くなら
     if (bUseTurn)
     {
-        // ボールを取得
-        CBall* pBall = CGame::GetBall();
-
         // ボールのほうを向いていないならそちらを向く
-        if (pBall->GetPos().x > m_pPlayer->GetPos().x && m_pPlayer->GetRot().y == PLAYER_ROT_LEFT ||
-            pBall->GetPos().x < m_pPlayer->GetPos().x && m_pPlayer->GetRot().y == PLAYER_ROT_RIGHT)
+        if (!IsFacingBall())
         {
+            // ボールを取得
+            CBall* pBall = CGame::GetBall();
             float fAngle = GetAngleToTarget3D2D(m_pPlayer->GetPos(), pBall->GetPos());
 
             m_pPlayer->GetControlInput()->bTiltedLeftStick = true;
             m_pPlayer->GetControlInput()->fLeftStickAngle = fAngle;
         }
     }
+}
+
+//=============================================================================
+// ボールの方を向いているか
+// Author : 後藤慎之助
+//=============================================================================
+bool CAi::IsFacingBall(void)
+{
+    // ボールを取得
+    CBall* pBall = CGame::GetBall();
+
+    // ボールのほうを向いていない
+    if (pBall->GetPos().x > m_pPlayer->GetPos().x && m_pPlayer->GetRot().y == PLAYER_ROT_LEFT ||
+        pBall->GetPos().x < m_pPlayer->GetPos().x && m_pPlayer->GetRot().y == PLAYER_ROT_RIGHT)
+    {
+        return false;
+    }
+
+    // ボールの方を向いている
+    return true;
 }
 
 //=============================================================================
@@ -495,6 +513,12 @@ bool CAi::JumpBecauseBallUp(void)
         return false;
     }
 
+    // ボールが配置されていないなら、ジャンプしない
+    if (!pBall->GetDisp())
+    {
+        return false;
+    }
+
     return bUseJump;
 }
 
@@ -528,6 +552,12 @@ bool CAi::JumpBecauseBallMoveDown(void)
         return false;
     }
 
+    // ボールが配置されていないなら、ジャンプしない
+    if (!pBall->GetDisp())
+    {
+        return false;
+    }
+
     return bUseJump;
 }
 
@@ -552,8 +582,15 @@ bool CAi::DecideAttack(bool bUseTurn)
     // ボールのほうを向いていないなら、関数を抜ける（振り向きで打てる攻撃を使用しないので、若干弱くなる）
     if (!bUseTurn)
     {
-        if (pBall->GetPos().x > m_pPlayer->GetPos().x && m_pPlayer->GetRot().y == PLAYER_ROT_LEFT ||
-            pBall->GetPos().x < m_pPlayer->GetPos().x && m_pPlayer->GetRot().y == PLAYER_ROT_RIGHT)
+        if (!IsFacingBall())
+        {
+            return false;
+        }
+    }
+    else
+    {
+        // ターンを使うとしても、そもそもターンを使えない状況（地面にいる）なら、関数を抜ける
+        if (!IsFacingBall() && m_pPlayer->GetGround())
         {
             return false;
         }

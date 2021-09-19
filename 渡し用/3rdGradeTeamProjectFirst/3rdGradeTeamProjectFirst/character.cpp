@@ -26,29 +26,6 @@
 //========================================
 
 //=============================================================================
-// デフォルトコンストラクタ
-// Author : 後藤慎之助
-//=============================================================================
-CCharacter::CCharacter()
-{
-    m_posOld = DEFAULT_VECTOR;
-
-    m_pos = DEFAULT_VECTOR;
-    m_rot = DEFAULT_VECTOR;
-    m_nPartsNum = 0;
-    memset(m_apModel, 0, sizeof(m_apModel));
-    memset(m_aPosDefault, 0, sizeof(m_aPosDefault));
-    memset(m_anIndexParent, 0, sizeof(m_anIndexParent));
-    memset(m_aPartsType, 0, sizeof(m_aPartsType));
-
-    m_pAnimation = NULL;
-    m_cAnimFilePass = NULL;
-
-    // アニメーションはデフォルトで使うことを設定
-    m_bUseAnimation = true;
-}
-
-//=============================================================================
 // オーバーライドされたコンストラクタ
 // Author : 後藤慎之助
 //=============================================================================

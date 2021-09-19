@@ -20,7 +20,7 @@
 // コンストラクタ
 // Author : 後藤慎之助
 //=============================================================================
-COutline::COutline(CScene::OBJTYPE objtype) :CBillboard(objtype)
+COutline::COutline() :CBillboard(CScene::OBJTYPE_NONE_DRAW)
 {
     m_bUse = true;
 }
@@ -113,7 +113,7 @@ COutline * COutline::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, 
 {
     // メモリの確保
     COutline *pOutline = NULL;
-    pOutline = new COutline(CScene::OBJTYPE_NONE_DRAW);
+    pOutline = new COutline();
 
     // メモリを確保出来たら
     if (pOutline != NULL)

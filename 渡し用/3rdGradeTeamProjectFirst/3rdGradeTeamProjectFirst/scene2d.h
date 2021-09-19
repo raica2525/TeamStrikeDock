@@ -45,7 +45,6 @@ public:
         BREND_SEAL          // ƒ|ƒŠƒSƒ“‚Ì“§–¾“x‚ð–³Ž‹‚·‚é
     }BREND;
 
-    CScene2D();
     CScene2D(OBJTYPE objType);
     virtual ~CScene2D();
     virtual HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);

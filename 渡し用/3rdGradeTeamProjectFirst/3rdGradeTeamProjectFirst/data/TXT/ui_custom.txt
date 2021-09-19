@@ -1452,6 +1452,262 @@ UISET
 END_UISET
 
 #---------------------------------------
+# [] 1pオススメ
+#---------------------------------------
+UISET
+	ACCESS_NUM = 40
+	TYPE = 66
+	POS = 275.0 110.0
+	SIZE = 50.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 275.0 110.5
+	COLLISION_SIZE = 60.0 60.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 3
+	PARAM1 = 0
+END_UISET
+
+#---------------------------------------
+# [] 2pオススメ
+#---------------------------------------
+UISET
+	ACCESS_NUM = 41
+	TYPE = 66
+	POS = 590.0 110.0
+	SIZE = 50.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 590.0 110.5
+	COLLISION_SIZE = 60.0 60.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 3
+	PARAM1 = 1
+END_UISET
+
+#---------------------------------------
+# [] 3pオススメ
+#---------------------------------------
+UISET
+	ACCESS_NUM = 42
+	TYPE = 66
+	POS = 905.0 110.0
+	SIZE = 50.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 905.0 110.5
+	COLLISION_SIZE = 60.0 60.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 3
+	PARAM1 = 2
+END_UISET
+
+#---------------------------------------
+# [] 4pオススメ
+#---------------------------------------
+UISET
+	ACCESS_NUM = 43
+	TYPE = 66
+	POS = 1220.0 110.0
+	SIZE = 50.0 50.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 1220.0 110.5
+	COLLISION_SIZE = 60.0 60.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 3
+	PARAM1 = 3
+END_UISET
+
+#---------------------------------------
+# [] 1p詳細
+#---------------------------------------
+UISET
+	ACCESS_NUM = 44
+	TYPE = 67
+	POS = 272.5 260.0
+	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 272.5 260.0
+	COLLISION_SIZE = 64.0 64.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 0
+END_UISET
+
+#---------------------------------------
+# [] 2p詳細
+#---------------------------------------
+UISET
+	ACCESS_NUM = 45
+	TYPE = 67
+	POS = 587.5 260.0
+	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 587.5 260.0
+	COLLISION_SIZE = 64.0 64.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 1
+END_UISET
+
+#---------------------------------------
+# [] 3p詳細
+#---------------------------------------
+UISET
+	ACCESS_NUM = 46
+	TYPE = 67
+	POS = 902.5 260.0
+	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 902.5 260.0
+	COLLISION_SIZE = 64.0 64.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 2
+END_UISET
+
+#---------------------------------------
+# [] 4p詳細
+#---------------------------------------
+UISET
+	ACCESS_NUM = 47
+	TYPE = 67
+	POS = 1217.5 260.0
+	SIZE = 64.0 64.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COLLISION_POS = 1217.5 260.0
+	COLLISION_SIZE = 64.0 64.0
+	FRONT_TEXT = 1		# bool
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
+	ACTION3 = 0		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 4
+	PARAM1 = 3
+END_UISET
+
+#---------------------------------------
+# [] 1pステータス表示
+#---------------------------------------
+UISET
+	ACCESS_NUM = 120
+	TYPE = 72
+	POS = 167.0 340.0
+	SIZE = 297.0 128.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	FRONT_TEXT = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+END_UISET
+
+#---------------------------------------
+# [] 2pステータス表示
+#---------------------------------------
+UISET
+	ACCESS_NUM = 121
+	TYPE = 72
+	POS = 482.0 340.0
+	SIZE = 297.0 128.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	FRONT_TEXT = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+END_UISET
+
+#---------------------------------------
+# [] 3pステータス表示
+#---------------------------------------
+UISET
+	ACCESS_NUM = 122
+	TYPE = 72
+	POS = 797.0 340.0
+	SIZE = 297.0 128.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	FRONT_TEXT = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+END_UISET
+
+#---------------------------------------
+# [] 4pステータス表示
+#---------------------------------------
+UISET
+	ACCESS_NUM = 123
+	TYPE = 72
+	POS = 1112.0 340.0
+	SIZE = 297.0 128.0
+	ROT = 0			# 0～360
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	FRONT_TEXT = 1		# bool
+	ALPHA_TEST_BORDER = 50	# 0～255
+END_UISET
+
+#---------------------------------------
 # [] カスタマイズ画面のバナー
 #---------------------------------------
 UISET

@@ -376,7 +376,7 @@ public:
     // カスタマイズの文字列周り
     //======================================================*/
     static void CustomPartsName(char* pName, int nPartsType);
-    void CustomExName(char* pName);
+    void CustomExName(char* pName, int exFlag);
     void CustomSpName(char* pName);
 
     /*========================================================
@@ -395,6 +395,7 @@ public:
     void SetSpGaugeCurrent(float fSpGauge) { m_fSpGaugeCurrent = fSpGauge; }
     void SetDisp(bool bDisp) { m_bDisp = bDisp; }
     void ResetStatusEveryRound(void);   // 毎ラウンドリセットするステータス
+    void SetDispAbility(bool bDisp) { m_bDispAbility = bDisp; }
 
     /*========================================================
     // ゲッター
@@ -420,6 +421,7 @@ public:
     AI_LEVEL GetAILevel(void) { return m_AIlevel; }
     int GetCustomPartsNum(int nParts) { return m_anNumCustomParts[nParts]; }
     bool GetUseControllerEffect(void);       // コントローラの振動を使用するかどうか
+    bool GetDispAbility(void) { return m_bDispAbility; }
 
 private:
     bool m_bMannequin;                       // マネキンかどうか
@@ -435,8 +437,13 @@ private:
     CUI *m_pUI_Custom_Def;                   // カスタマイズ画面_防御ゲージ
     CUI *m_pUI_Custom_Spd;                   // カスタマイズ画面_速さゲージ
     CUI *m_pUI_Custom_Wei;                   // カスタマイズ画面_重さゲージ
-    CText *m_pText_Custom_Ex;                // カスタマイズ画面_特殊能力名
+    CUI *m_pUI_Custom_Ability;               // カスタマイズ画面_アビリティ
+    CText *m_pText_Custom_Ex_Head;           // カスタマイズ画面_特殊能力名_頭
+    CText *m_pText_Custom_Ex_Up;             // カスタマイズ画面_特殊能力名_胴
+    CText *m_pText_Custom_Ex_Down;           // カスタマイズ画面_特殊能力名_脚
+    CText *m_pText_Custom_Ex_Wep;            // カスタマイズ画面_特殊能力名_武器
     CText *m_pText_Custom_Sp;                // カスタマイズ画面_必殺技名
+    bool m_bDispAbility;                     // カスタマイズ画面で詳細を表示するかどうか
                         
     int m_nIdxCreate;                        // 生成のインデックス
     int m_nIdxControlAndColor;               // コントロールとカラーのインデックス

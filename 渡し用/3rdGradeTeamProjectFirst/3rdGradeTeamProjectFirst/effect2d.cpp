@@ -374,11 +374,11 @@ CEffect2D* CEffect2D::Create(const int nType, D3DXVECTOR3 pos, float fScatterAng
     // タイプごとに、UIの手前か後ろのエフェクトかどうかを決める
     if (pCreateInfo->bUseZBuffer)
     {
-        pEffect2D = new CEffect2D(CScene::OBJTYPE_EFFECT2D_BACK);
+        pEffect2D = new CEffect2D(CScene::OBJTYPE_EFFECT2D_BACK_UI);
     }
     else
     {
-        pEffect2D = new CEffect2D(CScene::OBJTYPE_EFFECT2D_FRONT);
+        pEffect2D = new CEffect2D(CScene::OBJTYPE_EFFECT2D_FRONT_UI);
     }
 
     // 飛散角度が既に設定されているエフェクトなら、置き換える

@@ -74,8 +74,13 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_pUI_Custom_Def = NULL;
     m_pUI_Custom_Spd = NULL;
     m_pUI_Custom_Wei = NULL;
-    m_pText_Custom_Ex = NULL;
+    m_pUI_Custom_Ability = NULL;
+    m_pText_Custom_Ex_Head = NULL;
+    m_pText_Custom_Ex_Up = NULL;
+    m_pText_Custom_Ex_Down = NULL;
+    m_pText_Custom_Ex_Wep = NULL;
     m_pText_Custom_Sp = NULL;
+    m_bDispAbility = false;
 
     m_nIdxCreate = PLAYER_1;
     m_nIdxControlAndColor = PLAYER_1;
@@ -233,14 +238,25 @@ void CPlayer::LoadCustom(void)
             m_fWei += pModelData->GetPartsList(nPartsListType)->fWei * pModelData->GetPartsRate(nCntPartsList)->fWeiRate;
 
             // 特殊能力
+            int customPartsExFlag = 0;  // カスタマイズ画面で使う、パーツ毎の特殊能力
             nExNumber = pModelData->GetPartsList(nPartsListType)->nEx0;
             BITON(m_exFlag, 0x001 << nExNumber);
+            BITON(customPartsExFlag, 0x001 << nExNumber);
             nExNumber = pModelData->GetPartsList(nPartsListType)->nEx1;
             BITON(m_exFlag, 0x001 << nExNumber);
+            BITON(customPartsExFlag, 0x001 << nExNumber);
 
             // 各パーツリストから、細部のパーツを決定
             if (nCntPartsList == PARTS_LIST_HEAD)
             {
+                // カスタマイズ画面で特殊能力表示を更新
+                if (m_pText_Custom_Ex_Head)
+                {
+                    char cExName[256];
+                    CustomExName(cExName, customPartsExFlag);
+                    m_pText_Custom_Ex_Head->SetText(cExName);
+                }
+
                 // モデルをバインド
                 BindParts(PARTS_HEAD, (int)pModelData->GetPartsList(nPartsListType)->afParam[0]);
 
@@ -266,6 +282,14 @@ void CPlayer::LoadCustom(void)
             }
             else if (nCntPartsList == PARTS_LIST_UP)
             {
+                // カスタマイズ画面で特殊能力表示を更新
+                if (m_pText_Custom_Ex_Up)
+                {
+                    char cExName[256];
+                    CustomExName(cExName, customPartsExFlag);
+                    m_pText_Custom_Ex_Up->SetText(cExName);
+                }
+
                 // モデルをバインド
                 BindParts(PARTS_BODY, (int)pModelData->GetPartsList(nPartsListType)->afParam[0]);
                 BindParts(PARTS_RSHOULDER, (int)pModelData->GetPartsList(nPartsListType)->afParam[1]);
@@ -290,6 +314,14 @@ void CPlayer::LoadCustom(void)
             }
             else if (nCntPartsList == PARTS_LIST_DOWN)
             {
+                // カスタマイズ画面で特殊能力表示を更新
+                if (m_pText_Custom_Ex_Down)
+                {
+                    char cExName[256];
+                    CustomExName(cExName, customPartsExFlag);
+                    m_pText_Custom_Ex_Down->SetText(cExName);
+                }
+
                 // モデルをバインド
                 BindParts(PARTS_HIP, (int)pModelData->GetPartsList(nPartsListType)->afParam[0]);
                 BindParts(PARTS_RTHIGH, (int)pModelData->GetPartsList(nPartsListType)->afParam[1]);
@@ -314,6 +346,14 @@ void CPlayer::LoadCustom(void)
             }
             else if (nCntPartsList == PARTS_LIST_WEP)
             {
+                // カスタマイズ画面で特殊能力表示を更新
+                if (m_pText_Custom_Ex_Wep)
+                {
+                    char cExName[256];
+                    CustomExName(cExName, customPartsExFlag);
+                    m_pText_Custom_Ex_Wep->SetText(cExName);
+                }
+
                 // モデルをバインド
                 BindParts(PARTS_WEP, (int)pModelData->GetPartsList(nPartsListType)->afParam[0]);
 
@@ -336,6 +376,14 @@ void CPlayer::LoadCustom(void)
         }
         // ファイルを閉じる
         fclose(pFile);
+    }
+
+    // カスタマイズ画面で必殺技表示を更新
+    if (m_pText_Custom_Sp)
+    {
+        char cSpName[256];
+        CustomSpName(cSpName);
+        m_pText_Custom_Sp->SetText(cSpName);
     }
 
     // 体力を決定
@@ -701,6 +749,81 @@ void CPlayer::UpdateMannequin(void)
         // 入力処理
         Input();
 
+        // 1Pは、キーボードで右スティックの回転ができる
+        if (m_nIdxControlAndColor == PLAYER_1)
+        {
+            CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+            if (pInputKeyboard->GetKeyboardPress(DIK_UP) ||
+                pInputKeyboard->GetKeyboardPress(DIK_LEFT) ||
+                pInputKeyboard->GetKeyboardPress(DIK_DOWN) ||
+                pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
+            {
+                m_controlInput.bTiltedRightStick = true;
+
+                // 角度を求める
+                if (pInputKeyboard->GetKeyboardPress(DIK_LEFT))
+                {
+                    if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(-45.0f);
+                    }
+                    else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(-135.0f);
+                    }
+                    else if (pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                    }
+                    else
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(-90.0f);
+                    }
+                }
+                else if (pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
+                {
+                    if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(45.0f);
+                    }
+                    else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(135.0f);
+                    }
+                    else if (pInputKeyboard->GetKeyboardPress(DIK_LEFT))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                    }
+                    else
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(90.0f);
+                    }
+                }
+                else if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                {
+                    if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                    }
+                    else
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                    }
+                }
+                else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                {
+                    if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                    }
+                    else
+                    {
+                        m_controlInput.fRightStickAngle = D3DXToRadian(180.0f);
+                    }
+                }
+            }
+        }
+  
         // 右スティックが倒れているなら向きを変える
         D3DXVECTOR3 rot = GetRot();
         const float ROT_SPEED = 3.0f;
@@ -732,16 +855,24 @@ void CPlayer::UpdateMannequin(void)
         m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, m_fDef);
         m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, m_fSpd);
         m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, m_fWei);
-
-        // カスタマイズ画面のテキストを更新
-        char cExName[256];
-        CustomExName(cExName);
-        m_pText_Custom_Ex->SetText(cExName);
-        m_pText_Custom_Ex->SetColor(TEXT_EXIST_COLOR);
-        char cSpName[256];
-        CustomSpName(cSpName);
-        m_pText_Custom_Sp->SetText(cSpName);
-        m_pText_Custom_Sp->SetColor(TEXT_EXIST_COLOR);
+        if (m_bDispAbility)
+        {
+            m_pUI_Custom_Ability->SetAlpha(1.0f);
+            m_pText_Custom_Ex_Head->SetColor(TEXT_EXIST_COLOR);
+            m_pText_Custom_Ex_Up->SetColor(TEXT_EXIST_COLOR);
+            m_pText_Custom_Ex_Down->SetColor(TEXT_EXIST_COLOR);
+            m_pText_Custom_Ex_Wep->SetColor(TEXT_EXIST_COLOR);
+            m_pText_Custom_Sp->SetColor(TEXT_EXIST_COLOR);
+        }
+        else
+        {
+            m_pUI_Custom_Ability->SetAlpha(0.0f);
+            m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_pText_Custom_Ex_Down->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_pText_Custom_Ex_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_pText_Custom_Sp->SetColor(TEXT_NOT_EXIST_COLOR);
+        }
     }
     else
     {
@@ -750,7 +881,11 @@ void CPlayer::UpdateMannequin(void)
         m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, 0);
         m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, 0);
         m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, 0);
-        m_pText_Custom_Ex->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_pUI_Custom_Ability->SetAlpha(0.0f);
+        m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_pText_Custom_Ex_Down->SetColor(TEXT_NOT_EXIST_COLOR);
+        m_pText_Custom_Ex_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
         m_pText_Custom_Sp->SetColor(TEXT_NOT_EXIST_COLOR);
     }
 
@@ -1024,12 +1159,11 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
         nTexTypePlayable = 28;
         break;
     }
-    const float DIGIT_BLOCK = ((float)SCREEN_WIDTH / (CGame::GetNumAllPlayer() + 1));
-    float fDigitPosX = (DIGIT_BLOCK * (float)(pPlayer->m_nIdxCreate + 1));
-    if (CGame::GetNumAllPlayer() == MAX_PLAYER)
-    {
-        fDigitPosX = (SCREEN_WIDTH / 8) + ((SCREEN_WIDTH / 4) * (float)pPlayer->m_nIdxCreate);
-    }
+    const float UI_SIZE_X = 240.0f; // ここの値を、UIの大体の横幅に合わせる
+    const float SPACE_SIZE = (SCREEN_WIDTH - (UI_SIZE_X * CGame::GetNumAllPlayer())) / (CGame::GetNumAllPlayer() + 1);
+    const float FIRST_UI_POS_X = SPACE_SIZE + (UI_SIZE_X / 2);
+    const float NEXT_UI_POS_X = UI_SIZE_X + SPACE_SIZE;
+    float fDigitPosX = FIRST_UI_POS_X + (NEXT_UI_POS_X * (float)pPlayer->m_nIdxCreate);
     CUI* pUI = CUI::Create(17, D3DXVECTOR3(fDigitPosX, 40.0f, 0.0f), D3DXVECTOR3(240.0f, 30.0f, 0.0f), 0, DEFAULT_COLOR);
     pPlayer->m_pUI_HP = CUI::Create(18, D3DXVECTOR3(fDigitPosX, 40.0f, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, col);
     pPlayer->m_pUI_HP->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
@@ -1064,6 +1198,78 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
     // 読み込む種類の設定
     pPlayer->m_nIdxControlAndColor = nControlIndex;
 
+    // UIを生成
+    D3DXVECTOR3 startPos = D3DXVECTOR3(205.0f, 293.5f, 0.0f);
+    D3DXVECTOR3 clipingPos = DEFAULT_VECTOR;
+    const D3DXVECTOR3 gaugeSize = D3DXVECTOR3(210.0f, 22.0f, 0.0f);
+    const D3DXVECTOR3 abilitySize = D3DXVECTOR3(297.0f, 155.0f, 0.0f);
+    D3DXVECTOR3 abilityPos = D3DXVECTOR3(167.0f, 200.5f, 0.0f);
+    switch (pPlayer->m_nIdxControlAndColor)
+    {
+    case PLAYER_1:
+        clipingPos = D3DXVECTOR3(167.0f, 390.0f, 0.0f);
+        break;
+    case PLAYER_2:
+        startPos.x += 315.0f;
+        abilityPos.x += 315.0f;
+        clipingPos = D3DXVECTOR3(482.0f, 390.0f, 0.0f);
+        break;
+    case PLAYER_3:
+        startPos.x += 315.0f * PLAYER_3;
+        abilityPos.x += 315.0f * PLAYER_3;
+        clipingPos = D3DXVECTOR3(797.0f, 390.0f, 0.0f);
+        break;
+    case PLAYER_4:
+        startPos.x += 315.0f * PLAYER_4;
+        abilityPos.x += 315.0f * PLAYER_4;
+        clipingPos = D3DXVECTOR3(1112.0f, 390.0f, 0.0f);
+        break;
+    }
+    pPlayer->m_pUI_Custom_Ability = CUI::Create(73, abilityPos, abilitySize, 0, DEFAULT_COLOR_NONE_ALPHA);
+    float fDigitPosY = 0.0f;
+    const float DIGIT_UI_VALUE = 31.5f;
+    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_DEF_COLOR);
+    pPlayer->m_pUI_Custom_Def->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
+    fDigitPosY += DIGIT_UI_VALUE;
+
+    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_ATK_COLOR);
+    pPlayer->m_pUI_Custom_Atk->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
+    fDigitPosY += DIGIT_UI_VALUE;
+
+    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_SPD_COLOR);
+    pPlayer->m_pUI_Custom_Spd->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
+    fDigitPosY += DIGIT_UI_VALUE;
+
+    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_WEI_COLOR);
+    pPlayer->m_pUI_Custom_Wei->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
+
+    // テキストを生成
+    startPos += D3DXVECTOR3(-105.0f, -155.0f, 0.0f); // UIのステータスバーから、アビリティのテキストへ位置を合わせる
+    fDigitPosY = 0.0f;
+    const float DIGIT_TEXT_VALUE = 26.0f;
+    const int textSize = 20;
+    pPlayer->m_pText_Custom_Ex_Head = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), textSize, "なし",
+        CText::ALIGN_LEFT, "Reggae One", TEXT_NOT_EXIST_COLOR);
+    fDigitPosY += DIGIT_TEXT_VALUE;
+
+    pPlayer->m_pText_Custom_Ex_Up = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), textSize, "なし",
+        CText::ALIGN_LEFT, "Reggae One", TEXT_NOT_EXIST_COLOR);
+    fDigitPosY += DIGIT_TEXT_VALUE;
+
+    pPlayer->m_pText_Custom_Ex_Down = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), textSize, "なし",
+        CText::ALIGN_LEFT, "Reggae One", TEXT_NOT_EXIST_COLOR);
+    fDigitPosY += DIGIT_TEXT_VALUE;
+
+    pPlayer->m_pText_Custom_Ex_Wep = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), textSize, "なし",
+        CText::ALIGN_LEFT, "Reggae One", TEXT_NOT_EXIST_COLOR);
+    fDigitPosY += DIGIT_TEXT_VALUE;
+
+    pPlayer->m_pText_Custom_Sp = CText::Create(startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), textSize, "なし",
+        CText::ALIGN_LEFT, "Reggae One", TEXT_NOT_EXIST_COLOR);
+
+    // クリッピングを生成
+    pPlayer->ApplyMusk(clipingPos, D3DXVECTOR3(298.0f, 650.0f, 0.0f));
+
     // 初期化
     pPlayer->Init(pos, DEFAULT_SCALE);
 
@@ -1074,65 +1280,6 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
 
     // マネキンモードに
     pPlayer->m_bMannequin = true;
-
-    // UIを生成
-    D3DXVECTOR3 startPos = DEFAULT_VECTOR;
-    D3DXVECTOR3 clipingPos = DEFAULT_VECTOR;
-    switch (pPlayer->m_nIdxControlAndColor)
-    {
-    case PLAYER_1:
-        startPos = D3DXVECTOR3(150.0f, 290.0f, 0.0f);
-        clipingPos = D3DXVECTOR3(167.0f, 390.0f, 0.0f);
-        break;
-    case PLAYER_2:
-        startPos = D3DXVECTOR3(465.0f, 290.0f, 0.0f);
-        clipingPos = D3DXVECTOR3(482.0f, 390.0f, 0.0f);
-        break;
-    case PLAYER_3:
-        startPos = D3DXVECTOR3(780.0f, 290.0f, 0.0f);
-        clipingPos = D3DXVECTOR3(797.0f, 390.0f, 0.0f);
-        break;
-    case PLAYER_4:
-        startPos = D3DXVECTOR3(1095.0f, 290.0f, 0.0f);
-        clipingPos = D3DXVECTOR3(1112.0f, 390.0f, 0.0f);
-        break;
-    }
-    float fDigitPosY = 0.0f;
-    const float fDigitValue = 30.0f;
-    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_ATK_COLOR);
-    pPlayer->m_pUI_Custom_Atk->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
-    fDigitPosY += fDigitValue;
-
-    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_DEF_COLOR);
-    pPlayer->m_pUI_Custom_Def->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
-    fDigitPosY += fDigitValue;
-
-    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_SPD_COLOR);
-    pPlayer->m_pUI_Custom_Spd->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
-    fDigitPosY += fDigitValue;
-
-    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, CUSTOM_WEI_COLOR);
-    pPlayer->m_pUI_Custom_Wei->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
-    fDigitPosY += fDigitValue;
-
-    // クリッピングを生成
-    pPlayer->ApplyMusk(clipingPos, D3DXVECTOR3(298.0f, 650.0f, 0.0f));
-
-    // テキストを生成
-    D3DCOLOR textColor = TEXT_EXIST_COLOR;
-    if (!bDisp)
-    {
-        textColor = TEXT_NOT_EXIST_COLOR;
-    }
-    char cExName[256];
-    pPlayer->CustomExName(cExName);
-    pPlayer->m_pText_Custom_Ex = CText::Create(startPos + D3DXVECTOR3(-120.0f, -80.0f, 0.0f), 30, cExName,
-        CText::ALIGN_LEFT, "Reggae One", textColor);
-
-    char cSpName[256];
-    pPlayer->CustomSpName(cSpName);
-    pPlayer->m_pText_Custom_Sp = CText::Create(startPos + D3DXVECTOR3(-120.0f, -50.0f, 0.0f), 30, cSpName,
-        CText::ALIGN_LEFT, "Reggae One", textColor);
 
     return pPlayer;
 }

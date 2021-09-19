@@ -87,12 +87,12 @@ void CPlayer::CustomPartsName(char * pName, int nPartsType)
 // カスタマイズの特殊能力名
 // Author : 後藤慎之助
 //=============================================================================
-void CPlayer::CustomExName(char* pName)
+void CPlayer::CustomExName(char* pName, int exFlag)
 {
     // 特殊能力が存在するかどうか
     bool bExist = false;
 
-    if (IS_BITON(m_exFlag, EX_FLAG_THREE_JUMP))
+    if (IS_BITON(exFlag, EX_FLAG_THREE_JUMP))
     {
         if (!bExist)
         {
@@ -105,7 +105,7 @@ void CPlayer::CustomExName(char* pName)
         bExist = true;
     }
 
-    if (IS_BITON(m_exFlag, EX_FLAG_FAST_CHARGE))
+    if (IS_BITON(exFlag, EX_FLAG_FAST_CHARGE))
     {
         if (!bExist)
         {
@@ -118,7 +118,7 @@ void CPlayer::CustomExName(char* pName)
         bExist = true;
     }
 
-    if (IS_BITON(m_exFlag, EX_FLAG_DONT_CATCH))
+    if (IS_BITON(exFlag, EX_FLAG_DONT_CATCH))
     {
         if (!bExist)
         {
@@ -131,7 +131,7 @@ void CPlayer::CustomExName(char* pName)
         bExist = true;
     }
 
-    if (IS_BITON(m_exFlag, EX_FLAG_FIRST_HIT_GUARD))
+    if (IS_BITON(exFlag, EX_FLAG_FIRST_HIT_GUARD))
     {
         if (!bExist)
         {
@@ -147,7 +147,7 @@ void CPlayer::CustomExName(char* pName)
     // 存在しないなら
     if (!bExist)
     {
-        wsprintf(pName, "アビリティはありません");
+        wsprintf(pName, "なし");
     }
 }
 

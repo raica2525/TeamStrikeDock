@@ -23,24 +23,6 @@
 bool CScene3D::m_bAdditiveSynthesis = false;
 
 //=============================================================================
-// コンストラクタ
-// Author : 後藤慎之助
-//=============================================================================
-CScene3D::CScene3D()
-{
-    memset(m_apTexMat, 0, sizeof(m_apTexMat));
-    m_pBuffMat = NULL;
-    m_pMesh = NULL;
-    m_nNumMat = 0;
-    D3DXMatrixIdentity(&m_mtxWorld);
-    m_pos = DEFAULT_VECTOR;
-    m_rot = DEFAULT_VECTOR;
-    m_scale = DEFAULT_SCALE;
-
-    memset(m_aDiffuse, 0, sizeof(m_aDiffuse));
-}
-
-//=============================================================================
 // オーバーライドされたコンストラクタ
 // Author : 後藤慎之助
 //=============================================================================

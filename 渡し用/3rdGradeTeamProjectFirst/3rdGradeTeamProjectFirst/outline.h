@@ -24,7 +24,7 @@ class COutline :public CBillboard
 {
 public:
 
-    COutline(CScene::OBJTYPE objtype);
+    COutline();
     ~COutline();
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
     void Update(void);

@@ -27,7 +27,6 @@
 class CScene3D : public CScene
 {
 public:
-    CScene3D();
     CScene3D(OBJTYPE objType);
     virtual ~CScene3D();
     virtual HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
