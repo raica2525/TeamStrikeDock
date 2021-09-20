@@ -208,7 +208,7 @@ void CScene2D::Draw(void)
 			pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 			pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 			pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-			pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+			pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 		}
 		else
 		{
