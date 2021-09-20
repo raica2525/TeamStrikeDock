@@ -203,34 +203,44 @@ void CScene2D::Draw(void)
     // ブレンド方法設定　//池田追加
     for (int nCount = 0; nCount < m_nNumTexture; nCount++)
     {
-        switch (nCount)
-        {
-        case 0:
-            pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-            pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-            pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_MODULATE); // アルファブレンディング処理
-            break;
-        default:
-            pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_CURRENT);
-            pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
-            switch (m_aBrend[nCount])
-            {
-            case BREND_NORMAL:
-                pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-                pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
-                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
-                break;
+		if (m_aBrend[nCount] == BREND_IGNORE_INFO)
+		{
+			pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+			pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+			pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+		}
+		else
+		{
+			switch (nCount)
+			{
+			case 0:
+				pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+				pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+				pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_MODULATE); // アルファブレンディング処理
+				break;
+			default:
+				pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_CURRENT);
+				pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
+				switch (m_aBrend[nCount])
+				{
+				case BREND_NORMAL:
+					pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+					pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
+					pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+					pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
+					break;
 
-            case BREND_SEAL:
-                pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-                pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
-                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-                pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_ADD);
-                break;
-            }
-            break;
-        }
+				case BREND_SEAL:
+					pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+					pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
+					pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+					pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_ADD);
+					break;
+				}
+				break;
+			}
+		}
     }
 
     // テクスチャの設定 //池田変更
