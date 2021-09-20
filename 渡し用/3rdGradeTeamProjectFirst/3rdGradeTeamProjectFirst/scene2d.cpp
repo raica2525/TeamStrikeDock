@@ -216,6 +216,7 @@ void CScene2D::Draw(void)
 			{
 			case 0:
 				pDevice->SetTextureStageState(nCount, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+                pDevice->SetTextureStageState(nCount, D3DTSS_COLOROP, D3DTOP_MODULATE);
 				pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 				pDevice->SetTextureStageState(nCount, D3DTSS_ALPHAOP, D3DTOP_MODULATE); // アルファブレンディング処理
 				break;
@@ -292,6 +293,7 @@ void CScene2D::Draw(void)
 
     // ブレンド方法を戻す
     pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+    pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
     pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
     pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 }

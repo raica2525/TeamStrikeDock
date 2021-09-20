@@ -174,6 +174,7 @@ public:
     //======================================================*/
     void SelectParts(int nNumWho, int nNumWhere, bool bRight);                 // カスタマイズするパーツを選択
     void SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts);    // 誰のどこを何のパーツにして保存するか
+    void DoOsusume(int nNumWho);                                               // オススメ処理
 
 private:
     int m_anMemoryPartsHead[MAX_EACH_PARTS];  // 保持した頭パーツ

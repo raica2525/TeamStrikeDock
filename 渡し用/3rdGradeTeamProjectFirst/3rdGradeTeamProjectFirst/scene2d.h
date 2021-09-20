@@ -78,6 +78,7 @@ public:
     void SetAdditiveSynthesis(void) { m_bAdditiveSynthesis = true; }
     void SetNega(void) { m_bNega = true; }
     void SetColor(D3DXCOLOR col);
+    void SetBrend(BREND brend, int nTex = 0) { m_aBrend[nTex] = brend; }
 
     /*========================================================
     // ÉQÉbÉ^Å[

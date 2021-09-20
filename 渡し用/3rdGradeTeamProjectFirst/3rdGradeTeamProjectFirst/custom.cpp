@@ -1236,3 +1236,12 @@ void CCustom::SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts)
         fclose(pFile);
     }
 }
+
+//=============================================================================
+// ƒIƒXƒXƒˆ—
+// Author : Œã“¡T”V•
+//=============================================================================
+void CCustom::DoOsusume(int nNumWho)
+{
+
+}

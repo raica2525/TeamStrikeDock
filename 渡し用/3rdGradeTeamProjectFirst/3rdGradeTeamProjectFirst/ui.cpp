@@ -602,7 +602,8 @@ void CUI::SetActionInfo(int nNum, int action, bool bLock, float fParam0, float f
             brend = CScene2D::BREND_SEAL;
             break;
         case CScene2D::BREND_IGNORE_INFO:
-            brend = CScene2D::BREND_IGNORE_INFO;
+            brend = CScene2D::BREND_NORMAL;
+            CScene2D::SetBrend(CScene2D::BREND_IGNORE_INFO);
             break;
         }
 
