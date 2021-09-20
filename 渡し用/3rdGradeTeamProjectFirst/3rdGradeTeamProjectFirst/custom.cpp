@@ -33,6 +33,7 @@
 #define CURSOR_COLLISION_SIZE D3DXVECTOR3(5.0f, 5.0f, 0.0f)          // カーソルの当たり判定の大きさ
 #define CURSOR_VISUAL_SIZE_SIDE 59.0f                                // カーソルの一辺の大きさ
 #define CURSOR_VISUAL_SIZE D3DXVECTOR3(CURSOR_VISUAL_SIZE_SIDE, CURSOR_VISUAL_SIZE_SIDE, 0.0f)  // カーソルの見た目の大きさ
+#define CURSOR_PRESS_VISUAL_SIZE D3DXVECTOR3(45.0f, 45.0f, 0.0f)     // プレスカーソルの見た目の大きさ
 
 #define CURSOR_CLICK_ACTION_INFO_IDX 3                               // カーソルのクリックアクション情報が入ったインデックス
 
@@ -411,6 +412,9 @@ void CCustom::MoveCursor(void)
                 // 位置を設定
                 m_aEntryInfo[nCntPlayer].pUI_Cursor->SetPosition(cursorPos);
 
+                // プレスファイア
+                PressFire(nCntPlayer);
+
                 // 選択肢との当たり判定（カーソルの当たり判定の位置は左上に微調整）
                 CollisionSelect(nCntPlayer, cursorPos + CURSOR_ADJUST_COLLISON_POS);
             }
@@ -459,6 +463,37 @@ void CCustom::RimitMoveCursor(D3DXVECTOR3& cursorPos)
     else if (cursorPos.y - (CURSOR_VISUAL_SIZE_SIDE / 2) < 0.0f)
     {
         cursorPos.y = (CURSOR_VISUAL_SIZE_SIDE / 2);
+    }
+}
+
+//=============================================================================
+// プレスし続けると炎が出る
+// Author : 後藤慎之助
+//=============================================================================
+void CCustom::PressFire(int nNumWho)
+{
+    //キーボードの確保したメモリを取得
+    CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+
+    // コントローラを取得
+    CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
+
+    // Aボタンがプレスで押されたら
+    bool bPressA = false;
+    if (pInputJoypad->GetJoypadPress(nNumWho, CInputJoypad::BUTTON_A) ||
+        pInputKeyboard->GetKeyboardPress(DIK_RETURN) && nNumWho == PLAYER_1)
+    {
+        bPressA = true;
+    }
+
+    // カーソルのサイズを、押している間は少し小さくする
+    if (bPressA)
+    {
+        m_aEntryInfo[nNumWho].pUI_Cursor->SetSize(CURSOR_PRESS_VISUAL_SIZE);
+    }
+    else
+    {
+        m_aEntryInfo[nNumWho].pUI_Cursor->SetSize(CURSOR_VISUAL_SIZE);
     }
 }
 
@@ -592,7 +627,7 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
         // コントローラを取得
         CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
 
-        // Aボタンが押されたら
+        // Aボタンがトリガーで押されたら
         bool bTriggerA = false;
         bool bTriggerReturn = false;
         if (pInputJoypad->GetJoypadTrigger(nNumWho, CInputJoypad::BUTTON_A) ||
@@ -701,6 +736,13 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
                     }
                     pSelectUI->SetTexturePlace(nStock - 1, PLAYER_MAX_STOCK);
                     CGame::SetStock(nStock);
+                }
+                break;
+
+            case CLICK_TYPE_OSUSUME:
+                {
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
+                    DoOsusume(nParamWho);
                 }
                 break;
             }
@@ -1238,10 +1280,115 @@ void CCustom::SaveCustom(int nNumSaveWho, int nNumSaveWhere, int nNumSaveParts)
 }
 
 //=============================================================================
-// オススメ処理
+// オススメ処理（SaveCustomとInitが合わさった感じ）
 // Author : 後藤慎之助
 //=============================================================================
 void CCustom::DoOsusume(int nNumWho)
 {
+    // 書き込むパーツの数字たち
+    int anNumParts[MAX_PARTS] = {};
+    int nRand = GetRandNum(4, 1);
 
+    // おすすめ装備は随時更新
+    switch (nRand)
+    {
+    case 1:
+        anNumParts[0] = 0;
+        anNumParts[1] = 1;
+        anNumParts[2] = 2;
+        anNumParts[3] = 3;
+        break;
+    case 2:
+        anNumParts[0] = 4;
+        anNumParts[1] = 5;
+        anNumParts[2] = 6;
+        anNumParts[3] = 7;
+        break;
+    case 3:
+        anNumParts[0] = 8;
+        anNumParts[1] = 9;
+        anNumParts[2] = 10;
+        anNumParts[3] = 11;
+        break;
+    case 4:
+        anNumParts[0] = 15;
+        anNumParts[1] = 16;
+        anNumParts[2] = 17;
+        anNumParts[3] = 18;
+        break;
+    }
+
+    // カスタマイズデータのファイルを開く
+    FILE *pFile = NULL;
+    switch (nNumWho)
+    {
+    case PLAYER_1:
+        pFile = fopen("data/TXT/custom1.txt", "w");
+        break;
+    case PLAYER_2:
+        pFile = fopen("data/TXT/custom2.txt", "w");
+        break;
+    case PLAYER_3:
+        pFile = fopen("data/TXT/custom3.txt", "w");
+        break;
+    case PLAYER_4:
+        pFile = fopen("data/TXT/custom4.txt", "w");
+        break;
+    }
+
+    // ファイルを開けたら、装備登録
+    if (pFile != NULL)
+    {
+        for (int nCntWhere = 0; nCntWhere < MAX_PARTS; nCntWhere++)
+        {
+            fprintf(pFile, "%d\n", anNumParts[nCntWhere]);
+        }
+
+        // ファイルを閉じる
+        fclose(pFile);
+    }
+
+    // プレイヤーをリロード
+    m_aEntryInfo[nNumWho].pPlayer->LoadCustom();
+
+    // 選択カーソルとテキストを合わせる
+    int nPartNum = m_aEntryInfo[nNumWho].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_HEAD);
+    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
+    {
+        if (m_anMemoryPartsHead[nCntEachParts] == nPartNum)
+        {
+            m_aEntryInfo[nNumWho].nNumSelectHead = nCntEachParts;
+            m_aEntryInfo[nNumWho].pText_Head->SetText(CManager::GetModelData()->CModelData::GetPartsList(nPartNum)->cName);
+        }
+    }
+
+    nPartNum = m_aEntryInfo[nNumWho].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_UP);
+    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
+    {
+        if (m_anMemoryPartsUp[nCntEachParts] == nPartNum)
+        {
+            m_aEntryInfo[nNumWho].nNumSelectUp = nCntEachParts;
+            m_aEntryInfo[nNumWho].pText_Up->SetText(CManager::GetModelData()->CModelData::GetPartsList(nPartNum)->cName);
+        }
+    }
+
+    nPartNum = m_aEntryInfo[nNumWho].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_DOWN);
+    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
+    {
+        if (m_anMemoryPartsDown[nCntEachParts] == nPartNum)
+        {
+            m_aEntryInfo[nNumWho].nNumSelectDown = nCntEachParts;
+            m_aEntryInfo[nNumWho].pText_Down->SetText(CManager::GetModelData()->CModelData::GetPartsList(nPartNum)->cName);
+        }
+    }
+
+    nPartNum = m_aEntryInfo[nNumWho].pPlayer->GetCustomPartsNum(CPlayer::CUSTOM_PARTS_WEP);
+    for (int nCntEachParts = 0; nCntEachParts < MAX_EACH_PARTS; nCntEachParts++)
+    {
+        if (m_anMemoryPartsWep[nCntEachParts] == nPartNum)
+        {
+            m_aEntryInfo[nNumWho].nNumSelectWep = nCntEachParts;
+            m_aEntryInfo[nNumWho].pText_Wep->SetText(CManager::GetModelData()->CModelData::GetPartsList(nPartNum)->cName);
+        }
+    }
 }

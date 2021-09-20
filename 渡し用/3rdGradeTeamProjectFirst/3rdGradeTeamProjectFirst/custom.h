@@ -159,6 +159,7 @@ public:
     void MoveCursorByKeyboard(float& fStickAngle, bool& bTiltedStick, float& fTiltedStickValue); // キーボード操作
     void MoveCursor(void);                                                     // カーソル移動
     void RimitMoveCursor(D3DXVECTOR3& cursorPos);                              // カーソル移動の制限
+    void PressFire(int nNumWho);                                               // プレスし続けると、炎が出る
     void CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos);                  // 選択肢との当たり判定
     void ClickSelect(int nNumWho, CUI* pSelectUI);                             // 選択肢のクリック
 
