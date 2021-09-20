@@ -43,7 +43,8 @@ public:
     {
         BREND_NORMAL = 0,	// 単純貼付け
         BREND_SEAL,         // ポリゴンの透明度を無視する
-		BREND_IGNORE_INFO   // ポリゴン情報を無視する
+		BREND_IGNORE_INFO,  // ポリゴン情報を無視する
+		BREND_APPLY_INFO	// ポリゴン情報を使う
     }BREND;
 
     CScene2D(OBJTYPE objType);
