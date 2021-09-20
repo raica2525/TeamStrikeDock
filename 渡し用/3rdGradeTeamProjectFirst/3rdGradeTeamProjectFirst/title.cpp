@@ -67,19 +67,12 @@ void CTitle::Uninit(void)
 //=============================================================================
 void CTitle::Update(void)
 {
-    // 炎エフェクトを上下に発生
-    EmitFire(FIRE_POS_UP);
-    EmitFire(FIRE_POS_DOWN);
-    EmitFire(FIRE_POS_UP);
-    EmitFire(FIRE_POS_DOWN);
-    EmitFire(FIRE_POS_UP);
-    EmitFire(FIRE_POS_DOWN);
-    EmitFire(FIRE_POS_UP);
-    EmitFire(FIRE_POS_DOWN);
-    EmitFire(FIRE_POS_UP);
-    EmitFire(FIRE_POS_DOWN);
-    EmitFire(FIRE_POS_UP);
-    EmitFire(FIRE_POS_DOWN);
+    // 炎エフェクトを上下に発生(6回分でちょうどよくなった)
+    for (int nCnt = 0; nCnt < 6; nCnt++)
+    {
+        EmitFire(FIRE_POS_UP);
+        EmitFire(FIRE_POS_DOWN);
+    }
 
     // タイトルの時間をカウント
     m_nCntTime++;
