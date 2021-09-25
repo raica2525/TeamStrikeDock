@@ -81,10 +81,10 @@ HRESULT CCustom::Init(void)
     m_aEntryInfo[PLAYER_4].pPlayer = CPlayer::CreateInCustom(D3DXVECTOR3(950.0f, 650.0f, 0.0f), DEFAULT_VECTOR, PLAYER_4, false);
 
     // カーソル生成
-    m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, CURSOR_FIRST_POS_P1, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR_NONE_ALPHA, true);
-    m_aEntryInfo[PLAYER_2].pUI_Cursor = CUI::Create(54, CURSOR_FIRST_POS_P2, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR_NONE_ALPHA, true);
-    m_aEntryInfo[PLAYER_3].pUI_Cursor = CUI::Create(55, CURSOR_FIRST_POS_P3, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR_NONE_ALPHA, true);
-    m_aEntryInfo[PLAYER_4].pUI_Cursor = CUI::Create(56, CURSOR_FIRST_POS_P4, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR_NONE_ALPHA, true);
+    m_aEntryInfo[PLAYER_1].pUI_Cursor = CUI::Create(53, CURSOR_FIRST_POS_P1, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR, true);
+    m_aEntryInfo[PLAYER_2].pUI_Cursor = CUI::Create(54, CURSOR_FIRST_POS_P2, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR, true);
+    m_aEntryInfo[PLAYER_3].pUI_Cursor = CUI::Create(55, CURSOR_FIRST_POS_P3, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR, true);
+    m_aEntryInfo[PLAYER_4].pUI_Cursor = CUI::Create(56, CURSOR_FIRST_POS_P4, CURSOR_VISUAL_SIZE, 0, DEFAULT_COLOR, true);
 
     // パーツ選択情報の初期化
     float fTextPosX = 167.0f;
@@ -154,6 +154,9 @@ HRESULT CCustom::Init(void)
         m_aEntryInfo[nCnt].pUI_Bg_Select_Out_Frame = CUI::GetAccessUI(112 + (nCnt * 2));    // カスタム外枠112
         m_aEntryInfo[nCnt].pUI_Bg_Select_In_Frame = CUI::GetAccessUI(113 + (nCnt * 2));     // カスタム内枠113
         m_aEntryInfo[nCnt].pUI_Bg_Select_Status = CUI::GetAccessUI(120 + nCnt);             // カスタム内枠120
+
+        // カーソルを消しておく
+        m_aEntryInfo[nCnt].pUI_Cursor->SetDisp(false);
     }
 
     // カメラのロックオン場所を変える
@@ -767,12 +770,12 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
         m_aEntryInfo[nNumWho].pUI_Cursor->SetFirstPos();
         // 非表示
         m_aEntryInfo[nNumWho].pPlayer->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetAlpha(0.0f);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetAlpha(0.0f);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetAlpha(0.0f);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetAlpha(0.0f);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select_Status->SetAlpha(0.0f);
-        m_aEntryInfo[nNumWho].pUI_Cursor->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select_Status->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Cursor->SetDisp(false);
         m_aEntryInfo[nNumWho].pText_Head->SetColor(TEXT_NOT_EXIST_COLOR);
         m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_NOT_EXIST_COLOR);
         m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_NOT_EXIST_COLOR);
@@ -789,7 +792,7 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
                     if (nParamType != CLICK_TYPE_CHANGE)
                     {
                         // 選択肢を見えないように
-                        pSelectUI->SetAlpha(0.0f);
+                        pSelectUI->SetDisp(false);
                     }
                     else
                     {
@@ -802,7 +805,7 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
             }
         }
         // 表示
-        m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetAlpha(1.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetDisp(true);
         break;
 
     case ENTRY_STATUS_PLAYER:
@@ -811,14 +814,14 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
         if (m_aEntryInfo[nNumWho].status == ENTRY_STATUS_WAITING)
         {
             // 非表示
-            m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetAlpha(0.0f);
-            m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetAlpha(0.0f);
+            m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetDisp(false);
+            m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetDisp(false);
             // 表示
             m_aEntryInfo[nNumWho].pPlayer->SetDisp(true);
-            m_aEntryInfo[nNumWho].pUI_Bg_Select->SetAlpha(1.0f);
-            m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetAlpha(1.0f);
-            m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetAlpha(1.0f);
-            m_aEntryInfo[nNumWho].pUI_Bg_Select_Status->SetAlpha(1.0f);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select->SetDisp(true);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetDisp(true);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetDisp(true);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_Status->SetDisp(true);
             m_aEntryInfo[nNumWho].pText_Head->SetColor(TEXT_EXIST_COLOR);
             m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_EXIST_COLOR);
             m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_EXIST_COLOR);
@@ -830,7 +833,7 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
         if (nextEntryStatus == ENTRY_STATUS_PLAYER)
         {
             // プレイヤーへの遷移なら、カーソルを表示
-            m_aEntryInfo[nNumWho].pUI_Cursor->SetAlpha(1.0f);
+            m_aEntryInfo[nNumWho].pUI_Cursor->SetDisp(true);
         }
 
         // 選択肢は遷移元に関わらず、変わる表示がある
@@ -849,7 +852,7 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
                         if (m_aEntryInfo[nNumWho].status == ENTRY_STATUS_WAITING)
                         {
                             // 選択肢を見えるように
-                            pSelectUI->SetAlpha(1.0f);
+                            pSelectUI->SetDisp(true);
                         }
                     }
                     else
@@ -927,8 +930,8 @@ void CCustom::ToggleReady(int nNumWho)
     if (m_aEntryInfo[nNumWho].bReady)
     {
         // 非表示
-        m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetAlpha(0.0f);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetDisp(false);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetDisp(false);
         for (int nCntSelect = 0; nCntSelect < SELECT_MAX; nCntSelect++)
         {
             CUI *pSelectUI = CUI::GetAccessUI(nCntSelect);
@@ -941,7 +944,7 @@ void CCustom::ToggleReady(int nNumWho)
                     if (nParamType == CLICK_TYPE_PARTS)
                     {
                         // パーツの選択肢は見えないように
-                        pSelectUI->SetAlpha(0.0f);
+                        pSelectUI->SetDisp(false);
                     }
                     else if (nParamType == CLICK_TYPE_READY)
                     {
@@ -952,17 +955,17 @@ void CCustom::ToggleReady(int nNumWho)
             }
         }
         // 表示
-        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetAlpha(1.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetDisp(true);
         m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetActionLock(0, false);
     }
     else
     {
         // 非表示
-        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetAlpha(0.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetDisp(false);
         m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetActionReset(0);
         m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetActionLock(0, true);
         // 表示
-        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetAlpha(1.0f);
+        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetDisp(true);
         for (int nCntSelect = 0; nCntSelect < SELECT_MAX; nCntSelect++)
         {
             CUI *pSelectUI = CUI::GetAccessUI(nCntSelect);
@@ -975,7 +978,7 @@ void CCustom::ToggleReady(int nNumWho)
                     if (nParamType == CLICK_TYPE_PARTS)
                     {
                         // パーツの選択肢を見えるように
-                        pSelectUI->SetAlpha(1.0f);
+                        pSelectUI->SetDisp(true);
                     }
                     else if (nParamType == CLICK_TYPE_READY)
                     {

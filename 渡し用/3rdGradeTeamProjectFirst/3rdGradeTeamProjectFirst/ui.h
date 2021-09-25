@@ -56,6 +56,7 @@ public:
         ACTION_TEX_BREND,   // テクスチャブレンド
         ACTION_LOOP_ANIM,   // ループアニメーション
         ACTION_TEX_PLACE,   // テクスチャの描画場所指定
+        ACTION_EMIT_EFFECT, // エフェクト発生
         ACTION_MAX
     }ACTION;
 
@@ -165,6 +166,16 @@ public:
         PARAM_TEX_PLACE_PLACE,       // 何番目か
     }PARAM_TEX_PLACE;
 
+    // 補助値の内訳（エフェクト発生編）
+    typedef enum
+    {
+        PARAM_EMIT_EFFECT_TYPE = 0,            // 角度変更割合
+        PARAM_EMIT_EFFECT_RIMIT,               // 制限
+        PARAM_EMIT_EFFECT_FRAME,               // フレーム数
+        PARAM_EMIT_EFFECT_ADJUST_EMIT_POS_X,   // 発生位置Xをずらす値
+        PARAM_EMIT_EFFECT_ADJUST_EMIT_POS_Y,   // 発生位置Yをずらす値
+    }PARAM_EMIT_EFFECT;
+
     CUI(CScene::OBJTYPE objtype);
     ~CUI();
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
@@ -199,6 +210,7 @@ public:
     void SetActionReset(int nNum);
     void SetAllActionReset(void);
     void SetFirstPos(void) { SetPosition(m_memoryPos); }    // アクション経由ではなく、最初の位置に戻すとき使う（例:カーソルのリセット）
+    void SetDisp(bool bDisp) { m_bDisp = bDisp; }
 
     /*========================================================
     // アクション
@@ -211,6 +223,7 @@ public:
     void PlayActionRot(int nNum);        // 回転アクション
     void PlayActionTexBrend(int nNum);   // テクスチャブレンドアクション
     void PlayActionLoopAnim(int nNum);   // ループアニメーションアクション
+    void PlayActionEmitEffect(int nNum); // エフェクト発生アクション
 
     /*========================================================
     // アクション用の共通処理
@@ -242,6 +255,7 @@ private:
     D3DXVECTOR3 m_collisionPos;                 // 当たり判定の位置
     D3DXVECTOR3 m_collisionSize;                // 当たり判定の大きさ
     int m_nAccessNum;                           // アクセスナンバー
+    bool m_bDisp;                               // 表示するかどうか
 };
 
 #endif

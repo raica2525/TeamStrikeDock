@@ -40,7 +40,7 @@ UISET
 	POS = 167.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -56,7 +56,7 @@ UISET
 	POS = 167.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -98,7 +98,7 @@ UISET
 	POS = 482.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -114,7 +114,7 @@ UISET
 	POS = 482.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -156,7 +156,7 @@ UISET
 	POS = 797.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -172,7 +172,7 @@ UISET
 	POS = 797.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -214,7 +214,7 @@ UISET
 	POS = 1112.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -230,7 +230,7 @@ UISET
 	POS = 1112.0 390.0
 	SIZE = 298.0 658.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 1		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -272,7 +272,7 @@ UISET
 	POS = 167.0 555.5
 	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 100	# 0～255
@@ -295,7 +295,7 @@ UISET
 	POS = 167.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -309,7 +309,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 442.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 247.0 442.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -334,7 +334,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 442.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 87.0 442.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -359,7 +359,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 505.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 247.0 505.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -384,7 +384,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 505.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 87.0 505.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -409,7 +409,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 568.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 247.0 568.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -434,7 +434,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 568.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 87.0 568.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -459,7 +459,7 @@ UISET
 	TYPE = 59
 	POS = 292.0 631.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 247.0 631.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -484,7 +484,7 @@ UISET
 	TYPE = 58
 	POS = 42.0 631.5
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 87.0 631.5
 	COLLISION_SIZE = 130.0 50.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -509,7 +509,7 @@ UISET
 	TYPE = 51
 	POS = 167.0 684.0
 	SIZE = 170.0 37.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 167.0 684.0
 	COLLISION_SIZE = 170.0 37.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
@@ -537,7 +537,7 @@ UISET
 	POS = 482.0 555.5
 	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 100	# 0～255
@@ -560,7 +560,7 @@ UISET
 	POS = 482.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -576,7 +576,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 562.0 442.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -601,7 +601,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 402.0 442.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -626,7 +626,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 562.0 505.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -651,7 +651,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 402.0 505.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -676,7 +676,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 562.0 568.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -701,7 +701,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 402.0 568.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -726,7 +726,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 562.0 631.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -751,7 +751,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 402.0 631.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -776,7 +776,7 @@ UISET
 	SIZE = 170.0 37.0
 	COLLISION_POS = 482.0 684.0
 	COLLISION_SIZE = 170.0 37.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -802,7 +802,7 @@ UISET
 	POS = 797.0 555.5
 	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 100	# 0～255
@@ -825,7 +825,7 @@ UISET
 	POS = 797.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -841,7 +841,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 877.0 442.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -866,7 +866,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 717.0 442.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -891,7 +891,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 877.0 505.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -916,7 +916,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 717.0 505.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -941,7 +941,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 877.0 568.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -966,7 +966,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 717.0 568.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -991,7 +991,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 877.0 631.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1016,7 +1016,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 717.0 631.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1041,7 +1041,7 @@ UISET
 	SIZE = 170.0 37.0
 	COLLISION_POS = 797.0 684.0
 	COLLISION_SIZE = 170.0 37.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1067,7 +1067,7 @@ UISET
 	POS = 1112.0 555.5
 	SIZE = 512.0 512.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 100	# 0～255
@@ -1090,7 +1090,7 @@ UISET
 	POS = 1112.0 555.5
 	SIZE = 297.0 321.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 50	# 0～255
@@ -1106,7 +1106,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1192.0 442.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1131,7 +1131,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1032.0 442.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1156,7 +1156,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1192.0 505.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1181,7 +1181,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1032.0 505.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1206,7 +1206,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1192.0 568.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1231,7 +1231,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1032.0 568.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1256,7 +1256,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1192.0 631.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1281,7 +1281,7 @@ UISET
 	SIZE = 64.0 64.0
 	COLLISION_POS = 1032.0 631.5
 	COLLISION_SIZE = 130.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1306,7 +1306,7 @@ UISET
 	SIZE = 170.0 37.0
 	COLLISION_POS = 1112.0 684.0
 	COLLISION_SIZE = 170.0 37.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1333,7 +1333,7 @@ UISET
 	SIZE = 150.0 50.0
 	COLLISION_POS = 101.5 90.0
 	COLLISION_SIZE = 150.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1365,7 +1365,7 @@ UISET
 	SIZE = 150.0 50.0
 	COLLISION_POS = 416.5 90.0
 	COLLISION_SIZE = 150.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1397,7 +1397,7 @@ UISET
 	SIZE = 150.0 50.0
 	COLLISION_POS = 731.5 90.0
 	COLLISION_SIZE = 150.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1429,7 +1429,7 @@ UISET
 	SIZE = 150.0 50.0
 	COLLISION_POS = 1046.5 90.0
 	COLLISION_SIZE = 150.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
 	ACTION0 = 2		# 補助値はこの下に書いていく
 	LOCK = 1		# bool
 	PARAM0 = 1.0
@@ -1459,7 +1459,7 @@ UISET
 	TYPE = 66
 	POS = 275.0 110.0
 	SIZE = 50.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 275.0 110.5
 	COLLISION_SIZE = 60.0 60.0
 	FRONT_TEXT = 1		# bool
@@ -1483,7 +1483,7 @@ UISET
 	TYPE = 66
 	POS = 590.0 110.0
 	SIZE = 50.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 590.0 110.5
 	COLLISION_SIZE = 60.0 60.0
 	FRONT_TEXT = 1		# bool
@@ -1507,7 +1507,7 @@ UISET
 	TYPE = 66
 	POS = 905.0 110.0
 	SIZE = 50.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 905.0 110.5
 	COLLISION_SIZE = 60.0 60.0
 	FRONT_TEXT = 1		# bool
@@ -1531,7 +1531,7 @@ UISET
 	TYPE = 66
 	POS = 1220.0 110.0
 	SIZE = 50.0 50.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 1220.0 110.5
 	COLLISION_SIZE = 60.0 60.0
 	FRONT_TEXT = 1		# bool
@@ -1555,7 +1555,7 @@ UISET
 	TYPE = 67
 	POS = 272.5 260.0
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 272.5 260.0
 	COLLISION_SIZE = 64.0 64.0
 	FRONT_TEXT = 1		# bool
@@ -1579,7 +1579,7 @@ UISET
 	TYPE = 67
 	POS = 587.5 260.0
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 587.5 260.0
 	COLLISION_SIZE = 64.0 64.0
 	FRONT_TEXT = 1		# bool
@@ -1603,7 +1603,7 @@ UISET
 	TYPE = 67
 	POS = 902.5 260.0
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 902.5 260.0
 	COLLISION_SIZE = 64.0 64.0
 	FRONT_TEXT = 1		# bool
@@ -1627,7 +1627,7 @@ UISET
 	TYPE = 67
 	POS = 1217.5 260.0
 	SIZE = 64.0 64.0
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	COLLISION_POS = 1217.5 260.0
 	COLLISION_SIZE = 64.0 64.0
 	FRONT_TEXT = 1		# bool
@@ -1652,7 +1652,7 @@ UISET
 	POS = 167.0 340.0
 	SIZE = 297.0 128.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	FRONT_TEXT = 1		# bool
@@ -1668,7 +1668,7 @@ UISET
 	POS = 482.0 340.0
 	SIZE = 297.0 128.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	FRONT_TEXT = 1		# bool
@@ -1684,7 +1684,7 @@ UISET
 	POS = 797.0 340.0
 	SIZE = 297.0 128.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	FRONT_TEXT = 1		# bool
@@ -1700,7 +1700,7 @@ UISET
 	POS = 1112.0 340.0
 	SIZE = 297.0 128.0
 	ROT = 0			# 0～360
-	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	NO_DRAW = 1		# bool
 	ADD_BLEND = 0		# bool
 	USE_ZBUFFER = 0		# bool
 	FRONT_TEXT = 1		# bool

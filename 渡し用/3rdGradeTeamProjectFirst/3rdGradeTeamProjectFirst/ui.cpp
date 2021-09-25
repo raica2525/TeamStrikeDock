@@ -18,6 +18,7 @@
 #include "input.h"
 #include "title.h"
 #include "texture.h"
+#include "effect2d.h"
 
 //=======================================
 // 静的メンバ変数宣言
@@ -53,6 +54,7 @@ CUI::CUI(CScene::OBJTYPE objtype) :CScene2D(objtype)
     m_collisionPos = DEFAULT_VECTOR;
     m_collisionSize = DEFAULT_VECTOR;
     m_nAccessNum = NOT_EXIST;
+    m_bDisp = true;
 }
 
 //=========================================================
@@ -153,14 +155,18 @@ void CUI::Update(void)
 //=========================================================
 void CUI::Draw(void)
 {
-    // 加算合成
-    if (m_bUseAdditiveSynthesis)
+    // 表示するなら
+    if (m_bDisp)
     {
-        CScene2D::SetAdditiveSynthesis();
-    }
+        // 加算合成
+        if (m_bUseAdditiveSynthesis)
+        {
+            CScene2D::SetAdditiveSynthesis();
+        }
 
-    // 描画処理
-    CScene2D::Draw();
+        // 描画処理
+        CScene2D::Draw();
+    }
 }
 
 //=========================================================
@@ -305,6 +311,7 @@ void CUI::Place(SET set)
                     bool bFrontText = false;                            // テキストよりも手前かどうか
                     int nAlphaTestBorder = DEFAULT_ALPHATEST_BORDER_2D; // アルファテストのボーダー
                     bool bShaveTex = false;                             // 端の1ピクセル削るかどうか
+                    bool bDisp = true;                                  // 表示するかどうか
                     int nIndexAction = 0;                               // アクションのインデックス    
                     ActionInfo aActionInfo[MAX_ACTION] = {};            // アクションの情報
                     memset(aActionInfo, 0, sizeof(aActionInfo));
@@ -334,6 +341,15 @@ void CUI::Place(SET set)
                             if (nAccessNum < 0 || nAccessNum >= MAX_ACCESS_NUM)
                             {
                                 nAccessNum = NOT_EXIST;
+                            }
+                        }
+                        else if (strcmp(cHeadText, "NO_DRAW") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nBool);
+
+                            if (nBool == 1)
+                            {
+                                bDisp = false;
                             }
                         }
                         else if (strcmp(cHeadText, "POS") == 0)
@@ -527,6 +543,9 @@ void CUI::Place(SET set)
                     {
                         pUI->SetShaveTex();
                     }
+
+                    // 表示するかどうかを設定
+                    pUI->SetDisp(bDisp);
 #ifdef _DEBUG
                     pUI->SetReloadUI();
 #endif
@@ -738,6 +757,9 @@ void CUI::PlayAction(int nNum)
             break;
         case ACTION_LOOP_ANIM:
             PlayActionLoopAnim(nNum);
+            break;
+        case ACTION_EMIT_EFFECT:
+            PlayActionEmitEffect(nNum);
             break;
         }
     }
@@ -1379,6 +1401,67 @@ void CUI::PlayActionLoopAnim(int nNum)
 
     // アニメーションさせる
     SetFlowingAnimation(1, (int)m_aActionInfo[nNum].afParam[PARAM_LOOP_ANIM_ONE_ROUND_FRAME], bRightToLeft, direct);
+}
+
+//=========================================================
+// エフェクト発生アクション
+// Author : 後藤慎之助
+//=========================================================
+void CUI::PlayActionEmitEffect(int nNum)
+{
+    // 制限を考慮（値には対応していない）
+    bool bEmit = false;   // 発生させるかどうか
+    switch ((int)m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_RIMIT])
+    {
+    case RIMIT_NONE:
+        bEmit = true;
+        break;
+
+    case RIMIT_TO_FRAME:
+        if (m_aActionInfo[nNum].nCntTime < (int)m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_FRAME])
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+            bEmit = true;
+        }
+        break;
+
+    case RIMIT_FROM_FRAME:
+        if (m_aActionInfo[nNum].nCntTime >= (int)m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_FRAME])
+        {
+            bEmit = true;
+        }
+        else
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
+        break;
+
+    case RIMIT_REPEAT_FRAME:
+        if (m_aActionInfo[nNum].nCntTime < (int)m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_FRAME])
+        {
+            // カウンタ加算
+            m_aActionInfo[nNum].nCntTime++;
+        }
+        else
+        {
+            // エフェクトを発生させ、カウンタリセット
+            bEmit = true;
+            m_aActionInfo[nNum].nCntTime = 0;
+        }
+        break;
+    }
+
+    // エフェクト発生
+    if (bEmit)
+    {
+        // 発生位置は、中心以外に変えることもできる
+        D3DXVECTOR3 emitPos = CScene2D::GetPosition() +
+            D3DXVECTOR3(m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_ADJUST_EMIT_POS_X], 
+                m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_ADJUST_EMIT_POS_Y], 0.0f);
+        CEffect2D::Emit((int)m_aActionInfo[nNum].afParam[PARAM_EMIT_EFFECT_TYPE], emitPos, emitPos);
+    }
 }
 
 //=========================================================

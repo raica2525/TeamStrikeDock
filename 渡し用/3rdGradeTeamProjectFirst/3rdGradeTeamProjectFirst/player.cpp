@@ -865,7 +865,7 @@ void CPlayer::UpdateMannequin(void)
         m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, m_fWei);
         if (m_bDispAbility)
         {
-            m_pUI_Custom_Ability->SetAlpha(1.0f);
+            m_pUI_Custom_Ability->SetDisp(true);
             m_pText_Custom_Ex_Head->SetColor(TEXT_EXIST_COLOR);
             m_pText_Custom_Ex_Up->SetColor(TEXT_EXIST_COLOR);
             m_pText_Custom_Ex_Down->SetColor(TEXT_EXIST_COLOR);
@@ -874,7 +874,7 @@ void CPlayer::UpdateMannequin(void)
         }
         else
         {
-            m_pUI_Custom_Ability->SetAlpha(0.0f);
+            m_pUI_Custom_Ability->SetDisp(false);
             m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
             m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
             m_pText_Custom_Ex_Down->SetColor(TEXT_NOT_EXIST_COLOR);
@@ -889,7 +889,7 @@ void CPlayer::UpdateMannequin(void)
         m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, 0);
         m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, 0);
         m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, 0);
-        m_pUI_Custom_Ability->SetAlpha(0.0f);
+        m_pUI_Custom_Ability->SetDisp(false);
         m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
         m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
         m_pText_Custom_Ex_Down->SetColor(TEXT_NOT_EXIST_COLOR);
@@ -1233,7 +1233,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
         clipingPos = D3DXVECTOR3(1112.0f, 390.0f, 0.0f);
         break;
     }
-    pPlayer->m_pUI_Custom_Ability = CUI::Create(73, abilityPos, abilitySize, 0, DEFAULT_COLOR_NONE_ALPHA);
+    pPlayer->m_pUI_Custom_Ability = CUI::Create(73, abilityPos, abilitySize, 0, DEFAULT_COLOR);
     float fDigitPosY = 0.0f;
     const float DIGIT_UI_VALUE = 31.5f;
     pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_DEF_COLOR);
