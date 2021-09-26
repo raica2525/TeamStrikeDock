@@ -1137,25 +1137,35 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
     }
 
     // UIを生成
-    D3DXCOLOR col = DEFAULT_COLOR;
+    D3DXCOLOR playableCol = DEFAULT_COLOR;
+    D3DXCOLOR spGagueCol = DEFAULT_COLOR;
     int nTexTypePlayable = 0;
+    int nTexTypePlayer = 0;
     switch (pPlayer->m_nIdxControlAndColor)
     {
     case PLAYER_1:
-        col = PLAYER_COLOR_1;
+        playableCol = PLAYER_COLOR_1;
+        spGagueCol = D3DXCOLOR(0.768f, 0.470f, 0.470f, 1.0f);
         nTexTypePlayable = 21;
+        nTexTypePlayer = 78;
         break;
     case PLAYER_2:
-        col = PLAYER_COLOR_2;
+        playableCol = PLAYER_COLOR_2;
+        spGagueCol = D3DXCOLOR(0.501f, 0.607f, 0.737f, 1.0f);
         nTexTypePlayable = 22;
+        nTexTypePlayer = 79;
         break;
     case PLAYER_3:
-        col = PLAYER_COLOR_3;
+        playableCol = PLAYER_COLOR_3;
+        spGagueCol = D3DXCOLOR(0.513f, 0.654f, 0.509f, 1.0f);
         nTexTypePlayable = 23;
+        nTexTypePlayer = 80;
         break;
     case PLAYER_4:
-        col = PLAYER_COLOR_4;
+        playableCol = PLAYER_COLOR_4;
+        spGagueCol = D3DXCOLOR(0.760f, 0.623f, 0.478f, 1.0f);
         nTexTypePlayable = 24;
+        nTexTypePlayer = 81;
         break;
     }
     switch (pPlayer->m_AIlevel)
@@ -1170,24 +1180,38 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
         nTexTypePlayable = 28;
         break;
     }
-    const float UI_SIZE_X = 240.0f; // ここの値を、UIの大体の横幅に合わせる
+    // HPゲージ
+    const float UI_SIZE_X = 294.0f; // ここの値を、UIの大体の横幅に合わせる
+    const float UI_FRAME_SIZE_X = 220.0f;
+    const float UI_FRAME_SIZE_Y = 28.0f;
+    const float UI_BAR_SIZE_X = 204.0f;
+    const float UI_BAR_SIZE_Y = 20.0f;
     const float SPACE_SIZE = (SCREEN_WIDTH - (UI_SIZE_X * CGame::GetNumAllPlayer())) / (CGame::GetNumAllPlayer() + 1);
     const float FIRST_UI_POS_X = SPACE_SIZE + (UI_SIZE_X / 2);
     const float NEXT_UI_POS_X = UI_SIZE_X + SPACE_SIZE;
     float fDigitPosX = FIRST_UI_POS_X + (NEXT_UI_POS_X * (float)pPlayer->m_nIdxCreate);
-    CUI* pUI = CUI::Create(17, D3DXVECTOR3(fDigitPosX, 40.0f, 0.0f), D3DXVECTOR3(240.0f, 30.0f, 0.0f), 0, DEFAULT_COLOR);
-    pPlayer->m_pUI_HP = CUI::Create(18, D3DXVECTOR3(fDigitPosX, 40.0f, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, col);
-    pPlayer->m_pUI_HP->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
-    CUI::Create(17, D3DXVECTOR3(fDigitPosX, 70.0f, 0.0f), D3DXVECTOR3(240.0f, 30.0f, 0.0f), 0, DEFAULT_COLOR);
-    pPlayer->m_pUI_SP = CUI::Create(18, D3DXVECTOR3(fDigitPosX, 70.0f, 0.0f), D3DXVECTOR3(232.0f, 20.4f, 0.0f), 0, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
-    pPlayer->m_pUI_SP->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
+    CUI::Create(17, D3DXVECTOR3(fDigitPosX + 50.0f, 80.0f, 0.0f), D3DXVECTOR3(UI_FRAME_SIZE_X, UI_FRAME_SIZE_Y, 0.0f), 0, DEFAULT_COLOR);
+    pPlayer->m_pUI_HP = CUI::Create(18, D3DXVECTOR3(fDigitPosX + 50.0f, 80.0f, 0.0f), D3DXVECTOR3(UI_BAR_SIZE_X, UI_BAR_SIZE_Y, 0.0f), 0, DEFAULT_COLOR);
+    pPlayer->m_pUI_HP->SetActionInfo(0, CUI::ACTION_GAUGE, false);
+
+    // 必殺ゲージ
+    CUI::Create(76, D3DXVECTOR3(fDigitPosX - 80.0f, 60.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), 0, DEFAULT_COLOR);
+    pPlayer->m_pUI_SP = CUI::Create(77, D3DXVECTOR3(fDigitPosX - 80.0f, 60.0f, 0.0f), D3DXVECTOR3(85.0f, 85.0f, 0.0f), 0, spGagueCol);
+    pPlayer->m_pUI_SP->SetActionInfo(0, CUI::ACTION_GAUGE, false);
+
+    // ストック
     for (int nCntStock = 0; nCntStock < pPlayer->m_nStock; nCntStock++)
     {
-        // ストックは位置をずらす
-        float fStockDigitPosX = -120.0f + 15.0f + (30.0f * nCntStock);  // -ゲージの半分の大きさ+ストックの半分の大きさ+(ストックの大きさ*何番目のストックか)
-        pPlayer->m_apUI_Stock[nCntStock] = CUI::Create(19, D3DXVECTOR3(fDigitPosX + fStockDigitPosX, 100.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 0.0f), 0, DEFAULT_COLOR);
+        const float STOCK_SIZE_X = 36.0f;
+        float fStockDigitPosX = 45.0f + ((STOCK_SIZE_X / 2) * nCntStock);  // -ゲージの半分の大きさ+ストックの半分の大きさ+(ストックの大きさ*何番目のストックか)
+        pPlayer->m_apUI_Stock[nCntStock] = CUI::Create(19, D3DXVECTOR3(fDigitPosX + fStockDigitPosX, 95.0f, 0.0f), D3DXVECTOR3(STOCK_SIZE_X, 24.0f, 0.0f), 0, DEFAULT_COLOR);
     }
-    pPlayer->m_pUI_Playable = CUI::Create(nTexTypePlayable, DEFAULT_VECTOR, D3DXVECTOR3(50.0f, 50.0f, 0.0f), 0, col);
+
+    // Player表示
+    CUI::Create(nTexTypePlayer, D3DXVECTOR3(fDigitPosX + 10.0f, 50.0f, 0.0f), D3DXVECTOR3(82.5f, 54.0f, 0.0f), 0, DEFAULT_COLOR);
+
+    // プレイアブル表示
+    pPlayer->m_pUI_Playable = CUI::Create(nTexTypePlayable, DEFAULT_VECTOR, D3DXVECTOR3(50.0f, 50.0f, 0.0f), 0, playableCol);
 
     return pPlayer;
 }
@@ -1239,19 +1263,19 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
     pPlayer->m_pUI_Custom_Ability = CUI::Create(73, abilityPos, abilitySize, 0, DEFAULT_COLOR);
     float fDigitPosY = 0.0f;
     const float DIGIT_UI_VALUE = 31.5f;
-    pPlayer->m_pUI_Custom_Def = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_DEF_COLOR);
+    pPlayer->m_pUI_Custom_Def = CUI::Create(75, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_DEF_COLOR);
     pPlayer->m_pUI_Custom_Def->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += DIGIT_UI_VALUE;
 
-    pPlayer->m_pUI_Custom_Atk = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_ATK_COLOR);
+    pPlayer->m_pUI_Custom_Atk = CUI::Create(75, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_ATK_COLOR);
     pPlayer->m_pUI_Custom_Atk->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += DIGIT_UI_VALUE;
 
-    pPlayer->m_pUI_Custom_Spd = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_SPD_COLOR);
+    pPlayer->m_pUI_Custom_Spd = CUI::Create(75, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_SPD_COLOR);
     pPlayer->m_pUI_Custom_Spd->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
     fDigitPosY += DIGIT_UI_VALUE;
 
-    pPlayer->m_pUI_Custom_Wei = CUI::Create(18, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_WEI_COLOR);
+    pPlayer->m_pUI_Custom_Wei = CUI::Create(75, startPos + D3DXVECTOR3(0.0f, fDigitPosY, 0.0f), gaugeSize, 0, CUSTOM_WEI_COLOR);
     pPlayer->m_pUI_Custom_Wei->SetActionInfo(0, CUI::ACTION_GAUGE, false); // ゲージに変える
 
     // テキストを生成

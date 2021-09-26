@@ -202,7 +202,7 @@ HRESULT CGame::Init(void)
     m_pEffect2d_Posi->SetUseUpdate(false);
 
     // ボールスピード表示を生成
-    m_pNumArray_BallSpd = CNumberArray::Create(12, D3DXVECTOR3(640.0f, 665.0f, 0.0f), NUMBER_SIZE_X_BALL_SPD, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), (int)BALL_FIRST_SPEED, false);
+    m_pNumArray_BallSpd = CNumberArray::Create(12, D3DXVECTOR3(640.0f, 675.0f, 0.0f), NUMBER_SIZE_X_BALL_SPD, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), (int)BALL_FIRST_SPEED, false);
 
     // ステージの設定
     //SetStage(STAGE_1);

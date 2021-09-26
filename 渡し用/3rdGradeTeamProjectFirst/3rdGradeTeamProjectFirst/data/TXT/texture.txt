@@ -622,4 +622,76 @@ TEXTURESET
     NAME = data/TEXTURE/074_kira.png
 END_TEXTURESET
 
+#---------------------------------------
+# [75] カスタマイズ画面のバー
+#---------------------------------------
+TEXTURESET
+    TYPE = 75
+    NAME = data/TEXTURE/075_bar.png
+END_TEXTURESET
+
+#---------------------------------------
+# [76] パーセントフレーム
+#---------------------------------------
+TEXTURESET
+    TYPE = 76
+    NAME = data/TEXTURE/076_per_frame.png
+END_TEXTURESET
+
+#---------------------------------------
+# [77] パーセントゲージ
+#---------------------------------------
+TEXTURESET
+    TYPE = 77
+    NAME = data/TEXTURE/077_per_gauge.png
+END_TEXTURESET
+
+#---------------------------------------
+# [78] player1
+#---------------------------------------
+TEXTURESET
+    TYPE = 78
+    NAME = data/TEXTURE/078_player1.png
+END_TEXTURESET
+
+#---------------------------------------
+# [79] player2
+#---------------------------------------
+TEXTURESET
+    TYPE = 79
+    NAME = data/TEXTURE/079_player2.png
+END_TEXTURESET
+
+#---------------------------------------
+# [80] player3
+#---------------------------------------
+TEXTURESET
+    TYPE = 80
+    NAME = data/TEXTURE/080_player3.png
+END_TEXTURESET
+
+#---------------------------------------
+# [81] player4
+#---------------------------------------
+TEXTURESET
+    TYPE = 81
+    NAME = data/TEXTURE/081_player4.png
+END_TEXTURESET
+
+#---------------------------------------
+# [82] 発射メーターの背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 82
+    NAME = data/TEXTURE/082_meter.png
+END_TEXTURESET
+
+#---------------------------------------
+# [83] グルグル
+#---------------------------------------
+TEXTURESET
+    TYPE = 83
+    NAME = data/TEXTURE/083_toroidal.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

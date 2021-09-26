@@ -773,49 +773,72 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
     switch (nextEntryStatus)
     {
     case ENTRY_STATUS_WAITING:
-        // カーソルを封印
-        m_aEntryInfo[nNumWho].bUseCursor = false;
-        m_aEntryInfo[nNumWho].nNumSelectUIOld = NOT_EXIST;
-        m_aEntryInfo[nNumWho].bReady = false;
-        m_aEntryInfo[nNumWho].pUI_Cursor->SetFirstPos();
-        // 非表示
-        m_aEntryInfo[nNumWho].pPlayer->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Bg_Select_Status->SetDisp(false);
-        m_aEntryInfo[nNumWho].pUI_Cursor->SetDisp(false);
-        m_aEntryInfo[nNumWho].pText_Head->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_aEntryInfo[nNumWho].pText_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
-        for (int nCntSelect = 0; nCntSelect < SELECT_MAX; nCntSelect++)
         {
-            CUI *pSelectUI = CUI::GetAccessUI(nCntSelect);
-            if (pSelectUI)
+            // 他の全員がカーソルを使っていないなら
+            bool bAllOtherCursorNone = true;
+            for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
             {
-                int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
-                if (nParamWho == nNumWho)
+                if (nNumWho == nCntPlayer)
                 {
-                    int nParamType = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_TYPE);
-                    if (nParamType != CLICK_TYPE_CHANGE)
+                    continue;
+                }
+
+                if (m_aEntryInfo[nCntPlayer].bUseCursor)
+                {
+                    bAllOtherCursorNone = false;
+                    break;
+                }
+            }
+
+            // 誰か1人でもカーソルを使っているなら
+            if (!bAllOtherCursorNone)
+            {
+                // カーソルを封印
+                m_aEntryInfo[nNumWho].bUseCursor = false;
+                m_aEntryInfo[nNumWho].nNumSelectUIOld = NOT_EXIST;
+                m_aEntryInfo[nNumWho].bReady = false;
+                m_aEntryInfo[nNumWho].pUI_Cursor->SetFirstPos();
+                m_aEntryInfo[nNumWho].pUI_Cursor->SetDisp(false);
+            }
+
+            // 非表示
+            m_aEntryInfo[nNumWho].pPlayer->SetDisp(false);
+            m_aEntryInfo[nNumWho].pUI_Bg_Ready->SetDisp(false);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select->SetDisp(false);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_In_Frame->SetDisp(false);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_Out_Frame->SetDisp(false);
+            m_aEntryInfo[nNumWho].pUI_Bg_Select_Status->SetDisp(false);
+            m_aEntryInfo[nNumWho].pText_Head->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_aEntryInfo[nNumWho].pText_Up->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_aEntryInfo[nNumWho].pText_Down->SetColor(TEXT_NOT_EXIST_COLOR);
+            m_aEntryInfo[nNumWho].pText_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
+            for (int nCntSelect = 0; nCntSelect < SELECT_MAX; nCntSelect++)
+            {
+                CUI *pSelectUI = CUI::GetAccessUI(nCntSelect);
+                if (pSelectUI)
+                {
+                    int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
+                    if (nParamWho == nNumWho)
                     {
-                        // 選択肢を見えないように
-                        pSelectUI->SetDisp(false);
-                    }
-                    else
-                    {
-                        // チェンジはプレイヤー表示にし、サイズリセットからの拡縮ロック
-                        pSelectUI->SetTexturePlace(0, 4);
-                        pSelectUI->SetActionReset(0);
-                        pSelectUI->SetActionLock(0, true);
+                        int nParamType = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_TYPE);
+                        if (nParamType != CLICK_TYPE_CHANGE)
+                        {
+                            // 選択肢を見えないように
+                            pSelectUI->SetDisp(false);
+                        }
+                        else
+                        {
+                            // チェンジはプレイヤー表示にし、サイズリセットからの拡縮ロック
+                            pSelectUI->SetTexturePlace(0, 4);
+                            pSelectUI->SetActionReset(0);
+                            pSelectUI->SetActionLock(0, true);
+                        }
                     }
                 }
             }
+            // 表示
+            m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetDisp(true);
         }
-        // 表示
-        m_aEntryInfo[nNumWho].pUI_Bg_Wait->SetDisp(true);
         break;
 
     case ENTRY_STATUS_PLAYER:
