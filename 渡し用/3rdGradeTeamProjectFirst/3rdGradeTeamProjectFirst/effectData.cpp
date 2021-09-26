@@ -321,7 +321,7 @@ void CEffectData::Uninit(void)
 //=============================================================================
 CEffectData::CreateInfo * CEffectData::GetCreateInfo(const int nNum)
 {
-    if (nNum < TYPE_MAX && nNum >= 0)
+    if (nNum < MAX_EFFECT_TYPE && nNum >= 0)
     {
         if (&m_aCreateInfo[nNum] != NULL)
         {

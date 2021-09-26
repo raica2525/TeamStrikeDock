@@ -96,11 +96,11 @@ void CPlayer::CustomExName(char* pName, int exFlag)
     {
         if (!bExist)
         {
-            wsprintf(pName, "スリージャンプ");
+            wsprintf(pName, "三段ジャンプ");
         }
         else
         {
-            strcat(pName, "/スリージャンプ");
+            strcat(pName, "/三段ジャンプ");
         }
         bExist = true;
     }
@@ -109,11 +109,11 @@ void CPlayer::CustomExName(char* pName, int exFlag)
     {
         if (!bExist)
         {
-            wsprintf(pName, "ファストチャージ");
+            wsprintf(pName, "溜め短縮");
         }
         else
         {
-            strcat(pName, "/ファストチャージ");
+            strcat(pName, "/溜め短縮");
         }
         bExist = true;
     }
@@ -122,11 +122,11 @@ void CPlayer::CustomExName(char* pName, int exFlag)
     {
         if (!bExist)
         {
-            wsprintf(pName, "キャッチ×");
+            wsprintf(pName, "キャッチ使用不可");
         }
         else
         {
-            strcat(pName, "/キャッチ×");
+            strcat(pName, "/キャッチ使用不可");
         }
         bExist = true;
     }
@@ -140,6 +140,19 @@ void CPlayer::CustomExName(char* pName, int exFlag)
         else
         {
             strcat(pName, "/ファーストヒットガード");
+        }
+        bExist = true;
+    }
+
+    if (IS_BITON(exFlag, EX_FLAG_TRAIL_GREEN))
+    {
+        if (!bExist)
+        {
+            wsprintf(pName, "武器軌跡色:緑");
+        }
+        else
+        {
+            strcat(pName, "/武器軌跡色:緑");
         }
         bExist = true;
     }

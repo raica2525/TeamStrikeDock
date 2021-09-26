@@ -26,6 +26,8 @@
 #define LAY_ROT_RIGHT D3DXVECTOR3(0.0f, D3DXToRadian(270.0f), 0.0f)
 #define LAY_ROT_FRONT D3DXVECTOR3(0.0f, 0.0f, D3DXToRadian(0.0001f))
 
+#define MAX_EFFECT_TYPE 64
+
 //================================================
 // クラス宣言
 //================================================
@@ -64,7 +66,7 @@ public:
         TYPE_LUCKY_GUARD_SECOND,    // ラッキーガード時に2番目に出るエフェクト
         TYPE_TITLE_FIRE_RED,        // タイトルの赤い炎
         TYPE_TITLE_FIRE_BLUE,       // タイトルの青い炎
-        TYPE_MAX
+        TYPE_KIRA,                  // カーソルクリック時のキラキラ
     }TYPE;  // 生成するエフェクトの種類
 
     typedef enum
@@ -120,7 +122,7 @@ public:
     CreateInfo* GetCreateInfo(const int nNum);
 
 private:
-    CreateInfo m_aCreateInfo[TYPE_MAX];    // 生成情報
+    CreateInfo m_aCreateInfo[MAX_EFFECT_TYPE];    // 生成情報
 };
 
 #endif

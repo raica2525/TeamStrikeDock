@@ -161,7 +161,7 @@ public:
     void RimitMoveCursor(D3DXVECTOR3& cursorPos);                              // カーソル移動の制限
     void PressFire(int nNumWho);                                               // プレスし続けると、炎が出る
     void CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos);                  // 選択肢との当たり判定
-    void ClickSelect(int nNumWho, CUI* pSelectUI);                             // 選択肢のクリック
+    void ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos);      // 選択肢のクリック
 
     /*========================================================
     // エントリー周り

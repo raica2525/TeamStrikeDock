@@ -31,6 +31,7 @@
 #include "number_array.h"
 #include "text.h"
 #include "cliping_musk.h"
+#include "modelEffect.h"
 
 //========================================
 // マクロ定義
@@ -137,6 +138,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_collisionSizeDeffence = DEFAULT_VECTOR;
 
 	m_pClipingMusk = NULL;
+    m_nNumWep = 0;
 
     //===================================
     // 特殊能力対応周り
@@ -356,6 +358,7 @@ void CPlayer::LoadCustom(void)
 
                 // モデルをバインド
                 BindParts(PARTS_WEP, (int)pModelData->GetPartsList(nPartsListType)->afParam[0]);
+                m_nNumWep = (int)pModelData->GetPartsList(nPartsListType)->afParam[0];
 
                 // カスタマイズパーツ番号を取得
                 m_anNumCustomParts[CUSTOM_PARTS_WEP] = nPartsListType;
@@ -2457,12 +2460,13 @@ void CPlayer::Swing(D3DXVECTOR3 playerPos, bool bFirstCollision)
     }
     if (IsAttackBall(attackPos, attackSize, moveAngle, fFinalPower, bFirstCollision, flag))
     {
-        // 当たっていたら即座にスイングに
-        m_attackState = ATTACK_STATE_SWING;
-
-        // スイングのクールタイム決定
-        m_nCntAttackTime = ATTACK_SWING_WHOLE_FRAME;
-        m_nCntAttackAnimTime = PLAYER_ATTACK_ANIM_MIN_FRAME;
+        // 当たっていたら即座にスイングに（初回の当たり判定時のみ）
+        if (bFirstCollision)
+        {
+            m_attackState = ATTACK_STATE_SWING;
+            m_nCntAttackTime = ATTACK_SWING_WHOLE_FRAME;
+            m_nCntAttackAnimTime = PLAYER_ATTACK_ANIM_MIN_FRAME;
+        }
     }
 
 #ifdef COLLISION_TEST
@@ -2841,6 +2845,57 @@ bool CPlayer::IsAttackBall(D3DXVECTOR3 attackPos, D3DXVECTOR3 attackSize, D3DXVE
 }
 
 //=============================================================================
+// 武器の残像を残す
+// Author : 後藤慎之助
+//=============================================================================
+void CPlayer::LeaveWepAfterimage(void)
+{
+    // 攻撃アニメーションの最低保証期間なら
+    if (m_nCntAttackAnimTime > 0)
+    {
+        // 武器の位置を取得
+        D3DXVECTOR3 wepPos = CCharacter::GetPartsPos(PARTS_WEP);
+
+        // プレイヤーの向きに合わせて、モデルエフェクトの向きを合わせる
+        D3DXVECTOR3 playerRot = GetRot();
+        D3DXVECTOR3 wepRot = DEFAULT_VECTOR;
+        float fAngle = D3DXToRadian(12.5f);
+        if (playerRot.y == PLAYER_ROT_LEFT)
+        {
+            fAngle = D3DXToRadian(-12.5f);
+        }
+        wepRot.z = fAngle * m_nCntAttackAnimTime;
+
+        // モデルエフェクトを生成
+        D3DXCOLOR col = DEFAULT_COLOR;
+        switch (m_nIdxControlAndColor)
+        {
+        case PLAYER_1:
+            col = PLAYER_COLOR_1;
+            break;
+        case PLAYER_2:
+            col = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+            break;
+        case PLAYER_3:
+            col = PLAYER_COLOR_3;
+            break;
+        case PLAYER_4:
+            col = PLAYER_COLOR_4;
+            break;
+        }
+        
+        // 武器個別対応
+        if (IS_BITON(m_exFlag, EX_FLAG_TRAIL_GREEN))
+        {
+            col = PLAYER_COLOR_3;
+        }
+
+        CModelEffect *pCopy = CModelEffect::Create(m_nNumWep, wepPos, wepRot, col, D3DXCOLOR(0.0f, 0.0f, 0.0f, -0.025f));
+        pCopy->SetAdditive();
+    }
+}
+
+//=============================================================================
 // 向きの制御
 // Author : 後藤慎之助
 //=============================================================================
@@ -2895,9 +2950,11 @@ void CPlayer::AttackMotion(void)
         GetAnimation()->SetAnimation(ANIM_SWING_CHARGE);
         break;
     case ATTACK_STATE_SWING:
+        LeaveWepAfterimage();
         GetAnimation()->SetAnimation(ANIM_SWING);
         break;
     case ATTACK_STATE_SMASH:
+        LeaveWepAfterimage();
         GetAnimation()->SetAnimation(ANIM_SMASH);
         break;
     case ATTACK_STATE_SPIKE:

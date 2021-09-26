@@ -614,4 +614,12 @@ TEXTURESET
     NAME = data/TEXTURE/073_ability.png
 END_TEXTURESET
 
+#---------------------------------------
+# [74] キラキラ
+#---------------------------------------
+TEXTURESET
+    TYPE = 74
+    NAME = data/TEXTURE/074_kira.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

@@ -171,6 +171,7 @@
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="modelData.cpp" />
+    <ClCompile Include="modelEffect.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="outline.cpp" />
     <ClCompile Include="pause.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="modelData.h" />
+    <ClInclude Include="modelEffect.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="outline.h" />
     <ClInclude Include="pause.h" />

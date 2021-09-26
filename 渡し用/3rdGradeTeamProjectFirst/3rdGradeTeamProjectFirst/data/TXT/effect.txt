@@ -954,4 +954,42 @@ EFFECT_DATASET
 	ALPHA_TEST_BORDER = 50
 END_EFFECT_DATASET
 
+#---------------------------------------
+# [25] カーソル選択時のキラキラ
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 25
+	TEX_TYPE = 74
+	ONCE = 15
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 314	# 0～314
+	SPEED_MAX = 500
+	SPEED_MIN = 250
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.0		# 1.0倍が基本
+	GRAVITY = 0.0
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MIN = 0
+	COL = 1.0 1.0 1.0 1.0
+	COL_CHANGE = 0.0 0.0 0.0 0.0
+	FADE_OUT_RATE = 0.0	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 7500
+	SIZE_MIN = 5000
+	SIZE_CHANGE = -2.5 -2.5 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 50
+END_EFFECT_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

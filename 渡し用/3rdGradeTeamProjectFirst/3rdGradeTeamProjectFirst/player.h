@@ -323,6 +323,7 @@ public:
         EX_FLAG_FAST_CHARGE = 0x001 << 2,      // 溜め短縮
         EX_FLAG_DONT_CATCH = 0x001 << 3,       // キャッチ使用不可
         EX_FLAG_FIRST_HIT_GUARD = 0x001 << 4,  // ファーストヒットガード
+        EX_FLAG_TRAIL_GREEN = 0x001 << 5,      // 武器軌跡色:緑
     }EX_FLAG;
 
     // 必殺技（SPショット）の種類
@@ -366,6 +367,7 @@ public:
     void Bunt(D3DXVECTOR3 playerPos);                                                   // バント
     void Absorb(D3DXVECTOR3 playerPos);                                                 // 吸収
     bool IsAttackBall(D3DXVECTOR3 attackPos, D3DXVECTOR3 attackSize, D3DXVECTOR3 moveAngle, float fPower, bool bFirstCollision, int flag);   // 攻撃の当たり判定
+    void LeaveWepAfterimage(void);                                                      // 武器の残像を残す
     void RotControl();                                                                  // 回転制御
     void AttackMotion(void);                                                            // 攻撃モーションの管理
     void DamageUpdate(D3DXVECTOR3 pos);                                                 // 負傷更新処理
@@ -504,6 +506,7 @@ private:
     D3DXVECTOR3 m_collisionSizeDeffence;     // 防御衝突サイズ
 
 	CClipingMusk* m_pClipingMusk;			 // クリッピングマスク
+    int m_nNumWep;                           // 武器のモデル番号
                                              
     //===================================    
     // 特殊能力対応周り                      

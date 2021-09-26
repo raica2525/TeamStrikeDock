@@ -61,6 +61,7 @@ public:
     // セッター
     //======================================================*/
     D3DXVECTOR3 GetDefaultPos(int index) { return m_aPosDefault[index]; }
+    D3DXVECTOR3 GetPartsPos(int index) { return D3DXVECTOR3(m_apModel[index]->GetWorldMtx()._41, m_apModel[index]->GetWorldMtx()._42, m_apModel[index]->GetWorldMtx()._43); }
     D3DXVECTOR3 GetPartsRot(int index) { return m_apModel[index]->GetRot(); }
     CModel * GetParts(int index) { return m_apModel[index]; }
     D3DXVECTOR3 GetPos(void) { return m_pos; }

@@ -21,6 +21,7 @@
 #include "text.h"
 #include "player.h"
 #include "game.h"
+#include "effect2d.h"
 
 //========================================
 // マクロ定義
@@ -544,6 +545,12 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
                         continue;
                     }
                 }
+
+                // 詳細ボタンは、ReadyToFightがあるとき押せない
+                if(m_bDispReadyToFight && nParamType == CLICK_TYPE_DETAIL)
+                {
+                    continue;
+                }
             }
             else
             {
@@ -568,7 +575,7 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
                 pSelectUI->SetActionLock(0, false);
 
                 // クリック処理
-                ClickSelect(nNumWho, pSelectUI);
+                ClickSelect(nNumWho, pSelectUI, cursorPos);
 
                 // 今回当たっている選択肢
                 nNumSelectUICurrent = nCntSelect;
@@ -613,7 +620,7 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
 // 選択肢のクリック
 // Author : 後藤慎之助
 //=============================================================================
-void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
+void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
 {
     // 選んだUIが存在しないなら関数を抜ける
     if (!pSelectUI)
@@ -647,6 +654,9 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI)
 
         if (bTriggerA)
         {
+            // クリック時のキラキラ
+            CEffect2D::Emit(CEffectData::TYPE_KIRA, cursorPos, cursorPos);
+
             // 種類によって反応を変える
             switch ((int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_TYPE))
             {
