@@ -143,11 +143,35 @@ TEXTURESET
 END_TEXTURESET
 
 #---------------------------------------
-# [16] 線
+# [17] 線
 #---------------------------------------
 TEXTURESET
     TYPE = 17
     NAME = data/TEXTURE/017_WhiteSmoke.png
+END_TEXTURESET
+
+#---------------------------------------
+# [18] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 18
+    NAME = data/TEXTURE/018_suddenfalllight.png
+END_TEXTURESET
+
+#---------------------------------------
+# [18] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 19
+    NAME = data/TEXTURE/019_feather.png
+END_TEXTURESET
+
+#---------------------------------------
+# [18] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 20
+    NAME = data/TEXTURE/020_kirakira.png
 END_TEXTURESET
 
 END_SCRIPT		# この行は絶対消さないこと！
