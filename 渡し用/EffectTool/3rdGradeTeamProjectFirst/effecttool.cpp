@@ -197,7 +197,7 @@ void CEffectTool::Update(void)
 	// 回転に関する設定
 	if (ImGui::CollapsingHeader("rot"))
 	{
-		ImGui::SliderInt(u8"ポリゴンを横にするか", &m_EffectInfo.nLayRot, INT_ZERO, 2);								// ポリゴンそのものを横にするかどうか（1,2ならビルボード解除）
+		ImGui::SliderInt(u8"ポリゴンをどの方向に固定するか", &m_EffectInfo.nLayRot, INT_ZERO, 4);					// ポリゴンそのものをどの方向に固定するか（1,2ならビルボード解除）
 		ImGui::Checkbox(u8"回転を移動の向きに合わせるか", &m_EffectInfo.bRotEqualMoveAngle);						// 回転を移動の向きに合わせるか
 		ImGui::DragInt(u8"最大回転速度", &m_EffectInfo.nRotSpeedMax, 1, m_EffectInfo.nRotSpeedMin, EFFECT_PI*2);	// 最大回転速度
 		ImGui::DragInt(u8"最小回転速度", &m_EffectInfo.nRotSpeedMin, 1, INT_ZERO, m_EffectInfo.nRotSpeedMax);		// 最小回転速度
@@ -220,7 +220,7 @@ void CEffectTool::Update(void)
 		ImGui::DragInt(u8"最小の大きさ", &m_EffectInfo.nSizeMin, 1, EFFECT_SIZE_MIN, m_EffectInfo.nSizeMax);				// 最小大きさ
 		ImGui::DragFloat3(u8"拡大/縮小割合", m_EffectInfo.fSizeChangeRate, 0.01f, SIZECHANGERATE_MIN, SIZECHANGERATE_MAX);	// 拡大/縮小割合
 		ImGui::DragInt(u8"大きさをロックするカウンタ", &m_EffectInfo.nCntSizeChangeLock, 1, EFFECT_SIZE_MIN, 1000);			// 最小大きさ
-		ImGui::Checkbox(u8"大きさを変えるのか", &m_EffectInfo.bSizeChangeStartOrFinish);								// 大きさを変えるのが始まるか、終わるのか
+		ImGui::Checkbox(u8"大きさを変えるのか", &m_EffectInfo.bSizeChangeStartOrFinish);									// 大きさを変えるのが始まるか、終わるのか
 	}
 
 	// 描画に関する設定
