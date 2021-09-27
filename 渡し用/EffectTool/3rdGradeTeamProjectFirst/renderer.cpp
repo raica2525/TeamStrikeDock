@@ -114,7 +114,7 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
     }
 
     // レンダーステートの設定
-    m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);          // カリングをする
+    m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);          // カリングをする
     m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);                  // Zバッファを使用
     m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);         // αブレンドを行う
     m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);    // αソースカラーの指定

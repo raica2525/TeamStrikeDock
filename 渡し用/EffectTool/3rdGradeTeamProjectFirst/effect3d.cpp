@@ -289,7 +289,6 @@ void CEffect3D::Emit(const int nType, D3DXVECTOR3 pos, D3DXVECTOR3 posOld, float
 					fScatterAngle = atan2((pos.x - effectPos.x), (pos.z - effectPos.z));
 				}
 			}
-
 			// 生成
 			Create(nType, effectPos, fScatterAngle);
 		}
@@ -382,10 +381,15 @@ CEffect3D * CEffect3D::Create(const int nType, D3DXVECTOR3 pos, const float fSca
 
 		// ビルボードへ設定を反映
 		D3DXVECTOR3 rot = DEFAULT_VECTOR;
-		if (pCreateInfo->bLayRot)
+		if (pCreateInfo->nLayRot == 1)
 		{
 			rot = LAY_ROT_TOP;
 		}
+		else if (pCreateInfo->nLayRot == 2)
+		{
+			rot = LAY_ROT_LEFT;
+		}
+
 		pEffect3D->CBillboard::SetRot(rot);
 		pEffect3D->CBillboard::SetColorVertex(pCreateInfo->col);
 		pEffect3D->CBillboard::SetAlphaTestBorder(pCreateInfo->nAlphaTestBorder);

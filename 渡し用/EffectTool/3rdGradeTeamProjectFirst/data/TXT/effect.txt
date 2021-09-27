@@ -9,33 +9,35 @@ SCRIPT		# この行は絶対消さないこと！
 #-------------------------------------------------------------
 EFFECT_DATASET
 	TYPE = 0
-	TEX_TYPE = 11
-	ONCE = 1
+	TEX_TYPE = 6
+	ONCE = 8
 	PLANE = 0		# 0がXYで1がXZ
-	ON_CIRCLE = 1		# bool
-	EMIT_INSIDE = 1		# bool
-	SCATTER_ANGLE = 0	# 0～314
-	SCATTER_WIDTH = 0	# 0～314
-	SPEED_MAX = 1000
-	SPEED_MIN = 700
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 80	# 0～314
+	SCATTER_WIDTH = 80	# 0～314
+	SPEED_MAX = 800
+	SPEED_MIN = 600
 	SPEED_AA_MAX = 0
 	SPEED_AA_MIN = 0
 	ACCEL = 1.000	# 1.0倍が基本
 	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
 	ROT_LAY = 0		# bool
 	ROT_EQUAL_MOVE = 1	# bool
 	ROT_SPEED_MAX = 0
 	ROT_SPEED_MIN = 0
-	COL = 0.452 0.452 0.452 1.000
+	COL = 0.000 0.572 1.000 1.000
 	COL_CHANGE = 0.000 0.000 0.000 0.000
-	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
-	SIZE_MAX = 12000
-	SIZE_MIN = 12000
-	SIZE_CHANGE = -5.0 10.0 0.0
-	EMITRADIUS = 250
-	ADD_BLEND = 0		# bool
+	FADE_OUT_RATE = 0.025	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 10000
+	SIZE_MIN = 10000
+	SIZE_CHANGE = 2.0 2.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
 	USE_ZBUFFER = 0		# bool
-	ALPHA_TEST_BORDER = 100
+	ALPHA_TEST_BORDER = 65
 END_EFFECT_DATASET
 
 #-------------------------------------------------------------
@@ -145,32 +147,34 @@ END_EFFECT_DATASET
 #-------------------------------------------------------------
 EFFECT_DATASET
 	TYPE = 4
-	TEX_TYPE = 6
-	ONCE = 25
-	PLANE = 1		# 0がXYで1がXZ
+	TEX_TYPE = 10
+	ONCE = 10
+	PLANE = 0		# 0がXYで1がXZ
 	ON_CIRCLE = 1		# bool
 	EMIT_INSIDE = 0		# bool
-	SCATTER_ANGLE = 0	# 0～314
-	SCATTER_WIDTH = 0	# 0～314
-	SPEED_MAX = 400
-	SPEED_MIN = 400
-	SPEED_AA_MAX = 300
-	SPEED_AA_MIN = 300
+	SCATTER_ANGLE = 81	# 0～314
+	SCATTER_WIDTH = 80	# 0～314
+	SPEED_MAX = 600
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
 	ACCEL = 1.000	# 1.0倍が基本
 	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
 	ROT_LAY = 0		# bool
 	ROT_EQUAL_MOVE = 1	# bool
-	ROT_SPEED_MAX = 1000
+	ROT_SPEED_MAX = 0
 	ROT_SPEED_MIN = 0
-	COL = 0.452 0.452 0.452 1.000
+	COL = 0.000 0.027 0.699 1.000
 	COL_CHANGE = 0.000 0.000 0.000 0.000
-	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_RATE = 0.010	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
 	SIZE_MAX = 15000
 	SIZE_MIN = 15000
-	SIZE_CHANGE = -10.0 -10.0 0.0
-	EMITRADIUS = 100
+	SIZE_CHANGE = -5.0 -5.0 0.0
+	EMITRADIUS = 0
 	ADD_BLEND = 1		# bool
-	USE_ZBUFFER = 1		# bool
+	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 100
 END_EFFECT_DATASET
 
@@ -410,7 +414,6 @@ EFFECT_DATASET
 	ADD_BLEND = 1		# bool
 	USE_ZBUFFER = 0		# bool
 	ALPHA_TEST_BORDER = 5
-END_EFFECT_DATASET
 
 #-------------------------------------------------------------
 # [12] ボールが壁に当たった時の粒

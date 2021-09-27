@@ -192,6 +192,9 @@ void CBillboard::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	D3DXMATRIX mtxRot, mtxTrans, mtxScale;
 
+	// ライトを無効に
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	// Zバッファを使用するフラグがfalseなら
 	if (m_bUseZBuffer == false)
 	{
@@ -199,8 +202,14 @@ void CBillboard::Draw(void)
 		pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	}
 
-	// ライトを無効に
-	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	// 加算合成
+	if (m_bAdditiveSynthesis == true)
+	{
+		// レンダーステート(加算合成にする)
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
 
 	//アルファテストを有効化
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -211,14 +220,7 @@ void CBillboard::Draw(void)
 	//アルファテストの比較方法の設定
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 
-	// 加算合成
-	if (m_bAdditiveSynthesis == true)
-	{
-		// レンダーステート(加算合成にする)
-		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-	}
+
 
 	// ワールドマトリクスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
@@ -261,11 +263,11 @@ void CBillboard::Draw(void)
 
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
-	// ライトを有効化
-	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-
 	// テクスチャをNULLに
 	pDevice->SetTexture(0, NULL);
+
+	//アルファテストを無効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	// 加算合成を戻す
 	if (m_bAdditiveSynthesis == true)
@@ -279,8 +281,7 @@ void CBillboard::Draw(void)
 		m_bAdditiveSynthesis = false;
 	}
 
-	//アルファテストを無効化
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
 
 	// Zバッファを使用するフラグがfalseなら
 	if (m_bUseZBuffer == false)
@@ -291,6 +292,9 @@ void CBillboard::Draw(void)
 		// Zバッファを無効化するフラグをtrueに戻す
 		m_bUseZBuffer = true;
 	}
+
+	// ライトを有効化
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
 //=============================================================================

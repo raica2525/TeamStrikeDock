@@ -50,7 +50,7 @@ public:
 		float fGravity;					// 重力
 		float fGravityLimit;			// 重力制限
 
-		bool bLayRot;					// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+		int nLayRot;					// ポリゴンそのものを横にするかどうか（1,2ならビルボード解除）
 		bool bRotEqualMoveAngle;		// 回転を移動の向きに合わせるか
 		int nRotSpeedMax;				// 最大回転速度
 		int nRotSpeedMin;				// 最小回転速度

@@ -20,7 +20,7 @@
 #define EFFECT_FLOATING_POINT 100.0f    // エフェクトの浮動小数点
 
 // ブロック等に当たった際、板ポリのエフェクトを置くための回転量
-#define LAY_ROT_TOP D3DXVECTOR3(D3DXToRadian(90.0f), 0.0f, 0.0f)
+#define LAY_ROT_TOP D3DXVECTOR3(D3DXToRadian(90.0f), 0.0f, D3DXToRadian(90.0f))
 #define LAY_ROT_LEFT D3DXVECTOR3(0.0f, D3DXToRadian(90.0f), 0.0f)
 #define LAY_ROT_BACK D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f)
 #define LAY_ROT_RIGHT D3DXVECTOR3(0.0f, D3DXToRadian(270.0f), 0.0f)
@@ -83,7 +83,7 @@ public:
         float fGravity;					// 重力
 		float fGravityLimit;			// 重力制限
 
-        bool bLayRot;					// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+        int nLayRot;					// ポリゴンそのものを横にするかどうか（1,2ならビルボード解除）
         bool bRotEqualMoveAngle;		// 回転を移動の向きに合わせるか
         int nRotSpeedMax;				// 最大回転速度
         int nRotSpeedMin;				// 最小回転速度

@@ -168,16 +168,7 @@ HRESULT CEffectData::Init(void)
 						}
                         else if (strcmp(cHeadText, "ROT_LAY") == 0)
                         {
-                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nBool);
-
-                            if (nBool == 0)
-                            {
-                                m_aCreateInfo[nNumType].bLayRot = false;
-                            }
-                            else
-                            {
-                                m_aCreateInfo[nNumType].bLayRot = true;
-                            }
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &m_aCreateInfo[nNumType].nLayRot);
                         }
                         else if (strcmp(cHeadText, "ROT_EQUAL_MOVE") == 0)
                         {
@@ -369,7 +360,7 @@ HRESULT CEffectData::UploadEffectInfo(const int nNum)
 		fprintf(pFile, "	GRAVITYLIMIT = %.3f\n", m_aCreateInfo[nNum].fGravityLimit);
 
 
-		fprintf(pFile, "	ROT_LAY = %d		# bool\n", m_aCreateInfo[nNum].bLayRot);
+		fprintf(pFile, "	ROT_LAY = %d		# bool\n", m_aCreateInfo[nNum].nLayRot);
 		fprintf(pFile, "	ROT_EQUAL_MOVE = %d	# bool\n", m_aCreateInfo[nNum].bRotEqualMoveAngle);
 		fprintf(pFile, "	ROT_SPEED_MAX = %d\n", m_aCreateInfo[nNum].nRotSpeedMax);
 		fprintf(pFile, "	ROT_SPEED_MIN = %d\n", m_aCreateInfo[nNum].nRotSpeedMin);
@@ -458,7 +449,7 @@ void CEffectData::SetCreateInfo(const int nNum)
 	m_aCreateInfo[nNum].fGravity = pEffectInfo->fGravity;								// 重力
 	m_aCreateInfo[nNum].fGravityLimit = pEffectInfo->fGravityLimit;						// 重力制限
 
-	m_aCreateInfo[nNum].bLayRot = pEffectInfo->bLayRot;									// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+	m_aCreateInfo[nNum].nLayRot = pEffectInfo->nLayRot;									// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
 	m_aCreateInfo[nNum].bRotEqualMoveAngle = pEffectInfo->bRotEqualMoveAngle;			// 回転を移動の向きに合わせるか
 	m_aCreateInfo[nNum].nRotSpeedMax = pEffectInfo->nRotSpeedMax;						// 最大回転速度
 	m_aCreateInfo[nNum].nRotSpeedMin = pEffectInfo->nRotSpeedMin;						// 最小回転速度

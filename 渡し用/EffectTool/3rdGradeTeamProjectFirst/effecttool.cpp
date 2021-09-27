@@ -197,7 +197,7 @@ void CEffectTool::Update(void)
 	// 回転に関する設定
 	if (ImGui::CollapsingHeader("rot"))
 	{
-		ImGui::Checkbox(u8"ポリゴンを横にするか", &m_EffectInfo.bLayRot);											// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+		ImGui::SliderInt(u8"ポリゴンを横にするか", &m_EffectInfo.nLayRot, INT_ZERO, 2);								// ポリゴンそのものを横にするかどうか（1,2ならビルボード解除）
 		ImGui::Checkbox(u8"回転を移動の向きに合わせるか", &m_EffectInfo.bRotEqualMoveAngle);						// 回転を移動の向きに合わせるか
 		ImGui::DragInt(u8"最大回転速度", &m_EffectInfo.nRotSpeedMax, 1, m_EffectInfo.nRotSpeedMin, EFFECT_PI*2);	// 最大回転速度
 		ImGui::DragInt(u8"最小回転速度", &m_EffectInfo.nRotSpeedMin, 1, INT_ZERO, m_EffectInfo.nRotSpeedMax);		// 最小回転速度
@@ -349,7 +349,7 @@ CEffectTool::EffectInfo CEffectTool::InitEffectInfo(void)
 	Effectinfo.fGravity = 0.0f;														// 重力
 	Effectinfo.fGravityLimit = 0.0f;												// 重力制限
 
-	Effectinfo.bLayRot = false;														// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+	Effectinfo.nLayRot = 0;														// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
 	Effectinfo.nRotSpeedMax = 0;													// 最大回転速度
 	Effectinfo.nRotSpeedMin = 0;													// 最小回転速度
 
@@ -400,7 +400,7 @@ void CEffectTool::SetEffectInfo(int nEffectType)
 	m_EffectInfo.fGravity = pCreateInfo->fGravity;								// 重力
 	m_EffectInfo.fGravityLimit = pCreateInfo->fGravityLimit;					// 重力制限
 
-	m_EffectInfo.bLayRot = pCreateInfo->bLayRot;								// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+	m_EffectInfo.nLayRot = pCreateInfo->nLayRot;								// ポリゴンそのものを横にするかどうか（trueならビルボード解除）
 	m_EffectInfo.bRotEqualMoveAngle = pCreateInfo->bRotEqualMoveAngle;			// 回転を移動の向きに合わせるか
 	m_EffectInfo.nRotSpeedMax = pCreateInfo->nRotSpeedMax;						// 最大回転速度
 	m_EffectInfo.nRotSpeedMin = pCreateInfo->nRotSpeedMin;						// 最小回転速度
