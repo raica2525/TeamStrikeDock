@@ -819,6 +819,36 @@ void CScene2D::SetLeftToRightGauge(float fMax, float fNow, int nTex)
 }
 
 //=============================================================
+// 横長ゲージのサイズを設定
+// Author : 後藤慎之助
+//=============================================================
+void CScene2D::SetRightToLeftGauge(float fMax, float fNow, int nTex)
+{
+    // 重み
+    float fWeight = fNow / fMax;
+
+    VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
+
+                            // 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+    m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+    // 頂点座標の設定(右に揃えてから、左に伸ばすイメージ)
+    pVtx[0].pos = m_pos + D3DXVECTOR3((m_size.x / 2) - (m_size.x * fWeight), -(m_size.y / 2), 0.0f);
+    pVtx[1].pos = m_pos + D3DXVECTOR3((m_size.x / 2) , -(m_size.y / 2), 0.0f);
+    pVtx[2].pos = m_pos + D3DXVECTOR3((m_size.x / 2) - (m_size.x * fWeight), +(m_size.y / 2), 0.0f);
+    pVtx[3].pos = m_pos + D3DXVECTOR3((m_size.x / 2) , +(m_size.y / 2), 0.0f);
+
+    // テクスチャ座標を更新
+    pVtx[0].tex[nTex] = D3DXVECTOR2((1.0f - fWeight), 0.0f);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(1.0f, 0.0f);
+    pVtx[2].tex[nTex] = D3DXVECTOR2((1.0f - fWeight), 1.0f);
+    pVtx[3].tex[nTex] = D3DXVECTOR2(1.0f, 1.0f);
+
+    //頂点データをアンロックする
+    m_pVtxBuff->Unlock();
+}
+
+//=============================================================
 // 端の1ピクセルが反対側に行く現象を解決する関数
 // Author : 後藤慎之助
 //=============================================================

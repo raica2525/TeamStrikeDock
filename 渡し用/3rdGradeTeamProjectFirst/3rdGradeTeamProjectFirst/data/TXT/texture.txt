@@ -694,4 +694,44 @@ TEXTURESET
     NAME = data/TEXTURE/083_toroidal.png
 END_TEXTURESET
 
+#---------------------------------------
+# [84] 右のメーター
+#---------------------------------------
+TEXTURESET
+    TYPE = 84
+    NAME = data/TEXTURE/084_tempoR.png
+END_TEXTURESET
+
+#---------------------------------------
+# [85] 左のメーター
+#---------------------------------------
+TEXTURESET
+    TYPE = 85
+    NAME = data/TEXTURE/085_tempoL.png
+END_TEXTURESET
+
+#---------------------------------------
+# [86] パーセント
+#---------------------------------------
+TEXTURESET
+    TYPE = 86
+    NAME = data/TEXTURE/086_per.png
+END_TEXTURESET
+
+#---------------------------------------
+# [87] 影
+#---------------------------------------
+TEXTURESET
+    TYPE = 87
+    NAME = data/TEXTURE/087_shadow.png
+END_TEXTURESET
+
+#---------------------------------------
+# [88] 赤ゲージ
+#---------------------------------------
+TEXTURESET
+    TYPE = 88
+    NAME = data/TEXTURE/088_redGauge.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

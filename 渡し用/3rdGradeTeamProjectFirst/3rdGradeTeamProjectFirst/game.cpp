@@ -259,13 +259,6 @@ void CGame::Update(void)
 //=============================================================================
 void CGame::ManageState(void)
 {
-    // キーボードを取得
-    CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
-
-    // コントローラを取得
-    CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
-    DIJOYSTATE2 Controller = pInputJoypad->GetController(PLAYER_1);
-
     switch (m_state)
     {
     case STATE_ROUND_START:
@@ -319,6 +312,16 @@ void CGame::RoundStart(void)
 
     // ボールスピード表示をリセット
     m_pNumArray_BallSpd->SetDispNumber((int)BALL_FIRST_SPEED);
+    CUI *pBallGaugeR = CUI::GetAccessUI(0);
+    CUI *pBallGaugeL = CUI::GetAccessUI(1);
+    if (pBallGaugeR)
+    {
+        pBallGaugeR->SetLeftToRightGauge(BALL_UPDATE_METER_MIN_STOP_FRAME, 0);
+    }
+    if (pBallGaugeL)
+    {
+        pBallGaugeL->SetRightToLeftGauge(BALL_UPDATE_METER_MIN_STOP_FRAME, 0);
+    }
 
     // カウンタを加算
     m_nCntGameTime++;
@@ -462,6 +465,7 @@ void CGame::ReserveShoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, flo
 
 //========================================
 // 誰がシュートを撃てたかの判定
+// Author : 後藤慎之助
 //========================================
 void CGame::JudgmentShoot(void)
 {
@@ -635,6 +639,7 @@ void CGame::JudgmentShoot(void)
 
 //========================================
 // 一番近いプレイヤーへの角度を求める
+// Author : 後藤慎之助
 //========================================
 float CGame::GetAngleToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos)
 {
@@ -683,6 +688,7 @@ float CGame::GetAngleToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos)
 
 //========================================
 // 一番近いプレイヤーの位置を求める
+// Author : 後藤慎之助
 //========================================
 D3DXVECTOR3 CGame::GetPosToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos)
 {
@@ -723,4 +729,25 @@ D3DXVECTOR3 CGame::GetPosToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos)
     }
 
     return targetPos;
+}
+
+//========================================
+// ボール発射ゲージの設定
+// Author : 後藤慎之助
+//========================================
+void CGame::SetBallGauge(int nMax, int nNow)
+{
+    // UIを取得
+    CUI *pBallGaugeR = CUI::GetAccessUI(0);
+    CUI *pBallGaugeL = CUI::GetAccessUI(1);
+
+    // 左右のゲージを設定
+    if (pBallGaugeR)
+    {
+        pBallGaugeR->SetLeftToRightGauge((float)nMax, (float)nNow);
+    }
+    if (pBallGaugeL)
+    {
+        pBallGaugeL->SetRightToLeftGauge((float)nMax, (float)nNow);
+    }
 }

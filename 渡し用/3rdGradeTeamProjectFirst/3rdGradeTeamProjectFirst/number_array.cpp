@@ -160,7 +160,7 @@ void CNumberArray::SetDispNumber(int nDispNumber, bool bMove)
     int nRadix = 10;	                  // 基数　(数字配列表示用)
     float fSpace = 0.0f;                  // 数字の間の間隔
     bool bCheckStart = false;             // 数字が始まるまでのチェック(左から右へと数字を見るため)(例:00000500などをなくす)
-    bool bDispZero = false;               // 0の配置が終わったかどうか
+    bool bDispZeroOnce = false;           // 一度の0の配置が終わったかどうか
     int nNumDigit = 0;                    // 桁数
     bool bGetDigit = false;               // 桁数を受け取ったかどうか
 
@@ -226,12 +226,15 @@ void CNumberArray::SetDispNumber(int nDispNumber, bool bMove)
                 }
                 else
                 {
-                    // 無駄な桁を表示しないなら
-                    if (!bDispZero)
+                    // 無駄な桁を表示しないなら、一度だけ0を置く
+                    if (!bDispZeroOnce)
                     {
-                        bDispZero = true;
+                        bDispZeroOnce = true;
                         m_apNumber[nIndex]->SetAlpha(1.0f);
                         m_apNumber[nIndex]->SetNumber(nAnswer);
+
+                        // 位置を反映
+                        m_apNumber[nIndex]->SetPos(D3DXVECTOR3(m_createPos.x, m_createPos.y, 0.0f));
                     }
                 }
             }

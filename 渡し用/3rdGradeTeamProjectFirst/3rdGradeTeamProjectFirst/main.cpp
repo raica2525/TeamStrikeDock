@@ -166,7 +166,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 //=============================================================================
 // ウインドウプロシージャ
-// Author : 後藤慎之助、池田悠希
+// Author : 後藤慎之助、池田悠希（コントローラの再接続対応）
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {

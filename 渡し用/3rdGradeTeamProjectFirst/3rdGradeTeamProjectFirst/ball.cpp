@@ -1,7 +1,7 @@
 //===============================================
 //
 // ボールの処理 (ball.cpp)
-// Author : 後藤慎之助
+// Author : 後藤慎之助、伊藤陽梧（軌跡）
 //
 //===============================================
 
@@ -55,7 +55,8 @@ void CBall::ResetMenberVariables(void)
     m_moveAngle = BALL_FIRST_MOVE_ANGLE;
     m_fSpeed = BALL_FIRST_SPEED;
 
-    m_nCntStopTime = 0;
+    m_nCntCurrentStopTime = 0;
+    m_nStopTimeAtShoot = 0;
     m_bUseCollision = false;
     m_bNeverUseCollision = false;
     m_bStartButtle = true;
@@ -552,7 +553,7 @@ void CBall::ChangeScaleAndRot(void)
     D3DXVECTOR3 scale = GetScale();
     D3DXVECTOR3 rot = GetRot();
 
-    if (m_nWhoShooting == BALL_NOT_ANYONE || IS_BITON(m_shootFlag, SHOOT_FLAG_THROW) || m_nCntStopTime > 0)
+    if (m_nWhoShooting == BALL_NOT_ANYONE || IS_BITON(m_shootFlag, SHOOT_FLAG_THROW) || m_nCntCurrentStopTime > 0)
     {
         // 投げか誰のボールでもない時か止まっているときは通常スケール
         scale.x = 1.0f;
@@ -730,7 +731,7 @@ D3DXVECTOR3 CBall::Move(D3DXVECTOR3 pos)
     else if (IS_BITON(m_shootFlag, SHOOT_FLAG_BUNT))
     {
         // バントボールは一定速度かつ重量の影響を受ける
-        if (m_nCntStopTime <= 0)
+        if (m_nCntCurrentStopTime <= 0)
         {
             // 硬直中は、カウンタを加算しない
             m_nCntBuntTime++;
@@ -740,7 +741,7 @@ D3DXVECTOR3 CBall::Move(D3DXVECTOR3 pos)
     }
 
     // 硬直時間のカウンタ
-    if (m_nCntStopTime <= 0)
+    if (m_nCntCurrentStopTime <= 0)
     {
         // 移動量を決定
         move = (moveAngle * fSpeed) - D3DXVECTOR3(0.0f, fGravity, 0.0f);
@@ -760,18 +761,36 @@ D3DXVECTOR3 CBall::Move(D3DXVECTOR3 pos)
     else
     {
         // 集中線を出す硬直時間より上かつ、死亡時のカウントダウンをしていないなら
-        if (m_nCntStopTime > BALL_SHOOT_STOP_REFRECT_FRAME && m_nCntNoLineStopTime <= 0)
+        if (m_nCntCurrentStopTime > BALL_SHOOT_STOP_REFRECT_FRAME && m_nCntNoLineStopTime <= 0)
         {
+            // 集中線
             CEffect3D::Emit(CEffectData::TYPE_SHOOT_ABSORB, pos, pos);
         }
 
         // 停止時間をカウントダウン
-        m_nCntStopTime--;
+        m_nCntCurrentStopTime--;
 
-        // 当たり判定を使うボールなら、最後のフレームで、当たり判定を復活させる
-        if (!m_bNeverUseCollision && m_nCntStopTime == 0)
+        // 当たり判定を使うボールなら
+        if (!m_bNeverUseCollision)
         {
-            m_bUseCollision = true;
+            // ボール発射ゲージを更新するシュート時の硬直時間かつ、死亡時のカウントダウンをしていないなら
+            if (m_nStopTimeAtShoot > BALL_UPDATE_METER_MIN_STOP_FRAME && m_nCntNoLineStopTime <= 0)
+            {
+                // ボール発射ゲージを更新
+                CGame::SetBallGauge(m_nStopTimeAtShoot, m_nStopTimeAtShoot - m_nCntCurrentStopTime);
+            }
+            else
+            {
+                // 放っている最中は、ボール発射ゲージを常に満タンに
+                CGame::SetBallGauge(BALL_UPDATE_METER_MIN_STOP_FRAME, BALL_UPDATE_METER_MIN_STOP_FRAME);
+            }
+
+            // 最後のフレームで、当たり判定を復活させ、シュート時の硬直時間の記憶をリセット
+            if (m_nCntCurrentStopTime == 0)
+            {
+                m_bUseCollision = true;
+                m_nStopTimeAtShoot = 0;
+            }
         }
     }
 
@@ -960,7 +979,7 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
             CManager::SoundPlay(CSound::LABEL_SE_BOUND);
 
             // バントボール以外なら、壁に当たった時にわずかに硬直する
-            m_nCntStopTime = BALL_SHOOT_STOP_REFRECT_FRAME;
+            m_nCntCurrentStopTime = BALL_SHOOT_STOP_REFRECT_FRAME;
         }
     }
 
@@ -1139,7 +1158,7 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
             m_bUseCollision = false;
 
             // 硬直時間を決める
-            m_nCntStopTime = (int)(m_fSpeed * BALL_SHOOT_STOP_TIME_RATE);
+            m_nCntCurrentStopTime = (int)(m_fSpeed * BALL_SHOOT_STOP_TIME_RATE);
 
             // 引数が即打ちなら
             if (IS_BITON(flag, SHOOT_FLAG_QUICK))
@@ -1153,20 +1172,20 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
             {
                 // 即打ちフラグを解除し、硬直時間をまず半分に
                 BITOFF(m_shootFlag, SHOOT_FLAG_QUICK);
-                m_nCntStopTime /= 2;
+                m_nCntCurrentStopTime /= 2;
                 bQuickShoot = true;
 
                 // 最大硬直時間を調整
-                if (m_nCntStopTime > BALL_QUICK_SHOOT_MAX_STOP_TIME)
+                if (m_nCntCurrentStopTime > BALL_QUICK_SHOOT_MAX_STOP_TIME)
                 {
-                    m_nCntStopTime = BALL_QUICK_SHOOT_MAX_STOP_TIME;
+                    m_nCntCurrentStopTime = BALL_QUICK_SHOOT_MAX_STOP_TIME;
                 }
             }
 
             // 硬直時間の最大
-            if (m_nCntStopTime > BALL_SHOOT_MAX_STOP_TIME)
+            if (m_nCntCurrentStopTime > BALL_SHOOT_MAX_STOP_TIME)
             {
-                m_nCntStopTime = BALL_SHOOT_MAX_STOP_TIME;
+                m_nCntCurrentStopTime = BALL_SHOOT_MAX_STOP_TIME;
             }
 
             // 硬直が発生する速度で、波が発生
@@ -1209,12 +1228,12 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
             // 一定速度未満なら、最小硬直時間
             if (m_fSpeed < BALL_SHOOT_BIG_HIT_SPEED)
             {
-                m_nCntStopTime = BALL_SHOOT_STOP_LEAST_FRAME;
+                m_nCntCurrentStopTime = BALL_SHOOT_STOP_LEAST_FRAME;
 
                 // 早撃ちを考慮
                 if (bQuickShoot)
                 {
-                    m_nCntStopTime = BALL_SHOOT_STOP_LEAST_FRAME / 2;
+                    m_nCntCurrentStopTime = BALL_SHOOT_STOP_LEAST_FRAME / 2;
                 }
             }
 
@@ -1224,13 +1243,21 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
                 if (m_pPlayer->GetUseControllerEffect())
                 {
                     // 硬直時間の半分揺らす（最低保証あり）
-                    int nEffectFrame = m_nCntStopTime / 2;
+                    int nEffectFrame = m_nCntCurrentStopTime / 2;
                     if (nEffectFrame < BALL_SHOOT_EFFECT_LEAST_FRAME)
                     {
                         nEffectFrame = BALL_SHOOT_EFFECT_LEAST_FRAME;
                     }
                     CManager::GetInputJoypad()->StartEffect(m_pPlayer->GetIdxControlAndColor(), nEffectFrame);
                 }
+            }
+
+            // ボール発射時の硬直時間を記憶
+            m_nStopTimeAtShoot = m_nCntCurrentStopTime;
+            if (m_nStopTimeAtShoot > BALL_UPDATE_METER_MIN_STOP_FRAME)
+            {
+                // ボール発射ゲージを更新
+                CGame::SetBallGauge(m_nStopTimeAtShoot, 0);
             }
         }
         else
@@ -1260,7 +1287,7 @@ int CBall::Shoot(D3DXVECTOR3 attackCenterPos, D3DXVECTOR3 moveAngle, float fPowe
         }
     }
 
-    return m_nCntStopTime;
+    return m_nCntCurrentStopTime;
 }
 
 //=============================================================================
@@ -1313,7 +1340,7 @@ int CBall::Launch(D3DXVECTOR3 startPos, int nCntStopTime)
     // 硬直時間を結びつける
     SetStopTime(nCntStopTime);
 
-    return m_nCntStopTime;
+    return m_nCntCurrentStopTime;
 }
 
 //=============================================================================
@@ -1322,10 +1349,10 @@ int CBall::Launch(D3DXVECTOR3 startPos, int nCntStopTime)
 //=============================================================================
 void CBall::SetStopTime(const int nCntStopTime)
 {
-    m_nCntStopTime = nCntStopTime;
+    m_nCntCurrentStopTime = nCntStopTime;
 
     // 硬直しているなら
-    if (m_nCntStopTime > 0)
+    if (m_nCntCurrentStopTime > 0)
     {
         // 当たり判定を一回消す
         m_bUseCollision = false;

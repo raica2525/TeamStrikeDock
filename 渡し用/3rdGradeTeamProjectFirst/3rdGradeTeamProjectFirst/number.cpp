@@ -151,7 +151,7 @@ bool CNumber::Update(void)
             // ÉTÉCÉYägëÂ
             if (m_size.y != 0.0f)
             {
-                m_size.y += (m_size.x / m_size.y) * EXTEND_RATE;
+                m_size.y += (m_size.y / m_size.x) * EXTEND_RATE;
             }
             m_size.x += EXTEND_RATE;
 

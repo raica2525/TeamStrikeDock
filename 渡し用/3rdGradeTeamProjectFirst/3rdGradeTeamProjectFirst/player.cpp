@@ -1,7 +1,7 @@
 //======================================================================================
 //
 // プレイヤー処理 (player.cpp)
-// Author : 後藤慎之助、池田悠希（リザルトやカスタマイズのクリッピング対応）
+// Author : 後藤慎之助、池田悠希（リザルトやカスタマイズのクリッピングマスク対応）
 //
 //======================================================================================
 
@@ -32,6 +32,7 @@
 #include "text.h"
 #include "cliping_musk.h"
 #include "modelEffect.h"
+#include "number_array.h"
 
 //========================================
 // マクロ定義
@@ -45,6 +46,8 @@
 #define MAX_DEF 2000.0f
 #define MAX_SPD 2700.0f
 #define MAX_WEI 4100.0f
+
+#define SHADOW_POS_Y 20.0f
 
 //=============================================================================
 // コンストラクタ
@@ -68,9 +71,12 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_AIlevel = AI_LEVEL_NONE;
     m_pAI = NULL;
     m_pUI_HP = NULL;
+    m_pUI_HP_red = NULL;
     m_pUI_SP = NULL;
     memset(m_apUI_Stock, 0, sizeof(m_apUI_Stock));
     m_pUI_Playable = NULL;
+    m_pNumArray_SP = NULL;
+    m_pEffect3d_Shadow = NULL;
     m_pUI_Custom_Atk = NULL;
     m_pUI_Custom_Def = NULL;
     m_pUI_Custom_Spd = NULL;
@@ -101,6 +107,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_bDisp = true;
     m_nCntTakeDamageTime = 0;
     m_fLife = 0.0f;
+    m_fLife_red = 0.0f;
     m_bUsedLuckyGuard = false;
     m_damageState = DAMAGE_STATE_NONE;
 
@@ -139,6 +146,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
 
 	m_pClipingMusk = NULL;
     m_nNumWep = 0;
+    m_nCntStopRedLifeTime = 0;
 
     //===================================
     // 特殊能力対応周り
@@ -391,6 +399,7 @@ void CPlayer::LoadCustom(void)
 
     // 体力を決定
     m_fLife = m_fDef;
+    m_fLife_red = m_fDef;
 
     // ボイスセットの番号を結びつける
     BindVoiceSet(nVoiceSetNumber);
@@ -595,6 +604,12 @@ void CPlayer::Input(void)
 //=============================================================================
 void CPlayer::Update(void)
 {
+    // 赤ゲージのカウントダウン
+    if (m_nCntStopRedLifeTime > 0)
+    {
+        m_nCntStopRedLifeTime--;
+    }
+
     // マネキンモードでないなら
     if (!m_bMannequin)
     {
@@ -910,9 +925,33 @@ void CPlayer::UpdateMannequin(void)
 //=============================================================================
 void CPlayer::UpdateGameUI(void)
 {
-    // HPとSPゲージを設定
+    // 影の位置を更新
+    D3DXVECTOR3 hipPos = CCharacter::GetPartsPos(PARTS_HIP);
+    m_pEffect3d_Shadow->SetPos(D3DXVECTOR3(hipPos.x, SHADOW_POS_Y, hipPos.z));
+
+    // HPゲージ、赤ゲージを更新
     m_pUI_HP->SetLeftToRightGauge(m_fDef, m_fLife);
-    m_pUI_SP->SetLeftToRightGauge(m_fSpGaugeMax, m_fSpGaugeCurrent);
+    if (m_fLife_red > m_fLife && m_nCntStopRedLifeTime <= 0)
+    {
+        // 赤ゲージ停止時間が終わってから、更新する
+        const float LIFE_DOWN_SPD = 6.0f;
+        m_fLife_red -= LIFE_DOWN_SPD;
+    }
+
+    // 赤ゲージは、現在の体力を下回らない
+    if (m_fLife_red < m_fLife)
+    {
+        m_fLife_red = m_fLife;
+    }
+    m_pUI_HP_red->SetLeftToRightGauge(m_fDef, m_fLife_red);
+
+    // SPゲージとパーセント数値を更新
+    D3DXVECTOR3 spGaugeSize = m_pUI_SP->GetMemorySize();
+    spGaugeSize.x *= m_fSpGaugeCurrent / m_fSpGaugeMax;
+    spGaugeSize.y *= m_fSpGaugeCurrent / m_fSpGaugeMax;
+    m_pUI_SP->SetSize(spGaugeSize);
+    int nDispNumber = (int)((m_fSpGaugeCurrent / m_fSpGaugeMax) * 100.0f);
+    m_pNumArray_SP->SetDispNumber(nDispNumber);
 
     // ストックを表示/非表示
     for (int nCnt = 0; nCnt < PLAYER_MAX_STOCK; nCnt++)
@@ -1041,6 +1080,7 @@ void CPlayer::Respawn(void)
     SetRot(m_startRot);
     m_bDisp = true;
     m_fLife = m_fDef;
+    m_fLife_red = m_fDef;
 
     // 既存のリセット関数
     ResetOnGround();
@@ -1063,14 +1103,20 @@ void CPlayer::Respawn(void)
 
 //=============================================================================
 // 描画処理
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希（クリッピングマスク対応）
 //=============================================================================
 void CPlayer::Draw(void)
 {
     // 表示するなら、描画
     if (m_bDisp)
     {
-		// レンダラーからデバイスの取得
+        // 影
+        if (m_pEffect3d_Shadow)
+        {
+            m_pEffect3d_Shadow->CBillboard::Draw();
+        }
+
+		// クリッピングマスク
 		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 		if (m_pClipingMusk != NULL)
 		{
@@ -1085,7 +1131,11 @@ void CPlayer::Draw(void)
 			pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
 			pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
 		}
+
+        // キャラクター
         CCharacter::Draw();
+
+        // クリッピングマスクの後処理
 		if (m_pClipingMusk != NULL)
 		{
 			//ステンシル無効化
@@ -1135,6 +1185,11 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
     {
         pPlayer->m_pAI = CAi::Create(pPlayer);
     }
+
+    // 影を生成
+    pPlayer->m_pEffect3d_Shadow = CEffect3D::Create(CEffectData::TYPE_SHADOW, D3DXVECTOR3(pos.x, SHADOW_POS_Y, pos.z));
+    pPlayer->m_pEffect3d_Shadow->SetSize(D3DXVECTOR3(pPlayer->m_collisionSizeDeffence.x, pPlayer->m_collisionSizeDeffence.x, 0.0f));
+    pPlayer->m_pEffect3d_Shadow->SetDisp(false);
 
     // UIを生成
     D3DXCOLOR playableCol = DEFAULT_COLOR;
@@ -1191,20 +1246,24 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
     const float NEXT_UI_POS_X = UI_SIZE_X + SPACE_SIZE;
     float fDigitPosX = FIRST_UI_POS_X + (NEXT_UI_POS_X * (float)pPlayer->m_nIdxCreate);
     CUI::Create(17, D3DXVECTOR3(fDigitPosX + 50.0f, 80.0f, 0.0f), D3DXVECTOR3(UI_FRAME_SIZE_X, UI_FRAME_SIZE_Y, 0.0f), 0, DEFAULT_COLOR);
+    pPlayer->m_pUI_HP_red = CUI::Create(88, D3DXVECTOR3(fDigitPosX + 50.0f, 80.0f, 0.0f), D3DXVECTOR3(UI_BAR_SIZE_X, UI_BAR_SIZE_Y, 0.0f), 0, DEFAULT_COLOR);
+    pPlayer->m_pUI_HP_red->SetActionInfo(0, CUI::ACTION_GAUGE, false);
     pPlayer->m_pUI_HP = CUI::Create(18, D3DXVECTOR3(fDigitPosX + 50.0f, 80.0f, 0.0f), D3DXVECTOR3(UI_BAR_SIZE_X, UI_BAR_SIZE_Y, 0.0f), 0, DEFAULT_COLOR);
     pPlayer->m_pUI_HP->SetActionInfo(0, CUI::ACTION_GAUGE, false);
 
     // 必殺ゲージ
     CUI::Create(76, D3DXVECTOR3(fDigitPosX - 80.0f, 60.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), 0, DEFAULT_COLOR);
     pPlayer->m_pUI_SP = CUI::Create(77, D3DXVECTOR3(fDigitPosX - 80.0f, 60.0f, 0.0f), D3DXVECTOR3(85.0f, 85.0f, 0.0f), 0, spGagueCol);
-    pPlayer->m_pUI_SP->SetActionInfo(0, CUI::ACTION_GAUGE, false);
+    CUI::Create(86, D3DXVECTOR3(fDigitPosX - 57.5f, 60.0f, 0.0f), D3DXVECTOR3(20.0f, 20.0f, 0.0f), 0, DEFAULT_COLOR);
+    pPlayer->m_pNumArray_SP = CNumberArray::Create(12, D3DXVECTOR3(fDigitPosX - 87.5f, 60.0f, 0.0f), 15.0f,
+        DEFAULT_COLOR, 0, false);
 
     // ストック
     for (int nCntStock = 0; nCntStock < pPlayer->m_nStock; nCntStock++)
     {
         const float STOCK_SIZE_X = 36.0f;
-        float fStockDigitPosX = 45.0f + ((STOCK_SIZE_X / 2) * nCntStock);  // -ゲージの半分の大きさ+ストックの半分の大きさ+(ストックの大きさ*何番目のストックか)
-        pPlayer->m_apUI_Stock[nCntStock] = CUI::Create(19, D3DXVECTOR3(fDigitPosX + fStockDigitPosX, 95.0f, 0.0f), D3DXVECTOR3(STOCK_SIZE_X, 24.0f, 0.0f), 0, DEFAULT_COLOR);
+        float fStockDigitPosX = 47.5f + ((STOCK_SIZE_X / 2) * nCntStock);  // -ゲージの半分の大きさ+ストックの半分の大きさ+(ストックの大きさ*何番目のストックか)
+        pPlayer->m_apUI_Stock[nCntStock] = CUI::Create(19, D3DXVECTOR3(fDigitPosX + fStockDigitPosX, 98.5f, 0.0f), D3DXVECTOR3(STOCK_SIZE_X, 24.0f, 0.0f), 0, DEFAULT_COLOR);
     }
 
     // Player表示
@@ -1624,6 +1683,13 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
     // 生存しているなら
     if (m_bDisp)
     {
+        // 赤ゲージ硬直時間を設定
+        if (m_nCntStopRedLifeTime <= 0)
+        {
+            const int STOP_RED_TIME = 60;
+            m_nCntStopRedLifeTime = STOP_RED_TIME;
+        }
+
         // 攻撃状態をリセット
         ResetAttack();
 

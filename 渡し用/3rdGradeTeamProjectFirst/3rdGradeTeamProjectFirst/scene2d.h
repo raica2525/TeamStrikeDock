@@ -67,6 +67,7 @@ public:
     int CountAnimation(int nSpeed, int nPattern);                                                               // アニメーションのカウンタを利用する
     void ResetCountAnim(int nNum = 0) { m_anCounterAnim[nNum] = 0; m_anPatternAnim[nNum] = 0; }                 // アニメーションのカウンタをリセット
     void SetLeftToRightGauge(float fMax, float fNow, int nTex = 0);                                             // 左から右に伸びたゲージ
+    void SetRightToLeftGauge(float fMax, float fNow, int nTex = 0);                                             // 右から左に伸びたゲージ
     void SetShaveTex(void);                                                                                     // 端の1ピクセルが反対側に行く現象を解決する関数
 
     /*========================================================

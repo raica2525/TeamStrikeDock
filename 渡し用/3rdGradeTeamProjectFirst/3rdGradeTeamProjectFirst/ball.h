@@ -1,7 +1,7 @@
 //====================================================================
 //
 // ボールの処理 (ball.h)
-// Author : 後藤慎之助
+// Author : 後藤慎之助、伊藤陽梧（軌跡）
 //
 //====================================================================
 #ifndef _BALL_H_
@@ -58,6 +58,7 @@ class COutline;
 #define BALL_ABSORB_CLOSE_PLAYER 150.0f      // 吸収でプレイヤーに近いとみなす値
 #define BALL_ABSORB_MAX_TIME 300             // 吸収時間の最大カウンタ
 #define BALL_SHOOT_EFFECT_LEAST_FRAME 10     // 最小コントローラの振動フレーム数
+#define BALL_UPDATE_METER_MIN_STOP_FRAME 4   // ボール発射ゲージを更新する最低硬直フレーム数
 
 //================================================
 // クラス宣言
@@ -144,7 +145,7 @@ public:
     int GetWhoShooting(void) { return m_nWhoShooting; }
     D3DXVECTOR3 GetCornerPos(int nCnt) { return m_aCornerPos[nCnt]; }
     int GetAbsorbFlag(void) { return m_absorbFlag; }
-    int GetStopTime(void) { return m_nCntStopTime; }
+    int GetStopTime(void) { return m_nCntCurrentStopTime; }
     D3DXVECTOR3 GetPosOld(void) { return m_posOld; }
     int GetWhoAbsorbing(void) { return m_nWhoAbsorbing; }
     D3DXVECTOR3 GetCollisionPos(void) { return GetPos() + BALL_COLLISION_POS_SLIDE; }
@@ -156,7 +157,8 @@ private:
     D3DXVECTOR3 m_moveAngle;    // 移動する角度
     float m_fSpeed;             // 速さ
     
-    int m_nCntStopTime;         // 硬直時間のカウンタ
+    int m_nCntCurrentStopTime;  // 現在の硬直時間のカウンタ
+    int m_nStopTimeAtShoot;     // 発射時の硬直時間
     bool m_bUseCollision;       // 当たり判定を使うかどうか
     bool m_bNeverUseCollision;  // 当たり判定を絶対に使わないかどうか
     bool m_bStartButtle;        // バトル開始直後かどうか

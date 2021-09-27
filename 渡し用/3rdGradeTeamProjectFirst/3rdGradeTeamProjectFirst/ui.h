@@ -195,6 +195,7 @@ public:
     D3DXVECTOR3 GetCollisionSize(void) { return m_collisionSize; }
     static CUI* GetAccessUI(int nNum);
     float GetActionParam(int nNumAction, int nNumParam) { return m_aActionInfo[nNumAction].afParam[nNumParam]; }
+    D3DXVECTOR3 GetMemorySize(void) { return m_memorySize; }
 
     /*========================================================
     // セッター

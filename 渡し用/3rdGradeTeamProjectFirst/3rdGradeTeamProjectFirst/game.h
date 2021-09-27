@@ -129,6 +129,7 @@ public:
     void JudgmentShoot(void);                                                       // 誰がシュートを打てたかの判定
     static float GetAngleToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos);        // 一番近いプレイヤーへの角度を求める
     static D3DXVECTOR3  GetPosToClosestPlayer(int nIdxPlayer, D3DXVECTOR3 myPos);   // 一番近いプレイヤーの位置を求める
+    static void SetBallGauge(int nMax, int nNow);                                   // ボール発射ゲージ
 
 private:
 

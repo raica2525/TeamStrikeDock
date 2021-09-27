@@ -50,6 +50,8 @@ CEffect3D::CEffect3D(CScene::OBJTYPE objtype) :CBillboard(objtype)
     m_nAnimPattern = 0;
     m_nAnimSpeed = 0;
     m_bRepeat = false;
+
+    m_bDisp = true;
 }
 
 //=============================================================================
@@ -215,19 +217,22 @@ void CEffect3D::Update(void)
 //=============================================================================
 void CEffect3D::Draw(void)
 {
-    // 加算合成
-    if (m_bUseAdditiveSynthesis)
+    if (m_bDisp)
     {
-        CBillboard::SetAdditiveSynthesis();
-    }
+        // 加算合成
+        if (m_bUseAdditiveSynthesis)
+        {
+            CBillboard::SetAdditiveSynthesis();
+        }
 
-    // Zバッファを無視するかどうか
-    if (!m_bUseZBuffer)
-    {
-        CBillboard::SetZBufferNone();
-    }
+        // Zバッファを無視するかどうか
+        if (!m_bUseZBuffer)
+        {
+            CBillboard::SetZBufferNone();
+        }
 
-    CBillboard::Draw();
+        CBillboard::Draw();
+    }
 }
 
 //=============================================================================

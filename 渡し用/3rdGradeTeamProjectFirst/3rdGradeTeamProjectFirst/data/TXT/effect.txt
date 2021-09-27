@@ -992,4 +992,21 @@ EFFECT_DATASET
 	ALPHA_TEST_BORDER = 50
 END_EFFECT_DATASET
 
+
+#---------------------------------------
+# [26] 影
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 26
+	TEX_TYPE = 87
+	ONCE = 1
+	PLANE = 1		# 0がXYで1がXZ
+	ROT_LAY = 1		# bool
+	COL = 1.0 1.0 1.0 1.0
+	SIZE_MAX = 1
+	SIZE_MIN = 1
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 50
+END_EFFECT_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

@@ -67,6 +67,7 @@ public:
         TYPE_TITLE_FIRE_RED,        // タイトルの赤い炎
         TYPE_TITLE_FIRE_BLUE,       // タイトルの青い炎
         TYPE_KIRA,                  // カーソルクリック時のキラキラ
+        TYPE_SHADOW,                // 影
     }TYPE;  // 生成するエフェクトの種類
 
     typedef enum

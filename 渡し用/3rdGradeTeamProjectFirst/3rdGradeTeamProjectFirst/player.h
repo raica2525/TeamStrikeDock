@@ -1,7 +1,7 @@
 //======================================================================================
 //
 // プレイヤー処理 (player.h)
-// Author : 後藤慎之助
+// Author : 後藤慎之助、池田悠希（リザルトやカスタマイズのクリッピングマスク対応）
 //
 //======================================================================================
 #ifndef _PLAYER_H_
@@ -170,6 +170,8 @@
 class CAi;
 class CUI;
 class CText;
+class CNumberArray;
+class CEffect3D;
 
 //================================================
 // クラス宣言
@@ -436,9 +438,12 @@ private:
     AI_LEVEL m_AIlevel;                      // AIレベル
     CAi *m_pAI;                              // AIへのポインタ
     CUI *m_pUI_HP;                           // HPゲージへのポインタ
+    CUI *m_pUI_HP_red;                       // 赤HPゲージへのポインタ
     CUI *m_pUI_SP;                           // SPゲージへのポインタ
     CUI *m_apUI_Stock[PLAYER_MAX_STOCK];     // ストックへのポインタ
     CUI *m_pUI_Playable;                     // プレイヤー表示へのポインタ
+    CNumberArray *m_pNumArray_SP;            // SPパーセントへのポインタ
+    CEffect3D *m_pEffect3d_Shadow;           // 影へのポインタ
     CUI *m_pUI_Custom_Atk;                   // カスタマイズ画面_攻撃ゲージ
     CUI *m_pUI_Custom_Def;                   // カスタマイズ画面_防御ゲージ
     CUI *m_pUI_Custom_Spd;                   // カスタマイズ画面_速さゲージ
@@ -469,6 +474,7 @@ private:
     bool m_bDisp;                            // 表示フラグ
     int m_nCntTakeDamageTime;                // 攻撃を受けている時間
     float m_fLife;                           // 体力
+    float m_fLife_red;                       // 赤体力
     bool m_bUsedLuckyGuard;                  // ラッキーガードを使ったかどうか
     DAMAGE_STATE m_damageState;              // 負傷状態
                                              
@@ -507,6 +513,7 @@ private:
 
 	CClipingMusk* m_pClipingMusk;			 // クリッピングマスク
     int m_nNumWep;                           // 武器のモデル番号
+    int m_nCntStopRedLifeTime;               // 赤ゲージ停止時間のカウンタ
                                              
     //===================================    
     // 特殊能力対応周り                      
