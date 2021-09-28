@@ -1,10 +1,15 @@
 //=============================================================================
 //
 // サウンドの処理 [sound.cpp] (サウンド)
-// Author : 後藤慎之助
+// Author : 池田悠希
 //
 //=============================================================================
 #include "sound.h"
+
+//================================================
+// マクロ定義
+//================================================
+#define DEFAULT_VOLUME (100)	//音量の初期値
 
 //============================================
 // 静的メンバ変数宣言
@@ -12,19 +17,19 @@
 CSound::PARAM CSound::m_aParam[LABEL_MAX] =
 {
     // SE
-    { "data/SOUND/SE/hit1.wav", 0 },		        // ヒット音
-    { "data/SOUND/SE/swish.wav", 0 },		        // 素振り音
-    { "data/SOUND/SE/bound.wav", 0 },		        // バウンド音
-    { "data/SOUND/SE/catch.wav", 0 },		        // キャッチ音
-    { "data/SOUND/SE/throw.wav", 0 },		        // 投げ音
-    { "data/SOUND/SE/ko.wav", 0 },		            // KO音
-    { "data/SOUND/SE/bunt.wav", 0 },		        // バント音
-    { "data/SOUND/SE/damage.wav", 0 },		        // ダメージ音
-    { "data/SOUND/SE/offset.wav", 0 },		        // 相殺音
-    { "data/SOUND/SE/hit2.wav", 0 },		        // 大ヒット音
-    { "data/SOUND/SE/ball_disping.wav", 0 },		// ボール配置音
-    { "data/SOUND/SE/jump.wav", 0 },		        // ジャンプ音
-    { "data/SOUND/SE/hit3.wav", 0 },		        // ウルトラヒット音
+    { "data/SOUND/SE/hit1.wav", 0 , CATEGORY_SE },			// ヒット音
+    { "data/SOUND/SE/swish.wav", 0 , CATEGORY_SE },			// 素振り音
+    { "data/SOUND/SE/bound.wav", 0 , CATEGORY_SE },			// バウンド音
+    { "data/SOUND/SE/catch.wav", 0 , CATEGORY_SE },			// キャッチ音
+    { "data/SOUND/SE/throw.wav", 0 , CATEGORY_SE },			// 投げ音
+    { "data/SOUND/SE/ko.wav", 0 , CATEGORY_SE },			// KO音
+    { "data/SOUND/SE/bunt.wav", 0 , CATEGORY_SE },			// バント音
+    { "data/SOUND/SE/damage.wav", 0 , CATEGORY_SE },		// ダメージ音
+    { "data/SOUND/SE/offset.wav", 0 , CATEGORY_SE },		// 相殺音
+    { "data/SOUND/SE/hit2.wav", 0 , CATEGORY_SE },			// 大ヒット音
+    { "data/SOUND/SE/ball_disping.wav", 0 , CATEGORY_SE },	// ボール配置音
+    { "data/SOUND/SE/jump.wav", 0 , CATEGORY_SE },		    // ジャンプ音
+    { "data/SOUND/SE/hit3.wav", 0 , CATEGORY_SE },		    // ウルトラヒット音
 };
 
 //=============================================================================
@@ -37,6 +42,7 @@ CSound::CSound()
     memset(m_apSourceVoice, 0, sizeof(m_apSourceVoice));
     memset(m_apDataAudio, 0, sizeof(m_apDataAudio));
     memset(m_aSizeAudio, 0, sizeof(m_aSizeAudio));
+    memset(m_anVolume, 0, sizeof(m_anVolume));
 }
 
 //=============================================================================
@@ -86,6 +92,12 @@ HRESULT CSound::Init(HWND hWnd)
         CoUninitialize();
 
         return E_FAIL;
+    }
+
+    //音量の初期化
+    for (int nCount = 0; nCount < CATEGORY_MAX; nCount++)
+    {
+        m_anVolume[nCount] = DEFAULT_VOLUME;
     }
 
     // サウンドデータの初期化
@@ -181,6 +193,9 @@ HRESULT CSound::Init(HWND hWnd)
         // オーディオバッファの登録
         m_apSourceVoice[nCntSound]->SubmitSourceBuffer(&buffer);
 
+        //音量を設定
+        SetVolume((LABEL)nCntSound, m_anVolume[m_aParam[nCntSound].category]);
+
         // ファイルをクローズ
         CloseHandle(hFile);
     }
@@ -229,12 +244,13 @@ void CSound::Uninit(void)
 //=============================================================================
 // セグメント再生(再生中なら停止)
 //=============================================================================
-HRESULT CSound::Play(LABEL label)
+HRESULT CSound::Play(LABEL label, float fPitch)
 {
     XAUDIO2_VOICE_STATE xa2state;
     XAUDIO2_BUFFER buffer;
 
     // バッファの値設定
+
     memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
     buffer.AudioBytes = m_aSizeAudio[label];
     buffer.pAudioData = m_apDataAudio[label];
@@ -254,7 +270,7 @@ HRESULT CSound::Play(LABEL label)
 
     // オーディオバッファの登録
     m_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
-
+    m_apSourceVoice[label]->SetFrequencyRatio(fPitch);
     // 再生
     m_apSourceVoice[label]->Start(0);
 
@@ -384,3 +400,26 @@ HRESULT CSound::ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, D
     return S_OK;
 }
 
+//=============================================================================
+// 音量設定
+//=============================================================================
+void CSound::SetVolume(LABEL label, int nVolume)
+{
+    m_apSourceVoice[label]->SetVolume(float(nVolume) / DEFAULT_VOLUME);
+}
+
+//=============================================================================
+// カテゴリごとの音量設定
+//=============================================================================
+void CSound::SetCategoryVolume(CATEGORY category, int nVolume)
+{
+    m_anVolume[category] = nVolume;
+    //設定された種別の音声の音量を変更する
+    for (int nCount = 0; nCount < LABEL_MAX; nCount++)
+    {
+        if (m_aParam[nCount].category == category)
+        {
+            SetVolume((LABEL)nCount, nVolume);
+        }
+    }
+}

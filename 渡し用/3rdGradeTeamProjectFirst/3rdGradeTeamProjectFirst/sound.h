@@ -1,7 +1,7 @@
 //====================================================================
 //
 // サウンド処理 (sound.h)
-// Author : 後藤慎之助
+// Author : 池田悠希
 //
 //====================================================================
 #ifndef _SOUND_H_
@@ -39,19 +39,28 @@ public:
         LABEL_MAX,
     } LABEL;
 
+    typedef enum
+    {
+        CATEGORY_SE = 0,
+        CATEGORY_BGM,
+        CATEGORY_MAX
+    } CATEGORY;
+
     CSound();
-    ~CSound();  // 親クラスのデストラクタにvirtualをつけることで、メモリリークを抑える
+    ~CSound();
     HRESULT Init(HWND hWnd);
     void Uninit(void);
-    HRESULT Play(LABEL label);
+    HRESULT Play(LABEL label, float fPitch = 1.0f);
     void Stop(LABEL label);
     void StopAll(void);
-
+    void SetVolume(LABEL label, int nVolume);				// 音量設定用関数
+    void SetCategoryVolume(CATEGORY category, int nVolume); // カテゴリごとの音量設定用関数
 private:
     typedef struct
     {
         char *pFilename;	// ファイル名
         int nCntLoop;		// ループカウント (-1でループ、0でループなし)
+        CATEGORY category;	// 種類分け
     }PARAM;
     HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
     HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
@@ -62,6 +71,7 @@ private:
     BYTE *m_apDataAudio[LABEL_MAX];					    // オーディオデータ
     DWORD m_aSizeAudio[LABEL_MAX];					    // オーディオデータサイズ
     static PARAM m_aParam[LABEL_MAX];                   // 各音素材のパラメータ
+    int m_anVolume[CATEGORY_MAX];						// 各種別の音量
 };
 
 #endif

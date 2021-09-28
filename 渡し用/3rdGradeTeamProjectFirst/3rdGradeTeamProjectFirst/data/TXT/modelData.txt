@@ -605,11 +605,11 @@ MODEL_DATASET
 END_MODEL_DATASET
 
 #---------------------------------------
-# [75] 錆騎士の左手
+# [75] 錆騎士の武器持ち左手
 #---------------------------------------
 MODEL_DATASET
 	TYPE = 75
-	NAME = data/MODEL/knight/08_handL.x
+	NAME = data/MODEL/knight/08_weaponhandL.x
 END_MODEL_DATASET
 
 #---------------------------------------
@@ -674,6 +674,14 @@ END_MODEL_DATASET
 MODEL_DATASET
 	TYPE = 83
 	NAME = data/MODEL/stage1_line.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [84] 錆騎士の左手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 84
+	NAME = data/MODEL/knight/08_handL.x
 END_MODEL_DATASET
 
 END_SCRIPT		# この行は絶対消さないこと！
