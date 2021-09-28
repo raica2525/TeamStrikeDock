@@ -168,6 +168,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="manual.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="modelData.cpp" />
@@ -178,7 +179,6 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_custom.cpp" />
     <ClCompile Include="player_sp.cpp" />
-    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -215,6 +215,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="manual.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="modelData.h" />
@@ -223,7 +224,6 @@
     <ClInclude Include="outline.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />

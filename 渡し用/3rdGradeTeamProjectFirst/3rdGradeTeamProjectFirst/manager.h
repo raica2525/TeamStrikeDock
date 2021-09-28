@@ -46,6 +46,7 @@ public:
         MODE_CUSTOM,        // カスタマイズ画面
         MODE_GAME,          // ゲーム
         MODE_RESULT,        // リザルト
+        MODE_MENU,          // メニュー
         MODE_MAX
     }MODE;
 

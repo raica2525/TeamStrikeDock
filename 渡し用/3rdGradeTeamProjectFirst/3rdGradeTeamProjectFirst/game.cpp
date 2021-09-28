@@ -43,6 +43,7 @@
 bool CGame::m_bStopObjUpdate = false;
 
 CPlayer *CGame::m_apPlayer[] = {};
+int CGame::m_anPlayerRank[] = {};
 CBall *CGame::m_pBall = NULL;
 CPause *CGame::m_pPause = NULL;
 CEffect2D *CGame::m_pEffect2d_Nega = NULL;
@@ -71,6 +72,7 @@ CGame::CGame()
     m_bStopObjUpdate = false;
 
     memset(m_apPlayer, 0, sizeof(m_apPlayer));
+    memset(m_anPlayerRank, 0, sizeof(m_anPlayerRank));
     m_pBall = NULL;
     m_pPause = NULL;
     m_pEffect2d_Nega = NULL;
@@ -126,6 +128,7 @@ HRESULT CGame::Init(void)
     if (m_type == TYPE_TRAINING)
     {
         m_nNumAllPlayer = 1; // トレーニングは1人固定
+        m_nNumStock = 3;     // トレーニングは3ストック固定
     }
 
     // ステージのモデルを生成
@@ -355,6 +358,15 @@ void CGame::InButtle(void)
         // アリーナモードで1人残ったら
         if (m_nNumDefeatPlayer >= m_nNumAllPlayer - m_nNumDeathPlayer - 1)
         {
+            // その残った人を、1位にする
+            for (int nCntPlayer = 0; nCntPlayer < m_nNumAllPlayer; nCntPlayer++)
+            {
+                if (m_apPlayer[nCntPlayer]->GetDisp())
+                {
+                    m_anPlayerRank[CPlayer::RANK_1] = m_apPlayer[nCntPlayer]->GetIdxControlAndColor();
+                }
+            }
+
             // フィニッシュへ
             m_state = STATE_FINISH;
 
@@ -430,8 +442,8 @@ void CGame::JudgmentFinish(void)
         // 死んだプレイヤーが全体のプレイヤー-1に達したら
         if (m_nNumDeathPlayer >= m_nNumAllPlayer - 1)
         {
-            // 仮にタイトルに移行
-            CFade::SetFade(CManager::MODE_TITLE);
+            // リザルトに移行
+            CFade::SetFade(CManager::MODE_RESULT);
         }
         else
         {

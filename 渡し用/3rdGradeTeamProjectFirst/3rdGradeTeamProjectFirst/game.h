@@ -97,7 +97,7 @@ public:
     static void SetAILevel(int nNum, CPlayer::AI_LEVEL level) { m_aMemoryAILevel[nNum] = level; }   // AIレベル
     static void SetAddNumDefeatPlayer(void) { m_nNumDefeatPlayer++; }                       // やられたプレイヤー人数を増やす
     static void SetWorstPlayer(int player) { m_nWhoWorstPlayer = player; }                  // ワーストのプレイヤーを決める
-    static void SetAddNumDeathPlayer(void) { m_nNumDeathPlayer++; }                         // 死んだプレイヤー人数を増やす
+    static void SetAddNumDeathPlayer(int nIdxPlayer) { m_anPlayerRank[m_nNumAllPlayer - m_nNumDeathPlayer - 1] = nIdxPlayer; m_nNumDeathPlayer++; } // 死んだプレイヤー番号を記憶し、カウント
     static void SetQuitPause(void) { m_state = STATE_BUTTLE; m_bStopObjUpdate = false; }    // ポーズ状態をやめる
     static void SetStock(int nStock) { m_nNumStock = nStock; }
     static void SetUseKeyboard(bool bUseKeyboard) { m_bUseKeyboard = bUseKeyboard; }
@@ -121,6 +121,7 @@ public:
     static CNumberArray* GetNumArrayBallSpd(void) { return m_pNumArray_BallSpd; }   // ボールスピード表示を取得
     static bool GetUseKeyboard(void) { return m_bUseKeyboard; }                     // キーボードを使うかどうか取得
     static int GetStock(void) { return m_nNumStock; }                               // ストック数を取得
+    static int GetPlayerRank(int nIdx) { return m_anPlayerRank[nIdx]; }             // プレイヤーの順位を取得
 
     /*========================================================
     // 便利な関数
@@ -135,6 +136,7 @@ private:
 
     static bool m_bStopObjUpdate;                          // オブジェクトのアップデートを止めるかどうか
     static CPlayer *m_apPlayer[MAX_PLAYER];                // プレイヤーのポインタ
+    static int m_anPlayerRank[MAX_PLAYER];                 // プレイヤーのランキング（配列の若い順から1位、2位、、、）
     static CBall *m_pBall;                                 // ボールのポインタ
     static CPause *m_pPause;                               // ポーズのポインタ
     static CEffect2D *m_pEffect2d_Nega;                    // 反転合成へのポインタ

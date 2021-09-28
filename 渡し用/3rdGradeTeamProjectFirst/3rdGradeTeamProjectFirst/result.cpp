@@ -11,22 +11,12 @@
 #include "ui.h"
 #include "fade.h"
 #include "game.h"
-#include "ranking.h"
 #include "debug.h"
+#include "camera.h"
 
 //========================================
 // マクロ定義
 //========================================
-
-// 各順位に、カウンタを利用して敵を配置していく
-#define ENEMY_5 5
-#define ENEMY_4 95
-#define ENEMY_3 215
-#define ENEMY_2 335
-#define ENEMY_1 455
-#define STOP 1000       // カウンタのストップ
-
-#define SET_POS_X 1400  // 配置のX座標
 
 //=============================================================================
 // リザルトのコンストラクタ
@@ -52,18 +42,35 @@ CResult::~CResult()
 //=============================================================================
 HRESULT CResult::Init(void)
 {
-    // マウスカーソルの表示
-    ShowCursor(TRUE);
-
     // UIを生成
     CUI::Place(CUI::SET_RESULT);
-
-    // ランキングを生成
-    CRanking::Create(RANKING_FIRST_POS, DEFAULT_VECTOR);
 
     //// BGMを再生
     //CSound *pSound = CManager::GetSound();
     //pSound->Play(CSound::LABEL_BGM_RESULT);
+
+    // プレイヤー生成
+    for (int nCntPlayer = 0; nCntPlayer < CGame::GetNumAllPlayer(); nCntPlayer++)
+    {
+        switch (nCntPlayer)
+        {
+        case CPlayer::RANK_1:
+            CPlayer::CreateInResult(D3DXVECTOR3(250.0f, 200.0f, -1200.0f), DEFAULT_VECTOR, CGame::GetPlayerRank(nCntPlayer), CPlayer::RANK_1);
+            break;
+        case CPlayer::RANK_2:
+            CPlayer::CreateInResult(D3DXVECTOR3(-640.0f, 100.0f, -600.0f), DEFAULT_VECTOR, CGame::GetPlayerRank(nCntPlayer), CPlayer::RANK_2);
+            break;
+        case CPlayer::RANK_3:
+            CPlayer::CreateInResult(D3DXVECTOR3(-325.0f, 25.0f, -310.0f), DEFAULT_VECTOR, CGame::GetPlayerRank(nCntPlayer), CPlayer::RANK_3);
+            break;
+        case CPlayer::RANK_4:
+            CPlayer::CreateInResult(D3DXVECTOR3(125.0f, -40.0f, -100.0f), DEFAULT_VECTOR, CGame::GetPlayerRank(nCntPlayer), CPlayer::RANK_4);
+            break;
+        }
+    }
+
+    // カメラのロックオン場所を変える
+    CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
 
     return S_OK;
 }
@@ -92,10 +99,14 @@ void CResult::Update(void)
     CInputJoypad *pInputJoypad = CManager::GetInputJoypad();
     DIJOYSTATE2 Controller = pInputJoypad->GetController(PLAYER_1);
 
-    // 決定キーでタイトルへ
-    if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START))
+    // エンター、または何かボタンを押したら
+    if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START)
+        || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_A)
+        || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_B)
+        || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_X)
+        || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_Y))
     {
-        // タイトルモードに移行
+        // 仮にタイトル画面に移行
         CFade::SetFade(CManager::MODE_TITLE);
     }
 }

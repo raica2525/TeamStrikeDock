@@ -209,6 +209,10 @@ public:
         ANIM_THIRD_JUMP,    // 3段ジャンプ
         ANIM_CUSTOM_IDLE,   // カスタマイズ画面での待機
         ANIM_WEAPON_LOOK,   // カスタマイズ画面での武器を見る
+        ANIM_FIRST,         // 1位
+        ANIM_SECOND,        // 2位
+        ANIM_THIRD,         // 3位
+        ANIM_FOURTH,        // 4位
         ANIM_MAX,
     }ANIMATION;
 
@@ -336,6 +340,15 @@ public:
         SP_SHOT_WALL_THROUGH,   // ウォールスルー（壁ループ）
     }SP_SHOT;
 
+    // 順位
+    typedef enum
+    {
+        RANK_1 = 0,
+        RANK_2,
+        RANK_3,
+        RANK_4
+    }RANK;
+
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
     void LoadCustom(void);                                                              // カスタマイズ読み込み
     void BindVoiceSet(int voiceSet);                                                    // ボイスセットを結びつける
@@ -351,7 +364,8 @@ public:
     void Draw(void);                                                                    // 描画処理
     static CPlayer *CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, int nIdxCreate, int nIdxControlAndColor,
         AI_LEVEL AIlevel, bool bUseKeyboard = false);   // ゲーム内での生成処理
-    static CPlayer *CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdxControlAndColor, bool bDisp);     // カスタマイズ画面での生成
+    static CPlayer *CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdxControlAndColor, bool bDisp); // カスタマイズ画面での生成
+    static CPlayer *CreateInResult(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdxControlAndColor, RANK rank);  // リザルト画面での生成    
 
     void Movement(float fSpeed);                                                        // 行動
     void MoveMotion(void);                                                              // 移動モーションの管理
@@ -404,6 +418,7 @@ public:
     void ResetStatusEveryRound(void);   // 毎ラウンドリセットするステータス
     void SetDispAbility(bool bDisp) { m_bDispAbility = bDisp; }
     void SetCustomWeaponLook(void) { if (m_nCntAttackAnimTime <= 0)m_nCntAttackAnimTime = PLAYER_WEAPON_LOOK_FRAME; }
+    void SetRank(RANK rank) { m_rank = rank; }
 
     /*========================================================
     // ゲッター
@@ -514,7 +529,8 @@ private:
 	CClipingMusk* m_pClipingMusk;			 // クリッピングマスク
     int m_nNumWep;                           // 武器のモデル番号
     int m_nCntStopRedLifeTime;               // 赤ゲージ停止時間のカウンタ
-                                             
+    RANK m_rank;                             // 順位
+
     //===================================    
     // 特殊能力対応周り                      
     //===================================    

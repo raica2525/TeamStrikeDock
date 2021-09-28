@@ -153,6 +153,9 @@ void CDebug::CommonCommand(void)
         case CManager::MODE_RESULT:
             ReloadUI(CUI::SET_RESULT);
             break;
+        case CManager::MODE_MENU:
+            ReloadUI(CUI::SET_MENU);
+            break;
         case CManager::MODE_GAME:
             {
                 // UIÇÃÉäÉçÅ[Éh

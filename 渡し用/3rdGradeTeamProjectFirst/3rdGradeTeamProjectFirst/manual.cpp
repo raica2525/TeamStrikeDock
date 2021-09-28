@@ -100,7 +100,7 @@ void CManual::Update(void)
                 m_manual = MANUAL_002;
 
                 // 選択のクールタイムを設定
-                m_nSelectCoolTime = MANUAL_SELECT_COOL_TIME;
+                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
             }
 
             break;
@@ -119,7 +119,7 @@ void CManual::Update(void)
                 m_manual = MANUAL_001;
 
                 // 選択のクールタイムを設定
-                m_nSelectCoolTime = MANUAL_SELECT_COOL_TIME;
+                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
             }
             // 移動キーを押したら(右)
             else if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputKeyboard->GetKeyboardTrigger(DIK_D) || pInputKeyboard->GetKeyboardTrigger(DIK_RIGHT) ||
@@ -131,7 +131,7 @@ void CManual::Update(void)
                 m_manual = MANUAL_003;
 
                 // 選択のクールタイムを設定
-                m_nSelectCoolTime = MANUAL_SELECT_COOL_TIME;
+                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
             }
 
             break;
@@ -150,7 +150,7 @@ void CManual::Update(void)
                 m_manual = MANUAL_002;
 
                 // 選択のクールタイムを設定
-                m_nSelectCoolTime = MANUAL_SELECT_COOL_TIME;
+                m_nSelectCoolTime = MENU_SELECT_COOL_TIME;
             }
 
             // 決定キーを押したら

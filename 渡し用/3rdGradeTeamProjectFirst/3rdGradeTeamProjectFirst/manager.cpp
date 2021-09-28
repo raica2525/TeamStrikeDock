@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "custom.h"
 #include "text.h"
+#include "menu.h"
 
 //========================================
 // マクロ定義
@@ -367,8 +368,8 @@ void CManager::Update(void)
     // カメラの更新処理
     if (m_pCamera != NULL)
     {
-        // カスタマイズ画面またはゲーム中なら
-        if (typeid(*m_pMode) == typeid(CCustom) || typeid(*m_pMode) == typeid(CGame))
+        // カスタマイズ画面、ゲーム中、リザルト画面なら
+        if (typeid(*m_pMode) == typeid(CCustom) || typeid(*m_pMode) == typeid(CGame) || typeid(*m_pMode) == typeid(CResult))
         {
             m_pCamera->Update();
         }
@@ -417,6 +418,10 @@ CManager::MODE CManager::GetMode(void)
     else if (typeid(*m_pMode) == typeid(CResult))
     {
         mode = MODE_RESULT;
+    }
+    else if (typeid(*m_pMode) == typeid(CMenu))
+    {
+        mode = MODE_MENU;
     }
 
     return mode;
@@ -468,6 +473,10 @@ void CManager::SetMode(MODE mode)
 
     case MODE_RESULT:
         m_pMode = new CResult;
+        break;
+
+    case MODE_MENU:
+        m_pMode = new CMenu;
         break;
     }
 

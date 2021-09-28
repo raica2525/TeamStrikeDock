@@ -40,6 +40,7 @@ public:
         SET_CUSTOM,
         SET_GAME,
         SET_RESULT,
+        SET_MENU,
         SET_MAX
     }SET;
 

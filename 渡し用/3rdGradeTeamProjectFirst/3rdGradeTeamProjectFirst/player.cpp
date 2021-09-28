@@ -147,6 +147,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
 	m_pClipingMusk = NULL;
     m_nNumWep = 0;
     m_nCntStopRedLifeTime = 0;
+    m_rank = RANK_1;
 
     //===================================
     // 特殊能力対応周り
@@ -758,140 +759,161 @@ void CPlayer::Update(void)
 //=============================================================================
 void CPlayer::UpdateMannequin(void)
 {
-    // カスタマイズ画面での待機
-    GetAnimation()->SetAnimation(ANIM_CUSTOM_IDLE);
+    CManager::MODE mode = CManager::GetMode();
 
-    // 武器を変えたら、武器を見る
-    if (m_nCntAttackAnimTime > 0)
+    switch (mode)
     {
-        // 武器を見る
-        m_nCntAttackAnimTime--;
-        GetAnimation()->SetAnimation(ANIM_WEAPON_LOOK);
-    }
-
-    // 表示中なら
-    if (m_bDisp)
+    case CManager::MODE_CUSTOM:
     {
-        // 入力処理
-        Input();
+        // カスタマイズ画面での待機
+        GetAnimation()->SetAnimation(ANIM_CUSTOM_IDLE);
 
-        // 1Pは、キーボードで右スティックの回転ができる
-        if (m_nIdxControlAndColor == PLAYER_1)
+        // 武器を変えたら、武器を見る
+        if (m_nCntAttackAnimTime > 0)
         {
-            CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
-            if (pInputKeyboard->GetKeyboardPress(DIK_UP) ||
-                pInputKeyboard->GetKeyboardPress(DIK_LEFT) ||
-                pInputKeyboard->GetKeyboardPress(DIK_DOWN) ||
-                pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
-            {
-                m_controlInput.bTiltedRightStick = true;
+            // 武器を見る
+            m_nCntAttackAnimTime--;
+            GetAnimation()->SetAnimation(ANIM_WEAPON_LOOK);
+        }
 
-                // 角度を求める
-                if (pInputKeyboard->GetKeyboardPress(DIK_LEFT))
+        // 表示中なら
+        if (m_bDisp)
+        {
+            // 入力処理
+            Input();
+
+            // 1Pは、キーボードで右スティックの回転ができる
+            if (m_nIdxControlAndColor == PLAYER_1)
+            {
+                CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+                if (pInputKeyboard->GetKeyboardPress(DIK_UP) ||
+                    pInputKeyboard->GetKeyboardPress(DIK_LEFT) ||
+                    pInputKeyboard->GetKeyboardPress(DIK_DOWN) ||
+                    pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
                 {
-                    if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                    m_controlInput.bTiltedRightStick = true;
+
+                    // 角度を求める
+                    if (pInputKeyboard->GetKeyboardPress(DIK_LEFT))
                     {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(-45.0f);
-                    }
-                    else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(-135.0f);
+                        if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(-45.0f);
+                        }
+                        else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(-135.0f);
+                        }
+                        else if (pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                        }
+                        else
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(-90.0f);
+                        }
                     }
                     else if (pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
                     {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                        if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(45.0f);
+                        }
+                        else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(135.0f);
+                        }
+                        else if (pInputKeyboard->GetKeyboardPress(DIK_LEFT))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                        }
+                        else
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(90.0f);
+                        }
                     }
-                    else
+                    else if (pInputKeyboard->GetKeyboardPress(DIK_UP))
                     {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(-90.0f);
-                    }
-                }
-                else if (pInputKeyboard->GetKeyboardPress(DIK_RIGHT))
-                {
-                    if (pInputKeyboard->GetKeyboardPress(DIK_UP))
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(45.0f);
+                        if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                        }
+                        else
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                        }
                     }
                     else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
                     {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(135.0f);
-                    }
-                    else if (pInputKeyboard->GetKeyboardPress(DIK_LEFT))
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
-                    }
-                    else
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(90.0f);
-                    }
-                }
-                else if (pInputKeyboard->GetKeyboardPress(DIK_UP))
-                {
-                    if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
-                    }
-                    else
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
-                    }
-                }
-                else if (pInputKeyboard->GetKeyboardPress(DIK_DOWN))
-                {
-                    if (pInputKeyboard->GetKeyboardPress(DIK_UP))
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
-                    }
-                    else
-                    {
-                        m_controlInput.fRightStickAngle = D3DXToRadian(180.0f);
+                        if (pInputKeyboard->GetKeyboardPress(DIK_UP))
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(0.0f);
+                        }
+                        else
+                        {
+                            m_controlInput.fRightStickAngle = D3DXToRadian(180.0f);
+                        }
                     }
                 }
             }
-        }
-  
-        // 右スティックが倒れているなら向きを変える
-        D3DXVECTOR3 rot = GetRot();
-        const float ROT_SPEED = 3.0f;
-        if (m_controlInput.bTiltedRightStick)
-        {
-            // 右回転
-            if (STICK_RIGHT(m_controlInput.fRightStickAngle))
+
+            // 右スティックが倒れているなら向きを変える
+            D3DXVECTOR3 rot = GetRot();
+            const float ROT_SPEED = 3.0f;
+            if (m_controlInput.bTiltedRightStick)
             {
-                rot.y -= D3DXToRadian(ROT_SPEED);
+                // 右回転
+                if (STICK_RIGHT(m_controlInput.fRightStickAngle))
+                {
+                    rot.y -= D3DXToRadian(ROT_SPEED);
+                }
+                else if (STICK_LEFT(m_controlInput.fRightStickAngle))
+                {
+                    // 左回転
+                    rot.y += D3DXToRadian(ROT_SPEED);
+                }
             }
-            else if (STICK_LEFT(m_controlInput.fRightStickAngle))
+
+            // 回転の制限
+            if (rot.y > D3DXToRadian(180.0f) || rot.y < D3DXToRadian(-180.0f))
             {
-                // 左回転
-                rot.y += D3DXToRadian(ROT_SPEED);
+                rot.y *= -1;
             }
-        }
 
-        // 回転の制限
-        if (rot.y > D3DXToRadian(180.0f) || rot.y < D3DXToRadian(-180.0f))
-        {
-            rot.y *= -1;
-        }
+            // 回転の設定
+            SetRot(rot);
 
-        // 回転の設定
-        SetRot(rot);
-
-        // カスタマイズ画面のUIの更新
-        m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, m_fAtk);
-        m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, m_fDef);
-        m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, m_fSpd);
-        m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, m_fWei);
-        if (m_bDispAbility)
-        {
-            m_pUI_Custom_Ability->SetDisp(true);
-            m_pText_Custom_Ex_Head->SetColor(TEXT_EXIST_COLOR);
-            m_pText_Custom_Ex_Up->SetColor(TEXT_EXIST_COLOR);
-            m_pText_Custom_Ex_Down->SetColor(TEXT_EXIST_COLOR);
-            m_pText_Custom_Ex_Wep->SetColor(TEXT_EXIST_COLOR);
-            m_pText_Custom_Sp->SetColor(TEXT_EXIST_COLOR);
+            // カスタマイズ画面のUIの更新
+            m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, m_fAtk);
+            m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, m_fDef);
+            m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, m_fSpd);
+            m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, m_fWei);
+            if (m_bDispAbility)
+            {
+                m_pUI_Custom_Ability->SetDisp(true);
+                m_pText_Custom_Ex_Head->SetColor(TEXT_EXIST_COLOR);
+                m_pText_Custom_Ex_Up->SetColor(TEXT_EXIST_COLOR);
+                m_pText_Custom_Ex_Down->SetColor(TEXT_EXIST_COLOR);
+                m_pText_Custom_Ex_Wep->SetColor(TEXT_EXIST_COLOR);
+                m_pText_Custom_Sp->SetColor(TEXT_EXIST_COLOR);
+            }
+            else
+            {
+                m_pUI_Custom_Ability->SetDisp(false);
+                m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
+                m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
+                m_pText_Custom_Ex_Down->SetColor(TEXT_NOT_EXIST_COLOR);
+                m_pText_Custom_Ex_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
+                m_pText_Custom_Sp->SetColor(TEXT_NOT_EXIST_COLOR);
+            }
         }
         else
         {
+            // 非表示なら、各表示物も消す
+            m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, 0);
+            m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, 0);
+            m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, 0);
+            m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, 0);
             m_pUI_Custom_Ability->SetDisp(false);
             m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
             m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
@@ -899,24 +921,37 @@ void CPlayer::UpdateMannequin(void)
             m_pText_Custom_Ex_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
             m_pText_Custom_Sp->SetColor(TEXT_NOT_EXIST_COLOR);
         }
-    }
-    else
-    {
-        // 非表示なら、各表示物も消す
-        m_pUI_Custom_Atk->SetLeftToRightGauge(MAX_ATK, 0);
-        m_pUI_Custom_Def->SetLeftToRightGauge(MAX_DEF, 0);
-        m_pUI_Custom_Spd->SetLeftToRightGauge(MAX_SPD, 0);
-        m_pUI_Custom_Wei->SetLeftToRightGauge(MAX_WEI, 0);
-        m_pUI_Custom_Ability->SetDisp(false);
-        m_pText_Custom_Ex_Head->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_pText_Custom_Ex_Up->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_pText_Custom_Ex_Down->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_pText_Custom_Ex_Wep->SetColor(TEXT_NOT_EXIST_COLOR);
-        m_pText_Custom_Sp->SetColor(TEXT_NOT_EXIST_COLOR);
+
+        // アニメーションさせる
+        CCharacter::Update();
+        break;
     }
 
-    // アニメーションさせる
-    CCharacter::Update();
+    case CManager::MODE_RESULT:
+    {
+        // リザルト画面でのアニメーション
+        switch (m_rank)
+        {
+        case RANK_1:
+            GetAnimation()->SetAnimation(ANIM_FIRST);
+            break;
+        case RANK_2:
+            GetAnimation()->SetAnimation(ANIM_SECOND);
+            break;
+        case RANK_3:
+            GetAnimation()->SetAnimation(ANIM_THIRD);
+            break;
+        case RANK_4:
+            GetAnimation()->SetAnimation(ANIM_FOURTH);
+            break;
+        }
+
+        // アニメーションさせる
+        CCharacter::Update();
+        break;
+    }
+    }
+
 }
 
 //=============================================================================
@@ -1279,7 +1314,7 @@ CPlayer * CPlayer::CreateInGame(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nStock, in
 // カスタマイズ画面での生成
 // Author : 後藤慎之助
 //=============================================================================
-CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControlIndex, bool bDisp)
+CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdxControlAndColor, bool bDisp)
 {
     // メモリ確保
     CPlayer *pPlayer = NULL;
@@ -1290,7 +1325,7 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
     pPlayer->CCharacter::SetRot(rot);
 
     // 読み込む種類の設定
-    pPlayer->m_nIdxControlAndColor = nControlIndex;
+    pPlayer->m_nIdxControlAndColor = nIdxControlAndColor;
 
     // UIを生成
     D3DXVECTOR3 startPos = D3DXVECTOR3(205.0f, 293.5f, 0.0f);
@@ -1371,6 +1406,40 @@ CPlayer * CPlayer::CreateInCustom(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nControl
     pPlayer->m_startPos = pos;
     pPlayer->m_startRot = rot;
     pPlayer->m_bDisp = bDisp;
+
+    // マネキンモードに
+    pPlayer->m_bMannequin = true;
+
+    return pPlayer;
+}
+
+//=============================================================================
+// リザルト画面での生成
+// Author : 後藤慎之助
+//=============================================================================
+CPlayer * CPlayer::CreateInResult(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdxControlAndColor, RANK rank)
+{
+    // メモリ確保
+    CPlayer *pPlayer = NULL;
+    pPlayer = new CPlayer;
+
+    // 親元の情報を設定
+    pPlayer->CCharacter::SetPos(pos);
+    pPlayer->CCharacter::SetRot(rot);
+
+    // 読み込む種類の設定
+    pPlayer->m_nIdxControlAndColor = nIdxControlAndColor;
+
+    // 初期化
+    pPlayer->Init(pos, DEFAULT_SCALE);
+
+    // 結びつけるメンバ変数の初期化
+    pPlayer->m_rank = rank;
+    if (pPlayer->m_rank != RANK_1)
+    {
+        // 1位以外は、武器を描画しない
+        pPlayer->SetDrawWeapon(false);
+    }
 
     // マネキンモードに
     pPlayer->m_bMannequin = true;
@@ -1860,7 +1929,7 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
             else
             {
                 // 死んだプレイヤー人数を増やす
-                CGame::SetAddNumDeathPlayer();
+                CGame::SetAddNumDeathPlayer(m_nIdxControlAndColor);
             }
 
             // ボールにやられたなら、ボールも少しだけ止める（ボールでしかラッキーガードは発動しないため代用）

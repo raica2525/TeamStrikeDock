@@ -56,9 +56,10 @@ public:
     void SetAnimFilePass(char* cFilePass) { m_cAnimFilePass = cFilePass; }
 
     void BindParts(int nPartsIndex, int nPartsType) { m_aPartsType[nPartsIndex] = nPartsType; }
+    void SetDrawWeapon(bool bDrawWeapon) { m_bDrawWeapon = bDrawWeapon; }
 
     /*========================================================
-    // セッター
+    // ゲッター
     //======================================================*/
     D3DXVECTOR3 GetDefaultPos(int index) { return m_aPosDefault[index]; }
     D3DXVECTOR3 GetPartsPos(int index) { return D3DXVECTOR3(m_apModel[index]->GetWorldMtx()._41, m_apModel[index]->GetWorldMtx()._42, m_apModel[index]->GetWorldMtx()._43); }
@@ -89,6 +90,8 @@ private:
     char* m_cAnimFilePass;                                              // アニメーションファイルのパス
 
     bool m_bUseAnimation;												// アニメーションさせるかどうか
+
+    bool m_bDrawWeapon;                                                 // 武器を描画するかどうか
 };
 
 #endif
