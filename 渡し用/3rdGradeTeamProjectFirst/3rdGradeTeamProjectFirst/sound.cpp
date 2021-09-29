@@ -17,19 +17,34 @@
 CSound::PARAM CSound::m_aParam[LABEL_MAX] =
 {
     // SE
-    { "data/SOUND/SE/hit1.wav", 0 , CATEGORY_SE },			// ヒット音
-    { "data/SOUND/SE/swish.wav", 0 , CATEGORY_SE },			// 素振り音
-    { "data/SOUND/SE/bound.wav", 0 , CATEGORY_SE },			// バウンド音
-    { "data/SOUND/SE/catch.wav", 0 , CATEGORY_SE },			// キャッチ音
-    { "data/SOUND/SE/throw.wav", 0 , CATEGORY_SE },			// 投げ音
-    { "data/SOUND/SE/ko.wav", 0 , CATEGORY_SE },			// KO音
-    { "data/SOUND/SE/bunt.wav", 0 , CATEGORY_SE },			// バント音
-    { "data/SOUND/SE/damage.wav", 0 , CATEGORY_SE },		// ダメージ音
-    { "data/SOUND/SE/offset.wav", 0 , CATEGORY_SE },		// 相殺音
-    { "data/SOUND/SE/hit2.wav", 0 , CATEGORY_SE },			// 大ヒット音
-    { "data/SOUND/SE/ball_disping.wav", 0 , CATEGORY_SE },	// ボール配置音
-    { "data/SOUND/SE/jump.wav", 0 , CATEGORY_SE },		    // ジャンプ音
-    { "data/SOUND/SE/hit3.wav", 0 , CATEGORY_SE },		    // ウルトラヒット音
+    { "data/SOUND/SE/hit1.wav", 0 , CATEGORY_SE },								// ヒット音
+    { "data/SOUND/SE/swish.wav", 0 , CATEGORY_SE },								// 素振り音
+    { "data/SOUND/SE/bound.wav", 0 , CATEGORY_SE },								// バウンド音
+    { "data/SOUND/SE/catch.wav", 0 , CATEGORY_SE },								// キャッチ音
+    { "data/SOUND/SE/throw.wav", 0 , CATEGORY_SE },								// 投げ音
+    { "data/SOUND/SE/ko.wav", 0 , CATEGORY_SE },								// KO音
+    { "data/SOUND/SE/bunt.wav", 0 , CATEGORY_SE },								// バント音
+    { "data/SOUND/SE/damage.wav", 0 , CATEGORY_SE },							// ダメージ音
+    { "data/SOUND/SE/offset.wav", 0 , CATEGORY_SE },							// 相殺音
+    { "data/SOUND/SE/hit2.wav", 0 , CATEGORY_SE },								// 大ヒット音
+    { "data/SOUND/SE/ball_disping.wav", 0 , CATEGORY_SE },						// ボール配置音
+    { "data/SOUND/SE/jump.wav", 0 , CATEGORY_SE },								// ジャンプ音
+    { "data/SOUND/SE/hit3.wav", 0 , CATEGORY_SE },								// ウルトラヒット音
+	{ "data/SOUND/SE/select.wav", 0 , CATEGORY_SE },							// 決定音
+	{ "data/SOUND/SE/custom.wav", 0 , CATEGORY_SE },							// カスタマイズ変更音
+	{ "data/SOUND/SE/cancel.wav", 0 , CATEGORY_SE },							// キャンセル音
+	{ "data/SOUND/SE/entry.wav", 0 , CATEGORY_SE },								// エントリー音
+	{ "data/SOUND/SE/ready.wav", 0 , CATEGORY_SE },								// READYボタン出現音
+	{ "data/SOUND/SE/heal.wav", 0 , CATEGORY_SE },								// 回復音
+	{ "data/SOUND/SE/info.wav", 0 , CATEGORY_SE },								// 詳細が出る時の音
+	{ "data/SOUND/SE/cursolon.wav", 0 , CATEGORY_SE },							// ボタンにカーソルが乗った時の音
+	{ "data/SOUND/SE/warp.wav", 0 , CATEGORY_SE },								// ボールワープ音
+	{ "data/SOUND/SE/skill.wav", 0 , CATEGORY_SE },								// 必殺技発動音
+	{ "data/SOUND/BGM/title.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },		// タイトルBGM
+	{ "data/SOUND/BGM/menu.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },		// メニュー&カスタマイズBGM
+	{ "data/SOUND/BGM/battle00.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },	// バトルBGM00
+	{ "data/SOUND/BGM/battle01.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },	// バトルBGM01
+	{ "data/SOUND/BGM/battle02.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM }		// バトルBGM02
 };
 
 //=============================================================================
