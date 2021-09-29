@@ -57,6 +57,8 @@ CSound::PARAM CSound::m_aParam[LABEL_MAX] =
 	{ "data/SOUND/VOICE/OOO_SP.wav", 0 , CATEGORY_SE },
 	{ "data/SOUND/VOICE/Ranger_SP.wav", 0 , CATEGORY_SE },
 	{ "data/SOUND/VOICE/X_SP.wav", 0 , CATEGORY_SE },
+    { "data/SOUND/SE/wing.wav", 0 , CATEGORY_SE },
+    { "data/SOUND/SE/ok.wav", 0 , CATEGORY_SE },
 };
 
 //=============================================================================

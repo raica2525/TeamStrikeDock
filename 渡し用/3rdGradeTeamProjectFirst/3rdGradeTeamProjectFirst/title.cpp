@@ -44,9 +44,8 @@ HRESULT CTitle::Init(void)
     // UIを生成
     CUI::Place(CUI::SET_TITLE);
 
-    //// BGMを再生
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Play(CSound::LABEL_BGM_TITLE);
+    // BGMを再生
+    CManager::SoundPlay(CSound::LABEL_BGM_TITLE);
 
     return S_OK;
 }
@@ -57,9 +56,8 @@ HRESULT CTitle::Init(void)
 //=============================================================================
 void CTitle::Uninit(void)
 {
-    //// BGMを停止(仮)
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Stop(CSound::LABEL_BGM_TITLE);
+    // BGMを停止
+    CManager::SoundStop(CSound::LABEL_BGM_TITLE);
 }
 
 //=============================================================================
@@ -87,6 +85,7 @@ void CTitle::Update(void)
         // 翼エフェクトを放出
         if (m_bEmitWingEffect)
         {
+            CManager::SoundPlay(CSound::LABEL_SE_WING);
             m_bEmitWingEffect = false;
             CEffect2D::Emit(CEffectData::TYPE_RED_WING, D3DXVECTOR3(640.0f, 160.0f,0.0f), D3DXVECTOR3(640.0f, 360.0f, 0.0f));
             CEffect2D::Emit(CEffectData::TYPE_BLUE_WING, D3DXVECTOR3(640.0f, 160.0f, 0.0f), D3DXVECTOR3(640.0f, 360.0f, 0.0f));
@@ -118,6 +117,9 @@ void CTitle::Update(void)
             {
                 // 仮にカスタマイズ画面に移行
                 CFade::SetFade(CManager::MODE_CUSTOM);
+
+                // SE
+                CManager::SoundPlay(CSound::LABEL_SE_HIT_BIG);
 
                 // プレスボタンを点滅させる
                 if (pPressButton)

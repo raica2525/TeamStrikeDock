@@ -684,4 +684,132 @@ MODEL_DATASET
 	NAME = data/MODEL/knight/08_handL.x
 END_MODEL_DATASET
 
+#---------------------------------------
+# [85] ルシファーの腰
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 85
+	NAME = data/MODEL/lucifer/00_bodyD.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [86] ルシファーの胸部
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 86
+	NAME = data/MODEL/lucifer/01_bodyU.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [87] ルシファーの頭
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 87
+	NAME = data/MODEL/lucifer/02_head.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [88] ルシファーの右肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 88
+	NAME = data/MODEL/lucifer/03_armUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [89] ルシファーの右腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 89
+	NAME = data/MODEL/lucifer/04_armDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [90] ルシファーの右手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 90
+	NAME = data/MODEL/lucifer/05_handR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [91] ルシファーの左肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 91
+	NAME = data/MODEL/lucifer/06_armUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [92] ルシファーの左腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 92
+	NAME = data/MODEL/lucifer/07_armDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [93] ルシファーの左手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 93
+	NAME = data/MODEL/lucifer/08_handL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [94] ルシファーの右腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 94
+	NAME = data/MODEL/lucifer/09_legUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [95] ルシファーの右脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 95
+	NAME = data/MODEL/lucifer/10_legDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [96] ルシファーの右足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 96
+	NAME = data/MODEL/lucifer/11_footR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [97] ルシファーの左腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 97
+	NAME = data/MODEL/lucifer/12_legUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [98] ルシファーの左脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 98
+	NAME = data/MODEL/lucifer/13_legDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [99] ルシファーの左足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 99
+	NAME = data/MODEL/lucifer/14_footL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [100] ルシファーの武器(ヘブンズエッジ)
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 100
+	NAME = data/MODEL/lucifer/15_weapon.x
+END_MODEL_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

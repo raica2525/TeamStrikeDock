@@ -170,9 +170,8 @@ HRESULT CCustom::Init(void)
         pStock->SetTexturePlace(CGame::GetStock() - 1, PLAYER_MAX_STOCK);
     }
 
-    //// BGMを再生
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Play(CSound::LABEL_BGM_RESULT);
+    // BGMを再生
+    CManager::SoundPlay(CSound::LABEL_BGM_MENU);
 
     return S_OK;
 }
@@ -248,9 +247,8 @@ void CCustom::BindHaveParts(void)
 //=============================================================================
 void CCustom::Uninit(void)
 {
-    //// BGMを停止
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Stop(CSound::LABEL_BGM_RESULT);
+    // BGMを停止
+    CManager::SoundStop(CSound::LABEL_BGM_MENU);
 }
 
 //=============================================================================
@@ -571,6 +569,12 @@ void CCustom::CollisionSelect(int nNumWho, D3DXVECTOR3 cursorPos)
             if (IsCollisionRectangle2D(&cursorPos, &pSelectUI->GetCollisionPos(),
                 &CURSOR_COLLISION_SIZE, &pSelectUI->GetCollisionSize()))
             {
+                // SE
+                if (m_aEntryInfo[nNumWho].nNumSelectUIOld == NOT_EXIST)
+                {
+                    CManager::SoundPlay(CSound::LABEL_SE_CURSOLON);
+                }
+
                 // 拡大縮小を解除
                 pSelectUI->SetActionLock(0, false);
 
@@ -662,6 +666,7 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
             {
             case CLICK_TYPE_PARTS:
                 {
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
                     // 誰がどこのパーツの左右どちらを選んだか
                     int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
                     int nParamWhere = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHERE);
@@ -676,6 +681,7 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
 
             case CLICK_TYPE_CHANGE:
                 {
+                    CManager::SoundPlay(CSound::LABEL_SE_SELECT);
                     // 今の状態に応じて、次のエントリー状態にチェンジ
                     int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
                     ENTRY_STATUS nextEntryStatus = ENTRY_STATUS_WAITING;
@@ -724,6 +730,14 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
                 {
                     int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
                     m_aEntryInfo[nParamWho].pPlayer->SetDispAbility(!m_aEntryInfo[nParamWho].pPlayer->GetDispAbility());
+                    if (m_aEntryInfo[nParamWho].pPlayer->GetDispAbility())
+                    {
+                        CManager::SoundPlay(CSound::LABEL_SE_INFO);
+                    }
+                    else
+                    {
+                        CManager::SoundPlay(CSound::LABEL_SE_CANCEL);
+                    }
                 }
                 break;
 
@@ -735,12 +749,14 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
                 // ある程度画面に表示されたら
                 if (pSelectUI->GetPosition().x > 40.0f)
                 {
+                    CManager::SoundPlay(CSound::LABEL_SE_CANCEL);
                     CFade::SetFade(CManager::MODE_TITLE);   // 仮にタイトル
                 }
                 break;
 
             case CLICK_TYPE_STOCK:
                 {
+                    CManager::SoundPlay(CSound::LABEL_SE_SELECT);
                     // ストックを取得し、加算し、反映
                     int nStock = CGame::GetStock() + 1;
                     if (nStock > PLAYER_MAX_STOCK)
@@ -754,6 +770,7 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
 
             case CLICK_TYPE_OSUSUME:
                 {
+                    CManager::SoundPlay(CSound::LABEL_SE_SELECT);
                     int nParamWho = (int)pSelectUI->GetActionParam(CURSOR_CLICK_ACTION_INFO_IDX, PARAM_CLICK_WHO);
                     DoOsusume(nParamWho);
                 }
@@ -866,7 +883,11 @@ void CCustom::ChangeEntryStatus(int nNumWho, ENTRY_STATUS nextEntryStatus)
         if (nextEntryStatus == ENTRY_STATUS_PLAYER)
         {
             // プレイヤーへの遷移なら、カーソルを表示
-            m_aEntryInfo[nNumWho].pUI_Cursor->SetDisp(true);
+            if (!m_aEntryInfo[nNumWho].pUI_Cursor->GetDisp())
+            {
+                m_aEntryInfo[nNumWho].pUI_Cursor->SetDisp(true);
+                CManager::SoundPlay(CSound::LABEL_SE_ENTRY);
+            }
         }
 
         // 選択肢は遷移元に関わらず、変わる表示がある
@@ -958,6 +979,16 @@ void CCustom::ToggleReady(int nNumWho)
 {
     // 反転
     m_aEntryInfo[nNumWho].bReady = !m_aEntryInfo[nNumWho].bReady;
+
+    // SE
+    if (m_aEntryInfo[nNumWho].bReady)
+    {
+        CManager::SoundPlay(CSound::LABEL_SE_OK);
+    }
+    else
+    {
+        CManager::SoundPlay(CSound::LABEL_SE_CANCEL);
+    }
 
     // 準備状況に応じて、表示物を変える
     if (m_aEntryInfo[nNumWho].bReady)
@@ -1074,6 +1105,10 @@ void CCustom::JudgmentReadyToFight(void)
     // エントリー人数が2人以上（かつ準備完了している）なら、ReadyToFightとストックを表示
     if (nNumCurrentEntryPlayer >= 2)
     {
+        if (!m_bDispReadyToFight)
+        {
+            CManager::SoundPlay(CSound::LABEL_SE_READY);
+        }
         m_bDispReadyToFight = true;
         if (pReadyToFightBg)
         {
@@ -1094,6 +1129,7 @@ void CCustom::JudgmentReadyToFight(void)
     // ReadyToFightが押されたなら、ゲームへ遷移
     if (m_bClickReadyToFight)
     {
+        CManager::SoundPlay(CSound::LABEL_SE_HIT_BIG);
         CFade::SetFade(CManager::MODE_GAME);
         CGame::SetNextGameInCustom(CGame::TYPE_ARENA, nNumCurrentEntryPlayer);
 

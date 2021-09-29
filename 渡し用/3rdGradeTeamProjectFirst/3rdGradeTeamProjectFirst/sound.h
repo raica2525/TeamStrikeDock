@@ -63,6 +63,8 @@ public:
 		LABEL_VOICE_SP_OOO,
 		LABEL_VOICE_SP_RANGER,
 		LABEL_VOICE_SP_X,
+        LABEL_SE_WING,
+        LABEL_SE_OK,
         LABEL_MAX,
     } LABEL;
 
