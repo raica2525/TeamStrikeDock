@@ -44,7 +44,19 @@ CSound::PARAM CSound::m_aParam[LABEL_MAX] =
 	{ "data/SOUND/BGM/menu.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },		// メニュー&カスタマイズBGM
 	{ "data/SOUND/BGM/battle00.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },	// バトルBGM00
 	{ "data/SOUND/BGM/battle01.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },	// バトルBGM01
-	{ "data/SOUND/BGM/battle02.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM }		// バトルBGM02
+	{ "data/SOUND/BGM/battle02.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },	// バトルBGM02
+	{ "data/SOUND/VOICE/Icarus_WIN.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Kleinod_WIN.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Knight_WIN.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/OOO_WIN.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Ranger_WIN.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/X_WIN.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Icarus_SP.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Kleinod_SP.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Knight_SP.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/OOO_SP.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/Ranger_SP.wav", 0 , CATEGORY_SE },
+	{ "data/SOUND/VOICE/X_SP.wav", 0 , CATEGORY_SE },
 };
 
 //=============================================================================
