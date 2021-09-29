@@ -1473,4 +1473,257 @@ EFFECT_DATASET
 	ALPHA_TEST_BORDER = 100
 END_EFFECT_DATASET
 
+#-------------------------------------------------------------
+# [40] 飛び散る青い光
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 40
+	TEX_TYPE = 105
+	ONCE = 10
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 80	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 20000
+	SPEED_MIN = 6000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 0.000 0.178 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.020	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 40000
+	SIZE_MIN = 40000
+	SIZE_CHANGE = 0.0 7.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
+END_EFFECT_DATASET
+
+
+#-------------------------------------------------------------
+# [41] 飛び散る白い光
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 41
+	TEX_TYPE = 105
+	ONCE = 10
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 80	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 20000
+	SPEED_MIN = 6000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.020	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 40000
+	SIZE_MIN = 40000
+	SIZE_CHANGE = 0.0 7.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [42] 飛び散る白い線
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 42
+	TEX_TYPE = 38
+	ONCE = 5
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 80	# 0～314
+	SCATTER_WIDTH = 60	# 0～314
+	SPEED_MAX = 20000
+	SPEED_MIN = 6000
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 1	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.040	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 20000
+	SIZE_MIN = 20000
+	SIZE_CHANGE = 0.0 7.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [43] 光が出てくるところの丸い青い光
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 43
+	TEX_TYPE = 4
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 0.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 0.359 0.696 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.030	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 150000
+	SIZE_MIN = 150000
+	SIZE_CHANGE = 0.0 0.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 20
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [44] 左向きのチャージ中の煙
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 44
+	TEX_TYPE = 36
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 62	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1900
+	SPEED_MIN = 1900
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 50
+	ROT_SPEED_MIN = 20
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.02	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 15000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = 25.0 25.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [45] 右向きのチャージ中の煙
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 45
+	TEX_TYPE = 36
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 250	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 1900
+	SPEED_MIN = 1900
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 50
+	ROT_SPEED_MIN = 20
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.02	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 15200
+	SIZE_MIN = 15000
+	SIZE_CHANGE = 25.0 25.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 100
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [46] チャージ時の光
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 46
+	TEX_TYPE = 102
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 0.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.150	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 30000
+	SIZE_MIN = 30000
+	SIZE_CHANGE = 0.0 0.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 25
+END_EFFECT_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

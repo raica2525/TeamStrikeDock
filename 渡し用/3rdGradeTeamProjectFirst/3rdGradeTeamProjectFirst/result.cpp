@@ -45,10 +45,6 @@ HRESULT CResult::Init(void)
     // UIを生成
     CUI::Place(CUI::SET_RESULT);
 
-    //// BGMを再生
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Play(CSound::LABEL_BGM_RESULT);
-
     // プレイヤー生成
     for (int nCntPlayer = 0; nCntPlayer < CGame::GetNumAllPlayer(); nCntPlayer++)
     {
@@ -72,6 +68,9 @@ HRESULT CResult::Init(void)
     // カメラのロックオン場所を変える
     CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_CUSTOM);
 
+    // BGMを再生
+    CManager::SoundPlay(CSound::LABEL_BGM_RESULT);
+
     return S_OK;
 }
 
@@ -81,9 +80,8 @@ HRESULT CResult::Init(void)
 //=============================================================================
 void CResult::Uninit(void)
 {
-    //// BGMを停止
-    //CSound *pSound = CManager::GetSound();
-    //pSound->Stop(CSound::LABEL_BGM_RESULT);
+    // BGMを停止
+    CManager::SoundStop(CSound::LABEL_BGM_RESULT);
 }
 
 //=============================================================================
@@ -107,6 +105,7 @@ void CResult::Update(void)
         || pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_Y))
     {
         // 仮にタイトル画面に移行
+        CManager::SoundPlay(CSound::LABEL_SE_OK);
         CFade::SetFade(CManager::MODE_TITLE);
     }
 }

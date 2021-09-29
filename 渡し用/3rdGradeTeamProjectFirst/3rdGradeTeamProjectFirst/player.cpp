@@ -309,7 +309,29 @@ void CPlayer::LoadCustom(void)
                 BindParts(PARTS_RHAND, (int)pModelData->GetPartsList(nPartsListType)->afParam[3]);
                 BindParts(PARTS_LSHOULDER, (int)pModelData->GetPartsList(nPartsListType)->afParam[4]);
                 BindParts(PARTS_LARM, (int)pModelData->GetPartsList(nPartsListType)->afParam[5]);
-                BindParts(PARTS_LHAND, (int)pModelData->GetPartsList(nPartsListType)->afParam[6]);
+                // 左手に武器を持っているパーツの、カスタマイズ画面での例外処理
+                if (CManager::GetMode() == CManager::MODE_RESULT)
+                {
+                    switch ((int)pModelData->GetPartsList(nPartsListType)->afParam[6])
+                    {
+                    case 51:
+                        BindParts(PARTS_LHAND, 43);
+                        break;
+                    case 75:
+                        BindParts(PARTS_LHAND, 84);
+                        break;
+                    case 93:
+                        BindParts(PARTS_LHAND, 117);
+                        break;
+                    default:
+                        BindParts(PARTS_LHAND, (int)pModelData->GetPartsList(nPartsListType)->afParam[6]);
+                        break;
+                    }
+                }
+                else
+                {
+                    BindParts(PARTS_LHAND, (int)pModelData->GetPartsList(nPartsListType)->afParam[6]);
+                }
 
                 // カスタマイズパーツ番号を取得
                 m_anNumCustomParts[CUSTOM_PARTS_UP] = nPartsListType;
@@ -951,6 +973,12 @@ void CPlayer::UpdateMannequin(void)
         {
         case RANK_1:
             GetAnimation()->SetAnimation(ANIM_FIRST);
+            m_nCntAttackAnimTime++;
+            if (m_nCntAttackAnimTime > PLAYER_VICTORY_WAIT_START_FRAME)
+            {
+                m_nCntAttackAnimTime = PLAYER_VICTORY_WAIT_START_FRAME;
+                GetAnimation()->SetAnimation(ANIM_FIRST_WAIT);
+            }
             break;
         case RANK_2:
             GetAnimation()->SetAnimation(ANIM_SECOND);
@@ -2556,6 +2584,23 @@ void CPlayer::SwingCharge(void)
         m_nCntAttackTime = ATTACK_SWING_WHOLE_FRAME;
         m_nCntAttackAnimTime = PLAYER_ATTACK_ANIM_MIN_FRAME;
     }
+
+    // チャージエフェクト
+    if (m_nCntSwingCharge >= ATTACK_SWING_CHARGE_EMIT_EFFECT_FRAME)
+    {
+        D3DXVECTOR3 pos = GetPos();
+        D3DXVECTOR3 rot = GetRot();
+        if (rot.y == PLAYER_ROT_LEFT)
+        {
+            CEffect3D::Emit(CEffectData::TYPE_CHARGE_SWING_LEFT, pos, pos);
+        }
+        else if (rot.y == PLAYER_ROT_RIGHT)
+        {
+            CEffect3D::Emit(CEffectData::TYPE_CHARGE_SWING_RIGHT, pos, pos);
+        }
+        D3DXVECTOR3 wepPos = GetPartsPos(PARTS_WEP);
+        CEffect3D::Create(CEffectData::TYPE_CHARGE_LIGHT, wepPos);
+    }
 }
 
 //=============================================================================
@@ -3070,6 +3115,10 @@ void CPlayer::LeaveWepAfterimage(void)
         if (IS_BITON(m_exFlag, EX_FLAG_TRAIL_GREEN))
         {
             col = PLAYER_COLOR_3;
+        }
+        else if (IS_BITON(m_exFlag, EX_FLAG_TRAIL_PURPLE))
+        {
+            col = D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f);
         }
 
         CModelEffect *pCopy = CModelEffect::Create(m_nNumWep, wepPos, wepRot, col, D3DXCOLOR(0.0f, 0.0f, 0.0f, -0.025f));

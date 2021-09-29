@@ -862,5 +862,12 @@ TEXTURESET
     NAME = data/TEXTURE/104_kirakira.png
 END_TEXTURESET
 
+#---------------------------------------
+# [105] 光
+#---------------------------------------
+TEXTURESET
+    TYPE = 105
+    NAME = data/TEXTURE/105_scatterright.png
+END_TEXTURESET
 
 END_SCRIPT		# この行は絶対消さないこと！

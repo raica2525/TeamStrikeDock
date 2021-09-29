@@ -50,7 +50,7 @@ public:
 		LABEL_BGM_MENU,			// メニュー&カスタマイズBGM
 		LABEL_BGM_BATTLE00,		// バトルBGM00
 		LABEL_BGM_BATTLE01,		// バトルBGM01
-		LABEL_BGM_BATLLE02,		// バトルBGM02
+		LABEL_BGM_BATTLE02,		// バトルBGM02
 		LABEL_VOICE_WIN_ICARUS,	// 勝利ボイス
 		LABEL_VOICE_WIN_KLEINOD,
 		LABEL_VOICE_WIN_KNIGHT,
@@ -65,6 +65,7 @@ public:
 		LABEL_VOICE_SP_X,
         LABEL_SE_WING,
         LABEL_SE_OK,
+        LABEL_BGM_RESULT,		// リザルトBGM
         LABEL_MAX,
     } LABEL;
 

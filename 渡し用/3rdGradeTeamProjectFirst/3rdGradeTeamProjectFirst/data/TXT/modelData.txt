@@ -349,7 +349,7 @@ MODEL_DATASET
 END_MODEL_DATASET
 
 #---------------------------------------
-# [43] イカロスの左手
+# [43] イカロスの武器無し左手
 #---------------------------------------
 MODEL_DATASET
 	TYPE = 43
@@ -677,7 +677,7 @@ MODEL_DATASET
 END_MODEL_DATASET
 
 #---------------------------------------
-# [84] 錆騎士の左手
+# [84] 錆騎士の武器無し左手
 #---------------------------------------
 MODEL_DATASET
 	TYPE = 84
@@ -749,11 +749,11 @@ MODEL_DATASET
 END_MODEL_DATASET
 
 #---------------------------------------
-# [93] ルシファーの左手
+# [93] ルシファーの武器持ち左手
 #---------------------------------------
 MODEL_DATASET
 	TYPE = 93
-	NAME = data/MODEL/lucifer/08_handL.x
+	NAME = data/MODEL/lucifer/08_weaponhandL.x
 END_MODEL_DATASET
 
 #---------------------------------------
@@ -810,6 +810,142 @@ END_MODEL_DATASET
 MODEL_DATASET
 	TYPE = 100
 	NAME = data/MODEL/lucifer/15_weapon.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [101] タジャドルの腰
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 101
+	NAME = data/MODEL/tajyadol/00_bodyD.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [102] タジャドルの胸部
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 102
+	NAME = data/MODEL/tajyadol/01_bodyU.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [103] タジャドルの頭
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 103
+	NAME = data/MODEL/tajyadol/02_head.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [104] タジャドルの右肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 104
+	NAME = data/MODEL/tajyadol/03_armUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [105] タジャドルの右腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 105
+	NAME = data/MODEL/tajyadol/04_armDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [106] タジャドルの右手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 106
+	NAME = data/MODEL/tajyadol/05_handR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [107] タジャドルの左肩
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 107
+	NAME = data/MODEL/tajyadol/06_armUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [108] タジャドルの左腕
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 108
+	NAME = data/MODEL/tajyadol/07_armDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [109] タジャドルの左手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 109
+	NAME = data/MODEL/tajyadol/08_handL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [110] タジャドルの右腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 110
+	NAME = data/MODEL/tajyadol/09_legUR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [111] タジャドルの右脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 111
+	NAME = data/MODEL/tajyadol/10_legDR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [112] タジャドルの右足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 112
+	NAME = data/MODEL/tajyadol/11_footR.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [113] タジャドルの左腿
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 113
+	NAME = data/MODEL/tajyadol/12_legUL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [114] タジャドルの左脚
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 114
+	NAME = data/MODEL/tajyadol/13_legDL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [115] タジャドルの左足
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 115
+	NAME = data/MODEL/tajyadol/14_footL.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [116] 撃剣
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 116
+	NAME = data/MODEL/tajyadol/15_weapon.x
+END_MODEL_DATASET
+
+#---------------------------------------
+# [117] ルシファーの武器無し左手
+#---------------------------------------
+MODEL_DATASET
+	TYPE = 117
+	NAME = data/MODEL/lucifer/08_handL.x
 END_MODEL_DATASET
 
 END_SCRIPT		# この行は絶対消さないこと！

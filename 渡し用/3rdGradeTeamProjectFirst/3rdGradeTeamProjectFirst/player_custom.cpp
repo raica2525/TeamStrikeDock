@@ -77,6 +77,30 @@ void CPlayer::CustomPartsName(char * pName, int nPartsType)
     case 18:
         wsprintf(pName, "錆びた剣");
         break;
+    case 19:
+        wsprintf(pName, "ルシファーヘッド");
+        break;
+    case 20:
+        wsprintf(pName, "ルシファーアーマー");
+        break;
+    case 21:
+        wsprintf(pName, "ルシファーレッグ");
+        break;
+    case 22:
+        wsprintf(pName, "ヘブンズエッジ");
+        break;
+    case 23:
+        wsprintf(pName, "タカヘッド");
+        break;
+    case 24:
+        wsprintf(pName, "クジャクボディ");
+        break;
+    case 25:
+        wsprintf(pName, "コンドルレッグ");
+        break;
+    case 26:
+        wsprintf(pName, "猟銃");
+        break;
     default:
         wsprintf(pName, "無効なテキスト");
         break;
@@ -118,6 +142,32 @@ void CPlayer::CustomExName(char* pName, int exFlag)
         bExist = true;
     }
 
+    if (IS_BITON(exFlag, EX_FLAG_TRAIL_GREEN))
+    {
+        if (!bExist)
+        {
+            wsprintf(pName, "武器軌跡色:緑");
+        }
+        else
+        {
+            strcat(pName, "/武器軌跡色:緑");
+        }
+        bExist = true;
+    }
+
+    if (IS_BITON(exFlag, EX_FLAG_TRAIL_PURPLE))
+    {
+        if (!bExist)
+        {
+            wsprintf(pName, "武器軌跡色:紫");
+        }
+        else
+        {
+            strcat(pName, "/武器軌跡色:紫");
+        }
+        bExist = true;
+    }
+
     if (IS_BITON(exFlag, EX_FLAG_DONT_CATCH))
     {
         if (!bExist)
@@ -126,7 +176,7 @@ void CPlayer::CustomExName(char* pName, int exFlag)
         }
         else
         {
-            strcat(pName, "/キャッチ使用不可");
+            strcat(pName, "/キャッチ×");
         }
         bExist = true;
     }
@@ -139,20 +189,7 @@ void CPlayer::CustomExName(char* pName, int exFlag)
         }
         else
         {
-            strcat(pName, "/ファーストヒットガード");
-        }
-        bExist = true;
-    }
-
-    if (IS_BITON(exFlag, EX_FLAG_TRAIL_GREEN))
-    {
-        if (!bExist)
-        {
-            wsprintf(pName, "武器軌跡色:緑");
-        }
-        else
-        {
-            strcat(pName, "/武器軌跡色:緑");
+            strcat(pName, "/初撃封じ");
         }
         bExist = true;
     }

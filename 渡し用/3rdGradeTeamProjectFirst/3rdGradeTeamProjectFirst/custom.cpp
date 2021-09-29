@@ -1129,6 +1129,13 @@ void CCustom::JudgmentReadyToFight(void)
     // ReadyToFightが押されたなら、ゲームへ遷移
     if (m_bClickReadyToFight)
     {
+        // エフェクト
+        D3DXVECTOR3 effectPos = D3DXVECTOR3(0.0f, 231.0f, 0.0f);
+        CEffect2D::Emit(CEffectData::TYPE_READY_TO_FIGHT1, effectPos, effectPos);
+        CEffect2D::Emit(CEffectData::TYPE_READY_TO_FIGHT2, effectPos, effectPos);
+        CEffect2D::Emit(CEffectData::TYPE_READY_TO_FIGHT3, effectPos, effectPos);
+        CEffect2D::Emit(CEffectData::TYPE_READY_TO_FIGHT4, effectPos, effectPos);
+
         CManager::SoundPlay(CSound::LABEL_SE_HIT_BIG);
         CFade::SetFade(CManager::MODE_GAME);
         CGame::SetNextGameInCustom(CGame::TYPE_ARENA, nNumCurrentEntryPlayer);

@@ -207,8 +207,20 @@ HRESULT CGame::Init(void)
     // ボールスピード表示を生成
     m_pNumArray_BallSpd = CNumberArray::Create(12, D3DXVECTOR3(640.0f, 675.0f, 0.0f), NUMBER_SIZE_X_BALL_SPD, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), (int)BALL_FIRST_SPEED, false);
 
-    // ステージの設定
-    //SetStage(STAGE_1);
+    // BGMをランダム再生
+    int nRand = GetRandNum(2, 0);
+    switch (nRand)
+    {
+    case 0:
+        CManager::SoundPlay(CSound::LABEL_BGM_BATTLE00);
+        break;
+    case 1:
+        CManager::SoundPlay(CSound::LABEL_BGM_BATTLE01);
+        break;
+    case 2:
+        CManager::SoundPlay(CSound::LABEL_BGM_BATTLE02);
+        break;
+    }
 
     return S_OK;
 }

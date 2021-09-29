@@ -644,4 +644,259 @@ CHARACTERSET
 	
 END_CHARACTERSET
 
+#---------------------------------------
+# [10] ルシファーの上半身
+#---------------------------------------
+CHARACTERSET
+	TYPE = 10
+
+	PARTSSET
+		INDEX = 2					# 頭
+		PARENT = 1					# (親)上半身
+		POS = 0.0 65.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 3					# 右上腕
+		PARENT = 1					# (親)腹
+		POS = -35.0 60.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 4					# 右前腕
+		PARENT = 3					# (親)右上腕
+		POS = -5.0 10.0 .0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 5					# 右手
+		PARENT = 4					# (親)右前腕
+		POS = -40.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 6					# 左上腕
+		PARENT = 1					# (親)腹
+		POS = 35.0 60.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 7					# 左前腕
+		PARENT = 6					# (親)左上腕
+		POS = 5.0 10.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 8					# 左手
+		PARENT = 7					# (親)左前腕
+		POS = 40.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 15					# 武器
+		PARENT = 5					# (親)右上腕
+		POS = -58.0 0.0 5.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+END_CHARACTERSET
+
+#---------------------------------------
+# [11] ルシファーの下半身
+#---------------------------------------
+CHARACTERSET
+	TYPE = 11
+
+	PARTSSET
+		INDEX = 0					# 腰
+		PARENT = -1					# (親)NULL
+		POS = 0.0 179.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 1					# 腹
+		PARENT = 0					# (親)腰
+		POS = 0.0 0.0 2.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	PARTSSET
+		INDEX = 9					# 右もも
+		PARENT = 0					# (親)腰
+		POS = -23.0 -28.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 10					# 右ふくらはぎ
+		PARENT = 9					# (親)右もも
+		POS = 0.0 -60.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 11					# 右足
+		PARENT = 10					# (親)右ふくらはぎ
+		POS = 0.0 -80.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 12					# 左もも
+		PARENT = 0					# (親)腰
+		POS = 23.0 -28.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 13					# 左ふくらはぎ
+		PARENT = 12					# (親)左もも
+		POS = 0.0 -60.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 14					# 左足
+		PARENT = 13					# (親)左ふくらはぎ
+		POS = 0.0 -80.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+END_CHARACTERSET
+
+#---------------------------------------
+# [12] タジャドルの上半身
+#---------------------------------------
+CHARACTERSET
+	TYPE = 12
+
+	PARTSSET
+		INDEX = 2					# 頭
+		PARENT = 1					# (親)上半身
+		POS = 0.0 80.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 3					# 右上腕
+		PARENT = 1					# (親)腹
+		POS = -30.0 65.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 4					# 右前腕
+		PARENT = 3					# (親)右上腕
+		POS = -10.0 0.0 .0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 5					# 右手
+		PARENT = 4					# (親)右前腕
+		POS = -40.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 6					# 左上腕
+		PARENT = 1					# (親)腹
+		POS = 30.0 65.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 7					# 左前腕
+		PARENT = 6					# (親)左上腕
+		POS = 10.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 8					# 左手
+		PARENT = 7					# (親)左前腕
+		POS = 40.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+
+	PARTSSET
+		INDEX = 15					# 武器
+		PARENT = 5					# (親)右上腕
+		POS = -55.0 0.0 5.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+END_CHARACTERSET
+
+#---------------------------------------
+# [13] タジャドルの下半身
+#---------------------------------------
+CHARACTERSET
+	TYPE = 13
+
+	PARTSSET
+		INDEX = 0					# 腰
+		PARENT = -1					# (親)NULL
+		POS = 0.0 173.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 1					# 腹
+		PARENT = 0					# (親)腰
+		POS = 0.0 0.0 2.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	PARTSSET
+		INDEX = 9					# 右もも
+		PARENT = 0					# (親)腰
+		POS = -15.0 -30.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 10					# 右ふくらはぎ
+		PARENT = 9					# (親)右もも
+		POS = 0.0 -60.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 11					# 右足
+		PARENT = 10					# (親)右ふくらはぎ
+		POS = 0.0 -65.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 12					# 左もも
+		PARENT = 0					# (親)腰
+		POS = 15.0 -30.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 13					# 左ふくらはぎ
+		PARENT = 12					# (親)左もも
+		POS = 0.0 -60.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 14					# 左足
+		PARENT = 13					# (親)左ふくらはぎ
+		POS = 0.0 -65.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+END_CHARACTERSET
+
 END_SCRIPT		# この行は絶対消さないこと！

@@ -882,6 +882,9 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         }
         else
         {
+            // ワープ音
+            CManager::SoundPlay(CSound::LABEL_SE_WARP);
+
             // ワープエフェクト
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
@@ -908,6 +911,9 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         }
         else
         {
+            // ワープ音
+            CManager::SoundPlay(CSound::LABEL_SE_WARP);
+
             // ワープエフェクト
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
@@ -934,6 +940,9 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         }
         else
         {
+            // ワープ音
+            CManager::SoundPlay(CSound::LABEL_SE_WARP);
+
             // ワープエフェクト
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
@@ -960,6 +969,9 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         }
         else
         {
+            // ワープ音
+            CManager::SoundPlay(CSound::LABEL_SE_WARP);
+
             // ワープエフェクト
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
             CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);

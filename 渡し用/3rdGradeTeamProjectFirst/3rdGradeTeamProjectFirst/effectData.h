@@ -82,6 +82,13 @@ public:
         TYPE_WALL_HIT_SMOKE,        // 壁バウンド煙
         TYPE_WALL_HIT_SHOCK,        // 壁バウンド衝撃波
         TYPE_ABSORB,                // 立ち上がり吸収
+        TYPE_READY_TO_FIGHT1,       // 準備完了1
+        TYPE_READY_TO_FIGHT2,       // 準備完了2
+        TYPE_READY_TO_FIGHT3,       // 準備完了3
+        TYPE_READY_TO_FIGHT4,       // 準備完了4
+        TYPE_CHARGE_SWING_LEFT,     // チャージスイングエフェクト左
+        TYPE_CHARGE_SWING_RIGHT,    // チャージスイングエフェクト右
+        TYPE_CHARGE_LIGHT,          // チャージ時の光
     }TYPE;  // 生成するエフェクトの種類
 
     typedef enum

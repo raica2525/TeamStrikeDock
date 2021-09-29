@@ -48,6 +48,7 @@
 #define PLAYER_DEATH_STOP_FRAME 45                          // 死亡時に、止まるフレーム数
 #define PLAYER_SET_WALK_SMOKE_VALUE 6.0f                    // プレイヤーが砂煙を発生させる値
 #define PLAYER_WEAPON_LOOK_FRAME 250                        // カスタマイズ画面で武器を見るフレーム数
+#define PLAYER_VICTORY_WAIT_START_FRAME 120                 // リザルト画面で待機状態になるフレーム数
 
 // プレイヤーの防御周り
 #define PLAYER_MAX_STOCK 6                                  // ストックの最大数
@@ -84,6 +85,7 @@
 // その他
 #define ATTACK_SWING_CHARGE_MAX_FRAME_NORMAL 35            // チャージ最大フレーム数（通常）
 #define ATTACK_SWING_CHARGE_MAX_FRAME_FAST 20              // チャージ最大フレーム数（溜め短縮）
+#define ATTACK_SWING_CHARGE_EMIT_EFFECT_FRAME 10           // チャージエフェクト発生フレーム
 #define ATTACK_SWING_CHARGE_ATTACK_RATE 0.03f              // チャージ時間によるパワー増加割合 (最大チャージはスマッシュと同じ)
 #define STICK_SWING_UP(angle) angle < D3DXToRadian(75.0f) && angle > D3DXToRadian(-75.0f)
 #define STICK_SWING_DOWN(angle) angle >= D3DXToRadian(105.0f) && angle <= D3DXToRadian(180.0f) || angle <= D3DXToRadian(-105.0f) && angle > D3DXToRadian(-180.0f)
@@ -213,6 +215,7 @@ public:
         ANIM_SECOND,        // 2位
         ANIM_THIRD,         // 3位
         ANIM_FOURTH,        // 4位
+        ANIM_FIRST_WAIT,    // 1位待機
         ANIM_MAX,
     }ANIMATION;
 
@@ -330,6 +333,7 @@ public:
         EX_FLAG_DONT_CATCH = 0x001 << 3,       // キャッチ使用不可
         EX_FLAG_FIRST_HIT_GUARD = 0x001 << 4,  // ファーストヒットガード
         EX_FLAG_TRAIL_GREEN = 0x001 << 5,      // 武器軌跡色:緑
+        EX_FLAG_TRAIL_PURPLE = 0x001 << 6,     // 武器軌跡色:紫
     }EX_FLAG;
 
     // 必殺技（SPショット）の種類

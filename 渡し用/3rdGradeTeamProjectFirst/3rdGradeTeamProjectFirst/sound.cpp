@@ -59,6 +59,7 @@ CSound::PARAM CSound::m_aParam[LABEL_MAX] =
 	{ "data/SOUND/VOICE/X_SP.wav", 0 , CATEGORY_SE },
     { "data/SOUND/SE/wing.wav", 0 , CATEGORY_SE },
     { "data/SOUND/SE/ok.wav", 0 , CATEGORY_SE },
+    { "data/SOUND/BGM/result.wav", XAUDIO2_LOOP_INFINITE , CATEGORY_BGM },	// ƒŠƒUƒ‹ƒgBGM
 };
 
 //=============================================================================
