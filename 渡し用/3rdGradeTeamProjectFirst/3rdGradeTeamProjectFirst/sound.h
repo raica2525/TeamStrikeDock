@@ -36,6 +36,21 @@ public:
         LABEL_SE_BALL_DISPING,  // ボール配置音
         LABEL_SE_JUMP,          // ジャンプ音
         LABEL_SE_HIT_ULTRA,     // ウルトラヒット音
+		LABEL_SE_SELECT,		// 決定音
+		LABEL_SE_CUSTOM,		// カスタマイズ変更音
+		LABEL_SE_CANCEL,		// キャンセル音
+		LABEL_SE_ENTRY,			// エントリー音
+		LABEL_SE_READY,			// READYボタン出現音
+		LABEL_SE_HEAL,			// 回復音
+		LABEL_SE_INFO,			// 詳細が出る時の音
+		LABEL_SE_CURSOLON,		// ボタンにカーソルが乗った時の音
+		LABEL_SE_WARP,			// ボールワープ音
+		LABEL_SE_SKILL,			// 必殺技発動音
+		LABEL_BGM_TITLE,		// タイトルBGM
+		LABEL_BGM_MENU,			// メニュー&カスタマイズBGM
+		LABEL_BGM_BATTLE00,		// バトルBGM00
+		LABEL_BGM_BATTLE01,		// バトルBGM01
+		LABEL_BGM_BATLLE02,		// バトルBGM02
         LABEL_MAX,
     } LABEL;
 

@@ -530,6 +530,7 @@ private:
     int m_nNumWep;                           // 武器のモデル番号
     int m_nCntStopRedLifeTime;               // 赤ゲージ停止時間のカウンタ
     RANK m_rank;                             // 順位
+    D3DXVECTOR3 m_hipPosOld;                 // 1F前の腰の位置
 
     //===================================    
     // 特殊能力対応周り                      

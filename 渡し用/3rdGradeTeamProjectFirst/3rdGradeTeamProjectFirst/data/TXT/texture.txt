@@ -838,4 +838,29 @@ TEXTURESET
     NAME = data/TEXTURE/101_result_header2.png
 END_TEXTURESET
 
+#---------------------------------------
+# [102] 急降下の光
+#---------------------------------------
+TEXTURESET
+    TYPE = 102
+    NAME = data/TEXTURE/102_suddenfalllight.png
+END_TEXTURESET
+
+#---------------------------------------
+# [103] 翼
+#---------------------------------------
+TEXTURESET
+    TYPE = 103
+    NAME = data/TEXTURE/103_feather.png
+END_TEXTURESET
+
+#---------------------------------------
+# [104] キラキラ
+#---------------------------------------
+TEXTURESET
+    TYPE = 104
+    NAME = data/TEXTURE/104_kirakira.png
+END_TEXTURESET
+
+
 END_SCRIPT		# この行は絶対消さないこと！

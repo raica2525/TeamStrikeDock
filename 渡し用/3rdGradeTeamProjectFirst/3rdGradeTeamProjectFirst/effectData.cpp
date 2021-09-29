@@ -165,16 +165,7 @@ HRESULT CEffectData::Init(void)
                         }
                         else if (strcmp(cHeadText, "ROT_LAY") == 0)
                         {
-                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &nBool);
-
-                            if (nBool == 0)
-                            {
-                                m_aCreateInfo[nNumType].bLayRot = false;
-                            }
-                            else
-                            {
-                                m_aCreateInfo[nNumType].bLayRot = true;
-                            }
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &m_aCreateInfo[nNumType].nLayRot);
                         }
                         else if (strcmp(cHeadText, "ROT_EQUAL_MOVE") == 0)
                         {

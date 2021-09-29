@@ -19,11 +19,12 @@
 #define EFFECT_PI 314                   // 円の表現の際に使う値（これをエフェクトの浮動小数点で割る）
 #define EFFECT_FLOATING_POINT 100.0f    // エフェクトの浮動小数点
 
-// ブロック等に当たった際、板ポリのエフェクトを置くための回転量
-#define LAY_ROT_TOP D3DXVECTOR3(D3DXToRadian(90.0f), 0.0f, 0.0f)
-#define LAY_ROT_LEFT D3DXVECTOR3(0.0f, D3DXToRadian(90.0f), 0.0f)
+// ブロック等に当たった際、板ポリのエフェクトを置くための回転量（ブロックの中から見ているので注意）
+#define LAY_ROT_TOP D3DXVECTOR3(D3DXToRadian(-90.0f), 0.0f, 0.0f)    // 天井
+#define LAY_ROT_LEFT D3DXVECTOR3(0.0f, D3DXToRadian(270.0f), 0.0f)  // 左壁
+#define LAY_ROT_BOT D3DXVECTOR3(D3DXToRadian(90.0f), 0.0f, 0.0f)    // 地面
+#define LAY_ROT_RIGHT D3DXVECTOR3(0.0f, D3DXToRadian(90.0f), 0.0f)  // 右壁
 #define LAY_ROT_BACK D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f)
-#define LAY_ROT_RIGHT D3DXVECTOR3(0.0f, D3DXToRadian(270.0f), 0.0f)
 #define LAY_ROT_FRONT D3DXVECTOR3(0.0f, 0.0f, D3DXToRadian(0.0001f))
 
 #define MAX_EFFECT_TYPE 64
@@ -68,6 +69,19 @@ public:
         TYPE_TITLE_FIRE_BLUE,       // タイトルの青い炎
         TYPE_KIRA,                  // カーソルクリック時のキラキラ
         TYPE_SHADOW,                // 影
+        TYPE_WARP_SPLASH,           // ワープ時の飛沫
+        TYPE_WARP_SPLASH2,          // ワープ時の飛沫2
+        TYPE_WARP_UP,               // ワープ上
+        TYPE_WARP_DOWN,             // ワープ下
+        TYPE_WARP_RIGHT,            // ワープ右
+        TYPE_WARP_LEFT,             // ワープ左
+        TYPE_DIVING,                // 急降下
+        TYPE_BLOWN,                 // 吹っ飛ばされた時
+        TYPE_RED_WING,              // 赤い翼
+        TYPE_BLUE_WING,             // 青い翼
+        TYPE_WALL_HIT_SMOKE,        // 壁バウンド煙
+        TYPE_WALL_HIT_SHOCK,        // 壁バウンド衝撃波
+        TYPE_ABSORB,                // 立ち上がり吸収
     }TYPE;  // 生成するエフェクトの種類
 
     typedef enum
@@ -95,7 +109,7 @@ public:
         float fGravity;               // 重力
         float fGravityLimit;          // 重力制限
 
-        bool bLayRot;                 // ポリゴンそのものを横にするかどうか（trueならビルボード解除）
+        int nLayRot;                  // ポリゴンそのものを横にするかどうか（1下、2左、3上、4右）
         bool bRotEqualMoveAngle;      // 回転を移動の向きに合わせるか
         int nRotSpeedMax;             // 最大回転速度
         int nRotSpeedMin;             // 最小回転速度
