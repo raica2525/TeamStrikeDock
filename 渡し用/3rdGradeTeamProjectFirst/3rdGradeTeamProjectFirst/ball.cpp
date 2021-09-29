@@ -875,15 +875,25 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
     {
     case HIT_WALL_RIGHT:
         // ウォールスルーするかどうか
+        returnPos.x = mapLimit.fWidth - (BALL_COLLISION_SIZE_SIDE / 2);
         if (m_nCntWallThrough <= 0)
         {
-            returnPos.x = mapLimit.fWidth - (BALL_COLLISION_SIZE_SIDE / 2);
             m_moveAngle.x *= -1;
         }
         else
         {
+            // ワープエフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_RIGHT, returnPos);
+
             m_nCntWallThrough--;
             returnPos.x = -mapLimit.fWidth + (BALL_COLLISION_SIZE_SIDE / 2);
+
+            // ワープ先エフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_LEFT, returnPos);
 
             // ウォールスルーしたなら、前の位置も合わせる
             m_posOld.x = -mapLimit.fWidth + (BALL_COLLISION_SIZE_SIDE / 2);
@@ -891,15 +901,25 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         break;
     case HIT_WALL_LEFT:
         // ウォールスルーするかどうか
+        returnPos.x = -mapLimit.fWidth + (BALL_COLLISION_SIZE_SIDE / 2);
         if (m_nCntWallThrough <= 0)
         {
-            returnPos.x = -mapLimit.fWidth + (BALL_COLLISION_SIZE_SIDE / 2);
             m_moveAngle.x *= -1;
         }
         else
         {
+            // ワープエフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_LEFT, returnPos);
+
             m_nCntWallThrough--;
             returnPos.x = mapLimit.fWidth - (BALL_COLLISION_SIZE_SIDE / 2);
+
+            // ワープ先エフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_RIGHT, returnPos);
 
             // ウォールスルーしたなら、前の位置も合わせる
             m_posOld.x = mapLimit.fWidth - (BALL_COLLISION_SIZE_SIDE / 2);
@@ -907,15 +927,25 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         break;
     case HIT_WALL_UP:
         // ウォールスルーするかどうか
+        returnPos.y = mapLimit.fHeight - (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
         if (m_nCntWallThrough <= 0)
         {
-            returnPos.y = mapLimit.fHeight - (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
             m_moveAngle.y *= -1;
         }
         else
         {
+            // ワープエフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_UP, returnPos);
+
             m_nCntWallThrough--;
             returnPos.y = (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
+
+            // ワープ先エフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_DOWN, returnPos);
 
             // ウォールスルーしたなら、前の位置も合わせる
             m_posOld.y = (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
@@ -923,15 +953,25 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
         break;
     case HIT_WALL_DOWN:
         // ウォールスルーするかどうか
+        returnPos.y = (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
         if (m_nCntWallThrough <= 0)
         {
-            returnPos.y = (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
             m_moveAngle.y *= -1;
         }
         else
         {
+            // ワープエフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_DOWN, returnPos);
+
             m_nCntWallThrough--;
             returnPos.y = mapLimit.fHeight - (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
+
+            // ワープ先エフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WARP_SPLASH2, returnPos, m_posOld);
+            CEffect3D::Create(CEffectData::TYPE_WARP_UP, returnPos);
 
             // ウォールスルーしたなら、前の位置も合わせる
             m_posOld.y = mapLimit.fHeight - (BALL_COLLISION_SIZE_SIDE / 2) - BALL_COLLISION_POS_SLIDE_Y;
@@ -980,6 +1020,10 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
 
             // バントボール以外なら、壁に当たった時にわずかに硬直する
             m_nCntCurrentStopTime = BALL_SHOOT_STOP_REFRECT_FRAME;
+
+            // 壁ヒットエフェクト
+            CEffect3D::Emit(CEffectData::TYPE_WALL_HIT_SMOKE, returnPos, m_posOld);
+            CEffect3D::Emit(CEffectData::TYPE_WALL_HIT_SHOCK, returnPos, m_posOld);
         }
     }
 

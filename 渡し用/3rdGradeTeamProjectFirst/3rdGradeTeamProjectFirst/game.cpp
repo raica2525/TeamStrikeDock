@@ -300,17 +300,6 @@ void CGame::ManageState(void)
 //=============================================================================
 void CGame::RoundStart(void)
 {
-    // 反転合成を止める
-    if (m_pEffect2d_Nega && m_pEffect2d_Posi)
-    {
-        m_pEffect2d_Nega->SetSize(DEFAULT_VECTOR);
-        m_pEffect2d_Posi->SetSize(DEFAULT_VECTOR);
-        m_pEffect2d_Nega->SetUseUpdate(false);
-        m_pEffect2d_Posi->SetUseUpdate(false);
-        m_pEffect2d_Nega->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
-        m_pEffect2d_Posi->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
-    }
-
     // リスポーン処理
     for (int nCntPlayer = 0; nCntPlayer < m_nNumAllPlayer; nCntPlayer++)
     {
@@ -449,6 +438,17 @@ void CGame::JudgmentFinish(void)
     {
         // カウンタをリセット
         m_nCntGameTime = 0;
+
+        // 反転合成を、念のため止める（AIつよい同士で戦わせた際、反転合成が戻らないままゲームが進行したため）（←打ち始め1Fに当たったから?）
+        if (m_pEffect2d_Nega && m_pEffect2d_Posi)
+        {
+            m_pEffect2d_Nega->SetSize(DEFAULT_VECTOR);
+            m_pEffect2d_Posi->SetSize(DEFAULT_VECTOR);
+            m_pEffect2d_Nega->SetUseUpdate(false);
+            m_pEffect2d_Posi->SetUseUpdate(false);
+            m_pEffect2d_Nega->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
+            m_pEffect2d_Posi->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
+        }
 
         // 死んだプレイヤーが全体のプレイヤー-1に達したら
         if (m_nNumDeathPlayer >= m_nNumAllPlayer - 1)

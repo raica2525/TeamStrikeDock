@@ -424,9 +424,20 @@ CEffect3D* CEffect3D::Create(const int nType, D3DXVECTOR3 pos, float fScatterAng
 
         // ビルボードへ設定を反映
         D3DXVECTOR3 rot = DEFAULT_VECTOR;
-        if (pCreateInfo->bLayRot)
+        switch (pCreateInfo->nLayRot)
         {
+        case 1:
+            rot = LAY_ROT_BOT;
+            break;
+        case 2:
+            rot = LAY_ROT_LEFT;
+            break;
+        case 3:
             rot = LAY_ROT_TOP;
+            break;
+        case 4:
+            rot = LAY_ROT_RIGHT;
+            break;
         }
         pEffect3D->CBillboard::SetRot(rot);
         pEffect3D->CBillboard::SetColorVertex(pCreateInfo->col);

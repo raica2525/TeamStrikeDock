@@ -21,6 +21,7 @@
 CTitle::CTitle()
 {
     m_nCntTime = 0;
+    m_bEmitWingEffect = true;
 }
 
 //=============================================================================
@@ -82,6 +83,14 @@ void CTitle::Update(void)
     {
         // カウンタストップ
         m_nCntTime = TITLE_SHOW_TIME;
+
+        // 翼エフェクトを放出
+        if (m_bEmitWingEffect)
+        {
+            m_bEmitWingEffect = false;
+            CEffect2D::Emit(CEffectData::TYPE_RED_WING, D3DXVECTOR3(640.0f, 160.0f,0.0f), D3DXVECTOR3(640.0f, 360.0f, 0.0f));
+            CEffect2D::Emit(CEffectData::TYPE_BLUE_WING, D3DXVECTOR3(640.0f, 160.0f, 0.0f), D3DXVECTOR3(640.0f, 360.0f, 0.0f));
+        }
 
         // プレスボタンのUIを出現させる
         CUI *pPressButton = CUI::GetAccessUI(0);

@@ -148,6 +148,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_nNumWep = 0;
     m_nCntStopRedLifeTime = 0;
     m_rank = RANK_1;
+    m_hipPosOld = DEFAULT_VECTOR;
 
     //===================================
     // 特殊能力対応周り
@@ -605,6 +606,9 @@ void CPlayer::Input(void)
 //=============================================================================
 void CPlayer::Update(void)
 {
+    // 1F前の腰の位置を記憶
+    m_hipPosOld = GetPartsPos(PARTS_HIP);
+
     // 赤ゲージのカウントダウン
     if (m_nCntStopRedLifeTime > 0)
     {
@@ -750,6 +754,19 @@ void CPlayer::Update(void)
     {
         // マネキンモードの更新
         UpdateMannequin();
+    }
+
+    // 吹っ飛ばされエフェクトは、画面内で吹っ飛ばされているなら出す
+    if (m_damageState == DAMAGE_STATE_BLOWN)
+    {
+        if (m_nCntStopTime <= 0)
+        {
+            D3DXVECTOR3 hipPos = GetPartsPos(PARTS_HIP);
+            if (hipPos.y > -500.0f)
+            {
+                CEffect3D::Emit(CEffectData::TYPE_BLOWN, hipPos, m_hipPosOld);
+            }
+        }
     }
 }
 
@@ -2291,7 +2308,13 @@ void CPlayer::Jump(void)
                     // ジャンプを押していないなら成功
                     if (m_nCntPressJump <= 0)
                     {
-                        m_bDiving = true;
+                        // 地面にいないなら
+                        if (!m_bGround)
+                        {
+                            D3DXVECTOR3 headPos = GetPartsPos(PARTS_HEAD);
+                            CEffect3D::Create(CEffectData::TYPE_DIVING, headPos);
+                            m_bDiving = true;
+                        }
                     }
                     else
                     {
@@ -3183,6 +3206,10 @@ void CPlayer::DamageUpdate(D3DXVECTOR3 pos)
             }
             else if (m_controlInput.bTriggerX)
             {
+                // 吸収エフェクト
+                CEffect3D::Emit(CEffectData::TYPE_ABSORB, pos + D3DXVECTOR3(0.0f, m_collisionSizeDeffence.y / 2, 0.0f),
+                    pos + D3DXVECTOR3(0.0f, m_collisionSizeDeffence.y / 2, 0.0f), m_collisionSizeDeffence.y);
+
                 // ダメージ状態のリセット
                 m_damageState = DAMAGE_STATE_NONE;
                 m_nCntTakeDamageTime = 0;

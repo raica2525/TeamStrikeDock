@@ -47,7 +47,8 @@ public:
     void EmitFire(FIRE_POS firePos);
 
 private:
-    int m_nCntTime;     // スタートを押すまでの時間
+    int m_nCntTime;           // スタートを押すまでの時間
+    bool m_bEmitWingEffect;   // 翼エフェクトを放出するか
 };
 
 #endif
