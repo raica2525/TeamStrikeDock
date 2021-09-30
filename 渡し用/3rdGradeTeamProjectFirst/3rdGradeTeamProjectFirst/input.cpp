@@ -300,7 +300,7 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
     CInput::Init(hInstance, hWnd);
 
     // コントローラーを探す
-    hr = m_pInput->EnumDevices(DI8DEVCLASS_GAMECTRL, (LPDIENUMDEVICESCALLBACK)GetJoystickCallback, this, DIEDFL_FORCEFEEDBACK | DIEDFL_ATTACHEDONLY); //すでに接続されていてフォースフィードバック対応しているコントローラーを列挙 //池田変更 
+    hr = m_pInput->EnumDevices(DI8DEVCLASS_GAMECTRL, (LPDIENUMDEVICESCALLBACK)GetJoystickCallback, this, DIEDFL_ATTACHEDONLY); //すでに接続されていてフォースフィードバック対応しているコントローラーを列挙 //池田変更 
 
     for (int nCntCntroller = 0; nCntCntroller < m_nCntController; nCntCntroller++)
     {

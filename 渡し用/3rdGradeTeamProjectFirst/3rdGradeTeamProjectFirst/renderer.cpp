@@ -17,6 +17,7 @@
 #include "pause.h"
 #include "player.h"
 #include "ball.h"
+#include "camera.h"
 
 //========================================
 // 静的メンバ変数宣言
@@ -244,9 +245,17 @@ void CRenderer::Draw(void)
             }
             else if (nCount == 1)
             {
-                // 波を先に描画してから、普段の描画
-                CScene::DrawWave();
-                CScene::DrawExceptWave();
+                // 決着の一撃中なら
+                if (CManager::GetCamera()->CCamera::GetState() == CCamera::STATE_FINISH_EACH)
+                {
+                    CScene::DrawInBlowMoment();
+                }
+                else
+                {
+                    // 波を先に描画してから、普段の描画
+                    CScene::DrawWave();
+                    CScene::DrawExceptWave();
+                }
 
                 // ゲーム中かつ、ポーズ中なら
                 if (CManager::GetMode() == CManager::MODE_GAME)

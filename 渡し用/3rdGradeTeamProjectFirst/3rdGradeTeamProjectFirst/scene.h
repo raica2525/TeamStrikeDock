@@ -58,6 +58,7 @@ public:
     static void DrawExceptWaveAndUI(void);                                              // 波とUI以外を描画
     static void DrawWave(void);                                                         // 波を描画
     static void DrawPlayer(void);                                                       // プレイヤーを描画
+    static void DrawInBlowMoment(void);                                                 // 決着の一撃時の描画
     static void QuickSort(CScene*apScene[], int left, int right);                       // クイックソート
     static void ReleaseAll(void);                                                       // 全て開放
 #ifdef _DEBUG

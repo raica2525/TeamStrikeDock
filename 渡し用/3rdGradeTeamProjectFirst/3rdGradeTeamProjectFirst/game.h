@@ -48,7 +48,8 @@ public:
     {
         STATE_ROUND_START = 0,     // 開始
         STATE_BUTTLE,              // バトル中
-        STATE_FINISH,              // 決着中
+        STATE_BLOW_MOMENT,         // 一撃の瞬間
+        STATE_FINISH,              // 決着
         STATE_PAUSE_MENU,	       // ポーズメニュー
         STATE_MAX			       // 状態の最大数
     }STATE;
@@ -80,6 +81,7 @@ public:
     void ManageState(void);     // ゲーム状態の管理
     void RoundStart(void);      // ラウンド開始
     void InButtle(void);        // バトル中
+    void BlowMoment(void);      // 一撃の瞬間
     void JudgmentFinish(void);  // 勝敗判定
 
     /*========================================================
@@ -95,12 +97,21 @@ public:
     }   // カスタマイズ画面で、次のゲームを設定
     static void SetIdxPlayer(int nNum, int nIdxPlayer) { m_anMemoryIdxPlayer[nNum] = nIdxPlayer; }  // プレイヤーのインデックス
     static void SetAILevel(int nNum, CPlayer::AI_LEVEL level) { m_aMemoryAILevel[nNum] = level; }   // AIレベル
-    static void SetAddNumDefeatPlayer(void) { m_nNumDefeatPlayer++; }                       // やられたプレイヤー人数を増やす
+    static void SetAddNumDefeatPlayer(int nIdxPlayer) { SetPlayerRankInThisRound(nIdxPlayer); m_nNumDefeatPlayer++; }                       // やられたプレイヤー人数を増やす
     static void SetWorstPlayer(int player) { m_nWhoWorstPlayer = player; }                  // ワーストのプレイヤーを決める
-    static void SetAddNumDeathPlayer(int nIdxPlayer) { m_anPlayerRank[m_nNumAllPlayer - m_nNumDeathPlayer - 1] = nIdxPlayer; m_nNumDeathPlayer++; } // 死んだプレイヤー番号を記憶し、カウント
+    static void SetAddNumDeathPlayer(int nIdxPlayer) { SetPlayerRankInThisRound(nIdxPlayer); m_anPlayerRank[m_nNumAllPlayer - m_nNumDeathPlayer - 1] = nIdxPlayer; m_nNumDeathPlayer++; } // 死んだプレイヤー番号を記憶し、カウント
     static void SetQuitPause(void) { m_state = STATE_BUTTLE; m_bStopObjUpdate = false; }    // ポーズ状態をやめる
     static void SetStock(int nStock) { m_nNumStock = nStock; }
     static void SetUseKeyboard(bool bUseKeyboard) { m_bUseKeyboard = bUseKeyboard; }
+    static void SetPlayerRankInThisRound(int nIdxPlayer)
+    { 
+        int nRank = GetNumCurrentDispPlayer() - 1;
+        if (nRank < CPlayer::RANK_1)
+        {
+            nRank = CPlayer::RANK_2;    // 念のため、不正な配列を参照しないようにする
+        }
+        m_anPlayerRankInThisRound[nRank] = nIdxPlayer;
+    }
 
     /*========================================================
     // ゲッター
@@ -122,6 +133,7 @@ public:
     static bool GetUseKeyboard(void) { return m_bUseKeyboard; }                     // キーボードを使うかどうか取得
     static int GetStock(void) { return m_nNumStock; }                               // ストック数を取得
     static int GetPlayerRank(int nIdx) { return m_anPlayerRank[nIdx]; }             // プレイヤーの順位を取得
+    static int GetPlayerRankInThisRound(int nIdx) { return m_anPlayerRankInThisRound[nIdx]; }  // 現ラウンドのプレイヤーの順位を取得
 
     /*========================================================
     // 便利な関数
@@ -137,6 +149,7 @@ private:
     static bool m_bStopObjUpdate;                          // オブジェクトのアップデートを止めるかどうか
     static CPlayer *m_apPlayer[MAX_PLAYER];                // プレイヤーのポインタ
     static int m_anPlayerRank[MAX_PLAYER];                 // プレイヤーのランキング（配列の若い順から1位、2位、、、）
+    static int m_anPlayerRankInThisRound[MAX_PLAYER];      // このラウンド内のプレイヤーのランキング（配列の若い順から1位、2位、、、）
     static CBall *m_pBall;                                 // ボールのポインタ
     static CPause *m_pPause;                               // ポーズのポインタ
     static CEffect2D *m_pEffect2d_Nega;                    // 反転合成へのポインタ

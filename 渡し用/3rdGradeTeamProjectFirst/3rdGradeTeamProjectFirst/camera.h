@@ -22,11 +22,11 @@
 #define CAMERA_LOCK_ON_POS_ADJUST D3DXVECTOR3(0.0f, 400.0f, -1000.0f)
 #define CAMERA_LOCK_ON_OFFSET -750.0f
 
-// 失敗時のカメラの位置微調整
-#define CAMERA_FAILD_POS_ADJUST D3DXVECTOR3(0.0f, 200.0f, 0.0f)
-#define CAMERA_FAILD_OFFSET -600.0f
-#define CAMERA_FAILD_HEIGHT D3DXToRadian(75.0f)
-#define CAMERA_FAILD_ROT_SPEED D3DXToRadian(1.0f)
+// 決着時のカメラの位置微調整
+#define CAMERA_FINISH_NEXT_PLAYER_FRAME 90
+#define CAMERA_FINISH_ROT_SPEED D3DXToRadian(2.0f)
+//#define CAMERA_FINISH_OFFSET -600.0f
+//#define CAMERA_FINISH_HEIGHT D3DXToRadian(75.0f)
 
 // カメラの移動速度
 #define CAMERA_MOVE_RATE 0.1f                                     // カメラの補間値
@@ -50,8 +50,8 @@ public:
     typedef enum
     {
         STATE_NONE = 0,         // なし
+        STATE_OUT_GAME,         // アウトゲーム
         STATE_BUTTLE,           // バトル中
-        STATE_FINISH_ROTATION,  // 決着時の回転
         STATE_FINISH_EACH,      // 決着時の各自注視
     }STATE;
 

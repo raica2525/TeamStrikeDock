@@ -34,6 +34,7 @@
 //========================================
 
 // ゲーム状態の管理フレーム
+#define BLOW_MOMENT_FRAME 180   // 一撃の瞬間フレーム数
 #define FINISH_WAIT_FRAME 240   // 決着時に、待つフレーム数
 #define CREATE_POS_Y_RATE 0.8f  // ボールの発生位置Yの割合
 
@@ -44,6 +45,7 @@ bool CGame::m_bStopObjUpdate = false;
 
 CPlayer *CGame::m_apPlayer[] = {};
 int CGame::m_anPlayerRank[] = {};
+int CGame::m_anPlayerRankInThisRound[] = {};
 CBall *CGame::m_pBall = NULL;
 CPause *CGame::m_pPause = NULL;
 CEffect2D *CGame::m_pEffect2d_Nega = NULL;
@@ -73,6 +75,7 @@ CGame::CGame()
 
     memset(m_apPlayer, 0, sizeof(m_apPlayer));
     memset(m_anPlayerRank, 0, sizeof(m_anPlayerRank));
+    memset(m_anPlayerRankInThisRound, 0, sizeof(m_anPlayerRankInThisRound));
     m_pBall = NULL;
     m_pPause = NULL;
     m_pEffect2d_Nega = NULL;
@@ -277,31 +280,28 @@ void CGame::ManageState(void)
     switch (m_state)
     {
     case STATE_ROUND_START:
-
         // ラウンド開始
         RoundStart();
-
         break;
 
     case STATE_BUTTLE:
-
         // バトル中
         InButtle();
+        break;
 
+    case STATE_BLOW_MOMENT:
+        // 一撃の瞬間
+        BlowMoment();
         break;
 
     case STATE_FINISH:
-
         // 勝敗判定
         JudgmentFinish();
-
         break;
 
     case STATE_PAUSE_MENU:
-
         // ポーズの更新
         m_pPause->Update();
-
         break;
     }
 }
@@ -376,19 +376,27 @@ void CGame::InButtle(void)
                 if (m_apPlayer[nCntPlayer]->GetDisp())
                 {
                     m_anPlayerRank[CPlayer::RANK_1] = m_apPlayer[nCntPlayer]->GetIdxControlAndColor();
+                    m_anPlayerRankInThisRound[CPlayer::RANK_1] = m_apPlayer[nCntPlayer]->GetIdxControlAndColor();
                 }
             }
 
-            // フィニッシュへ
-            m_state = STATE_FINISH;
+            // 一撃の瞬間へ
+            m_state = STATE_BLOW_MOMENT;
 
-            // ボールは消しておく
-            m_pBall->SetDispOff();
+            // 更新を止めておく
+            m_bStopObjUpdate = true;
+
+            // 勝者と敗者の注視へ
+            CManager::GetCamera()->SetState(CCamera::STATE_FINISH_EACH);
+
+            // このフレームはポーズをさせないため、関数を抜ける
+            return;
         }
         break;
     }
 
-    // 定義
+    //================================================================================
+    // ポーズ処理
     const int NO_PAUSE_PLAYER = -1; // 誰もポーズを押していない
 
     // 変数宣言
@@ -434,6 +442,36 @@ void CGame::InButtle(void)
         // カメラも止める
         CManager::GetCamera()->SetState(CCamera::STATE_NONE);
     }
+    //================================================================================
+}
+
+//=============================================================================
+// 一撃の瞬間
+// Author : 後藤慎之助
+//=============================================================================
+void CGame::BlowMoment(void)
+{
+    // カウンタを加算
+    m_nCntGameTime++;
+
+    // 一定フレームで、勝敗判定
+    if (m_nCntGameTime >= BLOW_MOMENT_FRAME)
+    {
+        // カウンタをリセット
+        m_nCntGameTime = 0;
+
+        // カメラのロックオン場所をリセット
+        CManager::GetCamera()->CCamera::ResetCamera(DEFAULT_VECTOR, CAMERA_DEFAULT_ROT, CCamera::SETTING_GAME);
+
+        // 更新開始
+        m_bStopObjUpdate = false;
+
+        // 勝敗判定へ
+        m_state = STATE_FINISH;
+
+        // ボールは消しておく
+        m_pBall->SetDispOff();
+    }
 }
 
 //=============================================================================
@@ -477,7 +515,7 @@ void CGame::JudgmentFinish(void)
             m_pBall->Reset(D3DXVECTOR3(0.0f, m_mapLimit.fHeight * CREATE_POS_Y_RATE, 0.0f));
             m_pBall->SetAbsorb(m_apPlayer[m_nWhoWorstPlayer]);
 
-            // 仮にもう一度ステージ開始へ
+            // もう一度ラウンド開始へ
             m_state = STATE_ROUND_START;
         }
     }

@@ -249,6 +249,37 @@ void CScene::DrawPlayer(void)
 }
 
 //==============================================
+// 決着の一撃時の描画
+// Author : 後藤慎之助
+//==============================================
+void CScene::DrawInBlowMoment(void)
+{
+    for (int nCnt = 0; nCnt < OBJTYPE_MAX; nCnt++)
+    {
+        // 描画するものなら
+        if (nCnt == OBJTYPE_BALL || nCnt == OBJTYPE_PLAYER)
+        {
+            // 先頭、最新のものがあるなら
+            if (m_apTop[nCnt] != NULL && m_apCur[nCnt] != NULL)
+            {
+                // 記憶用の変数
+                CScene*pScene = m_apTop[nCnt];
+
+                do
+                {
+                    // 描画処理
+                    pScene->Draw();
+
+                    // 次のシーンに変えていく
+                    pScene = pScene->m_pNext;
+
+                } while (pScene != NULL);
+            }
+        }
+    }
+}
+
+//==============================================
 // クイックソート
 // Author : 後藤慎之助
 //==============================================

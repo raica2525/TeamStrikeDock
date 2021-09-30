@@ -1969,7 +1969,7 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
                 }
 
                 // やられたプレイヤー人数を増やす
-                CGame::SetAddNumDefeatPlayer();
+                CGame::SetAddNumDefeatPlayer(m_nIdxControlAndColor);
             }
             else
             {

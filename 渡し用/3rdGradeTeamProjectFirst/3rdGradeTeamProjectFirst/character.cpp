@@ -20,6 +20,7 @@
 #include "game.h"
 #include "player.h"
 #include "modelData.h"
+#include "camera.h"
 
 //========================================
 // 静的メンバ変数宣言
@@ -181,9 +182,13 @@ void CCharacter::Draw(void)
 //=============================================================================
 void CCharacter::DeathDraw(void)
 {
-    // Zバッファを無効化
-    LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-    pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+    // 決着の一撃中以外なら
+    if (CManager::GetCamera()->CCamera::GetState() != CCamera::STATE_FINISH_EACH)
+    {
+        // Zバッファを無効化
+        LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+        pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+    }
 
     // 各パーツを、白くするためのtrue
     for (int nCount = 0; nCount < m_nPartsNum; nCount++)
@@ -198,8 +203,13 @@ void CCharacter::DeathDraw(void)
         }
     }
 
-    // Zバッファを有効化
-    pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+    // 決着の一撃中以外なら
+    if (CManager::GetCamera()->CCamera::GetState() != CCamera::STATE_FINISH_EACH)
+    {
+        // Zバッファを有効化
+        LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+        pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+    }
 }
 
 //=============================================================================
