@@ -34,6 +34,9 @@ void CPlayer::EmitSpShot(void)
         case SP_SHOT_WALL_THROUGH:
             SpWallThrough();
             break;
+		case SP_SHOT_BARRIER:
+			SpBarrier();
+			break;
         default:
 
             break;
@@ -126,4 +129,14 @@ void CPlayer::SpDecoy(void)
 void CPlayer::SpWallThrough(void)
 {
     CGame::GetBall()->SetWallThrough((int)m_afParam[PARAM_7_WEAPON_SP]);
+}
+
+//=============================================================================
+// 必殺技:バリアの処理
+// Author : 池田悠希
+//=============================================================================
+void CPlayer::SpBarrier(void)
+{
+	bSpBarrier = true;
+	//演出を出すならここに追加
 }

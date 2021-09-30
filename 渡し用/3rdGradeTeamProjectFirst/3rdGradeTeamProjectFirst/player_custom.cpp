@@ -218,6 +218,9 @@ void CPlayer::CustomSpName(char* pName)
     case SP_SHOT_WALL_THROUGH:
         wsprintf(pName, "ウォールスルーボール");
         break;
+	case SP_SHOT_BARRIER:
+		wsprintf(pName, "バリア");
+		break;
     default:
         wsprintf(pName, "必殺技はありません");
         break;

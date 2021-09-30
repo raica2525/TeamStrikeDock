@@ -342,6 +342,7 @@ public:
         SP_SHOT_HEAL = 0,       // ヒール（回復）
         SP_SHOT_DECOY,          // ぶんしんボール
         SP_SHOT_WALL_THROUGH,   // ウォールスルー（壁ループ）
+		SP_SHOT_BARRIER			// バリア
     }SP_SHOT;
 
     // 順位
@@ -411,7 +412,7 @@ public:
     void SpHeal(void);
     void SpDecoy(void);
     void SpWallThrough(void);
-
+	void SpBarrier(void);
     /*========================================================
     // セッター
     //======================================================*/
@@ -535,7 +536,7 @@ private:
     int m_nCntStopRedLifeTime;               // 赤ゲージ停止時間のカウンタ
     RANK m_rank;                             // 順位
     D3DXVECTOR3 m_hipPosOld;                 // 1F前の腰の位置
-
+	bool bSpBarrier;						 // 必殺技によるバリアを獲得しているかどうか
     //===================================    
     // 特殊能力対応周り                      
     //===================================    
