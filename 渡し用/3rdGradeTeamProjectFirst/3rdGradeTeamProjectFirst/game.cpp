@@ -37,6 +37,8 @@
 #define BLOW_MOMENT_FRAME 180   // 一撃の瞬間フレーム数
 #define FINISH_WAIT_FRAME 240   // 決着時に、待つフレーム数
 #define CREATE_POS_Y_RATE 0.8f  // ボールの発生位置Yの割合
+#define FADE_IN_TELOP 30        // テロップのフェードイン開始フレーム
+#define FADE_OUT_TELOP 150      // テロップのフェードアウト開始フレーム
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -108,6 +110,7 @@ CGame::CGame()
     m_mapLimit.fWidth = GAME_LIMIT_WIDTH;
 
     m_nCntGameTime = 0;
+    m_bFirestRound = true;
 }
 
 //=============================================================================
@@ -352,6 +355,83 @@ void CGame::RoundStart(void)
 
         // バトル中に
         m_state = STATE_BUTTLE;
+    }
+    else if (m_nCntGameTime == FADE_OUT_TELOP)
+    {
+        if (!m_bFirestRound)
+        {
+            // ネクストラウンド
+            CUI *pTelopBg = CUI::GetAccessUI(4);
+            CUI *pTelop = CUI::GetAccessUI(5);
+            if (pTelopBg)
+            {
+                pTelopBg->SetActionLock(2, false);
+            }
+            if (pTelop)
+            {
+                pTelop->SetActionLock(2, false);
+            }
+        }
+        else
+        {
+            // ファーストラウンドのフラグを切る
+            m_bFirestRound = false;
+
+            // バトルスタート
+            CUI *pTelopBg = CUI::GetAccessUI(2);
+            CUI *pTelop = CUI::GetAccessUI(3);
+            if (pTelopBg)
+            {
+                pTelopBg->SetActionLock(2, false);
+            }
+            if (pTelop)
+            {
+                pTelop->SetActionLock(2, false);
+            }
+        }
+    }
+    else if (m_nCntGameTime == FADE_IN_TELOP)
+    {
+        if (!m_bFirestRound)
+        {
+            // ネクストラウンド
+            CUI *pTelopBg = CUI::GetAccessUI(4);
+            CUI *pTelop = CUI::GetAccessUI(5);
+            if (pTelopBg)
+            {
+                pTelopBg->SetActionReset(0);
+                pTelopBg->SetActionLock(0, false);
+                pTelopBg->SetActionReset(2);
+            }
+            if (pTelop)
+            {
+                pTelop->SetActionReset(0);
+                pTelop->SetActionLock(0, false);
+                pTelop->SetActionReset(1);
+                pTelop->SetActionLock(1, false);
+                pTelop->SetActionReset(2);
+            }
+        }
+        else
+        {
+            // バトルスタート
+            CUI *pTelopBg = CUI::GetAccessUI(2);
+            CUI *pTelop = CUI::GetAccessUI(3);
+            if (pTelopBg)
+            {
+                pTelopBg->SetActionReset(0);
+                pTelopBg->SetActionLock(0, false);
+                pTelopBg->SetActionReset(2);
+            }
+            if (pTelop)
+            {
+                pTelop->SetActionReset(0);
+                pTelop->SetActionLock(0, false);
+                pTelop->SetActionReset(1);
+                pTelop->SetActionLock(1, false);
+                pTelop->SetActionReset(2);
+            }
+        }
     }
 }
 

@@ -50,4 +50,106 @@ UISET
 	LOCK = 0		# bool
 END_UISET
 
+#---------------------------------------
+# [108] バトルスタートの背景
+#---------------------------------------
+UISET
+	ACCESS_NUM = 2
+	TYPE = 108
+	POS = 640.0 300.0
+	SIZE = 0.0 400.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 75.0
+	PARAM2 = 0
+	PARAM3 = 3
+	PARAM5 = 1280.0
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = -0.1
+	PARAM1 = 3
+	PARAM3 = 0.0
+END_UISET
+
+#---------------------------------------
+# [107] バトルスタート
+#---------------------------------------
+UISET
+	ACCESS_NUM = 3
+	TYPE = 107
+	POS = 640.0 300.0
+	SIZE = 1280.0 400.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ACTION0 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 0.05
+	PARAM1 = 1
+	PARAM2 = 21
+	ACTION1 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 40
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 1
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = -0.1
+	PARAM1 = 3
+	PARAM3 = 0.0
+END_UISET
+
+#---------------------------------------
+# [112] ネクストラウンドの背景
+#---------------------------------------
+UISET
+	ACCESS_NUM = 4
+	TYPE = 112
+	POS = 640.0 300.0
+	SIZE = 0.0 140.0
+	COL = 1.0 1.0 1.0 1.0	# 0.0～1.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 75.0
+	PARAM2 = 0
+	PARAM3 = 3
+	PARAM5 = 1280.0
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = -0.1
+	PARAM1 = 3
+	PARAM3 = 0.0
+END_UISET
+
+#---------------------------------------
+# [111] ネクストラウンド
+#---------------------------------------
+UISET
+	ACCESS_NUM = 5
+	TYPE = 111
+	POS = 640.0 300.0
+	SIZE = 1280.0 140.0
+	COL = 1.0 1.0 1.0 0.0	# 0.0～1.0
+	ACTION0 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 0.05
+	PARAM1 = 1
+	PARAM2 = 21
+	ACTION1 = 7		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = 40
+	PARAM1 = 0
+	PARAM2 = 30
+	PARAM3 = 60
+	PARAM4 = 1
+	PARAM5 = 1
+	ACTION2 = 4		# 補助値はこの下に書いていく
+	LOCK = 1		# bool
+	PARAM0 = -0.1
+	PARAM1 = 3
+	PARAM3 = 0.0
+END_UISET
+
 END_SCRIPT		# この行は絶対消さないこと！

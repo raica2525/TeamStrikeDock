@@ -170,6 +170,7 @@ private:
     static RESERVE_SHOOT m_aReserveShoot[MAX_PLAYER];      // シュートの予約
 
     int m_nCntGameTime;                                    // ゲーム時間のカウンタ
+    bool m_bFirestRound;                                   // 最初のラウンドかどうか
 };
 
 #endif

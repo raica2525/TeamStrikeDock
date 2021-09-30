@@ -49,6 +49,7 @@
 #define PLAYER_SET_WALK_SMOKE_VALUE 6.0f                    // プレイヤーが砂煙を発生させる値
 #define PLAYER_WEAPON_LOOK_FRAME 250                        // カスタマイズ画面で武器を見るフレーム数
 #define PLAYER_VICTORY_WAIT_START_FRAME 120                 // リザルト画面で待機状態になるフレーム数
+#define PLAYER_SP_GAUGE_MAX_EFFECT_INTERVAL 30              // SPゲージエフェクトのインターバル
 
 // プレイヤーの防御周り
 #define PLAYER_MAX_STOCK 6                                  // ストックの最大数
@@ -538,6 +539,7 @@ private:
     D3DXVECTOR3 m_hipPosOld;                 // 1F前の腰の位置
 
 	bool m_bSpBarrier;						 // 必殺技によるバリアを獲得しているかどうか
+    int m_nCntSpGaugeMaxTime;                // 必殺ゲージMAX時間
 
     //===================================    
     // 特殊能力対応周り                      

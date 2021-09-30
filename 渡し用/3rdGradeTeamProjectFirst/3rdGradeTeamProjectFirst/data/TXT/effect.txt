@@ -1764,4 +1764,76 @@ EFFECT_DATASET
 	ALPHA_TEST_BORDER = 50
 END_EFFECT_DATASET
 
+#-------------------------------------------------------------
+# [48] 必殺ゲージMAXのときのエフェクト1
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 48
+	TEX_TYPE = 36
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 100
+	SPEED_MIN = 100
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 0.100 0.548 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.010	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 13000
+	SIZE_MIN = 13000
+	SIZE_CHANGE = 0.5 0.5 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
+END_EFFECT_DATASET
+
+#-------------------------------------------------------------
+# [49] 必殺ゲージMAXのときのエフェクト2
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 49
+	TEX_TYPE = 36
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 100
+	SPEED_MIN = 100
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 0.100 0.622 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.010	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 0
+	SIZE_MAX = 15000
+	SIZE_MIN = 15000
+	SIZE_CHANGE = 0.0 0.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 70
+END_EFFECT_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

@@ -881,4 +881,52 @@ TEXTURESET
     SPEED = 3
 END_TEXTURESET
 
+#---------------------------------------
+# [107] バトルスタート
+#---------------------------------------
+TEXTURESET
+    TYPE = 107
+    NAME = data/TEXTURE/107_battlestart.png
+END_TEXTURESET
+
+#---------------------------------------
+# [108] バトルスタート背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 108
+    NAME = data/TEXTURE/108_battlestart_belt.png
+END_TEXTURESET
+
+#---------------------------------------
+# [109] フィニッシュ
+#---------------------------------------
+TEXTURESET
+    TYPE = 109
+    NAME = data/TEXTURE/109_finish.png
+END_TEXTURESET
+
+#---------------------------------------
+# [110] フィニッシュ背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 110
+    NAME = data/TEXTURE/110_finish_belt.png
+END_TEXTURESET
+
+#---------------------------------------
+# [111] 次のラウンド
+#---------------------------------------
+TEXTURESET
+    TYPE = 111
+    NAME = data/TEXTURE/111_nextround.png
+END_TEXTURESET
+
+#---------------------------------------
+# [112] 次のラウンド背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 112
+    NAME = data/TEXTURE/112_nextround_belt.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

@@ -151,6 +151,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_hipPosOld = DEFAULT_VECTOR;
 
 	m_bSpBarrier = false;
+    m_nCntSpGaugeMaxTime = 0;
 
     //===================================
     // 特殊能力対応周り
@@ -1034,6 +1035,21 @@ void CPlayer::UpdateGameUI(void)
     m_pUI_SP->SetSize(spGaugeSize);
     int nDispNumber = (int)((m_fSpGaugeCurrent / m_fSpGaugeMax) * 100.0f);
     m_pNumArray_SP->SetDispNumber(nDispNumber);
+
+    // 必殺ゲージMAXエフェクト
+    if (m_fSpGaugeCurrent >= m_fSpGaugeMax)
+    {
+        m_nCntSpGaugeMaxTime++;
+        if (m_nCntSpGaugeMaxTime > PLAYER_SP_GAUGE_MAX_EFFECT_INTERVAL)
+        {
+            m_nCntSpGaugeMaxTime = 0;
+            D3DXVECTOR3 bodyPos = GetPartsPos(PARTS_BODY);
+            CEffect2D *pSp1 = CEffect2D::Create(CEffectData::TYPE_SP_MAX_1, ConvertScreenPos(bodyPos));
+            pSp1->SetPlayer(this);
+            CEffect2D *pSp2 = CEffect2D::Create(CEffectData::TYPE_SP_MAX_2, ConvertScreenPos(bodyPos));
+            pSp2->SetPlayer(this);
+        }
+    }
 
     // ストックを表示/非表示
     for (int nCnt = 0; nCnt < PLAYER_MAX_STOCK; nCnt++)

@@ -688,6 +688,15 @@ void CCustom::ClickSelect(int nNumWho, CUI* pSelectUI, D3DXVECTOR3 cursorPos)
                     switch (m_aEntryInfo[nParamWho].status)
                     {
                     case ENTRY_STATUS_WAITING:
+                        if (m_aEntryInfo[nParamWho].bUseCursor)
+                        {
+                            nextEntryStatus = ENTRY_STATUS_PLAYER;
+                        }
+                        else
+                        {
+                            nextEntryStatus = ENTRY_STATUS_CP_LEVEL_1;
+                        }
+                        break;
                     case ENTRY_STATUS_PLAYER:
                         nextEntryStatus = ENTRY_STATUS_CP_LEVEL_1;
                         break;
