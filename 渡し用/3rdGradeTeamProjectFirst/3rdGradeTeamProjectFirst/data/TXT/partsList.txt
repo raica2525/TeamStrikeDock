@@ -25,7 +25,7 @@ PARTS_PARAM
 	PARAM3 = 170.0		# スマッシュ
 	PARAM4 = 170.0		# スパイク右
 	PARAM5 = 190.0		# スパイク左
-	PARAM6 = 0		# ボイスセット番号
+	PARAM6 = 5		# ボイスセット番号
 	PARAM7 = 0		#
 END_PARTS_PARAM
 
@@ -125,7 +125,7 @@ PARTS_PARAM
 	PARAM3 = 160.0		# スマッシュ
 	PARAM4 = 170.0		# スパイク右
 	PARAM5 = 190.0		# スパイク左
-	PARAM6 = 0		# ボイスセット番号
+	PARAM6 = 1		# ボイスセット番号
 	PARAM7 = 0		#
 END_PARTS_PARAM
 
@@ -325,7 +325,7 @@ PARTS_PARAM
 	PARAM3 = 100.0		# スマッシュ
 	PARAM4 = 120.0		# スパイク右
 	PARAM5 = 210.0		# スパイク左
-	PARAM6 = 0		# ボイスセット番号
+	PARAM6 = 4		# ボイスセット番号
 	PARAM7 = 0		#
 END_PARTS_PARAM
 
@@ -400,7 +400,7 @@ PARTS_PARAM
 	PARAM3 = 170.0		# スマッシュ
 	PARAM4 = 175.0		# スパイク右
 	PARAM5 = 185.0		# スパイク左
-	PARAM6 = 0		# ボイスセット番号
+	PARAM6 = 2		# ボイスセット番号
 	PARAM7 = 0		#
 END_PARTS_PARAM
 
@@ -600,7 +600,7 @@ PARTS_PARAM
 	PARAM3 = 160.0		# スマッシュ
 	PARAM4 = 170.0		# スパイク右
 	PARAM5 = 190.0		# スパイク左
-	PARAM6 = 0		# ボイスセット番号
+	PARAM6 = 3		# ボイスセット番号
 	PARAM7 = 0		#
 END_PARTS_PARAM
 
