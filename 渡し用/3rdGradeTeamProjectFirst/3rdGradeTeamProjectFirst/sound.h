@@ -66,6 +66,7 @@ public:
         LABEL_SE_WING,
         LABEL_SE_OK,
         LABEL_BGM_RESULT,		// リザルトBGM
+		LABEL_SE_FINISH,		// フィニッシュSE
         LABEL_MAX,
     } LABEL;
 
