@@ -1836,4 +1836,40 @@ EFFECT_DATASET
 	ALPHA_TEST_BORDER = 70
 END_EFFECT_DATASET
 
+#-------------------------------------------------------------
+# [50] 紙吹雪のエフェクト
+#-------------------------------------------------------------
+EFFECT_DATASET
+	TYPE = 50
+	TEX_TYPE = 115
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 78	# 0～314
+	SPEED_MAX = 800
+	SPEED_MIN = 500
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITYLIMIT = 0.000
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 600
+	ROT_SPEED_MIN = 100
+	COL = 1.000 1.000 1.000 1.000
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.010	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_COUNT = 230
+	SIZE_MAX = 2500
+	SIZE_MIN = 1500
+	SIZE_CHANGE = 0.0 0.0 0.0
+	EMITRADIUS = 0
+	ADD_BLEND = 1		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
+END_EFFECT_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

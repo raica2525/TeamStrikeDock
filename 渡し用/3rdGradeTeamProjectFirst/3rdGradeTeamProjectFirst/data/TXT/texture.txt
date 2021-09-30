@@ -945,4 +945,12 @@ TEXTURESET
     NAME = data/TEXTURE/114_bg.png
 END_TEXTURESET
 
+#---------------------------------------
+# [115] 紙吹雪
+#---------------------------------------
+TEXTURESET
+    TYPE = 115
+    NAME = data/TEXTURE/115_kami.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

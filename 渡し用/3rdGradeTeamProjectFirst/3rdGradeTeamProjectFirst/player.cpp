@@ -152,6 +152,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
 
 	m_bSpBarrier = false;
     m_nCntSpGaugeMaxTime = 0;
+    m_voiceSet = VOICE_SET_ROBO;
 
     //===================================
     // 特殊能力対応周り
@@ -202,7 +203,6 @@ void CPlayer::LoadCustom(void)
     // 変数宣言
     int nPartsListType = 0;                // パーツリスト内の種類
     int nExNumber = 0;                     // 特殊能力番号
-    int nVoiceSetNumber = 0;               // ボイスセットの番号
 
     // 定義
     const int PARTS_LIST_HEAD = 0;         // パーツリスト_頭
@@ -286,7 +286,7 @@ void CPlayer::LoadCustom(void)
                 m_afParam[PARAM_SPIKE_LEFT] = pModelData->GetPartsList(nPartsListType)->afParam[5];
 
                 // ボイスセットの番号を保持
-                nVoiceSetNumber = (int)pModelData->GetPartsList(nPartsListType)->afParam[6];
+                m_voiceSet = (int)pModelData->GetPartsList(nPartsListType)->afParam[6];
 
                 // 防御当たり判定の更新
                 if (m_collisionSizeDeffence.x < pModelData->GetPartsList(nPartsListType)->fWidth)
@@ -428,9 +428,6 @@ void CPlayer::LoadCustom(void)
     m_fLife = m_fDef;
     m_fLife_red = m_fDef;
 
-    // ボイスセットの番号を結びつける
-    BindVoiceSet(nVoiceSetNumber);
-
     // 溜め短縮のフラグがONなら、反映
     if (IS_BITON(m_exFlag, EX_FLAG_FAST_CHARGE))
     {
@@ -440,25 +437,6 @@ void CPlayer::LoadCustom(void)
     // キャラクターに反映
     CCharacter::LoadModelData(m_nModelPosDefUp, m_nModelPosDefDown);
     CCharacter::Init(CCharacter::GetPos(), DEFAULT_SCALE);
-}
-
-//=============================================================================
-// ボイスセットを結びつける
-// Author : 後藤慎之助
-//=============================================================================
-void CPlayer::BindVoiceSet(int voiceSet)
-{
-    switch (voiceSet)
-    {
-    case VOICE_SET_0:
-        break;
-    case VOICE_SET_1:
-        break;
-    case VOICE_SET_2:
-        break;
-    case VOICE_SET_3:
-        break;
-    }
 }
 
 //=============================================================================
@@ -981,6 +959,30 @@ void CPlayer::UpdateMannequin(void)
             {
                 m_nCntAttackAnimTime = PLAYER_VICTORY_WAIT_START_FRAME;
                 GetAnimation()->SetAnimation(ANIM_FIRST_WAIT);
+            }
+            else if (m_nCntAttackAnimTime == PLAYER_VICTORY_VOICE_FRAME)
+            {
+                switch (m_voiceSet)
+                {
+                case VOICE_SET_ROBO:
+                    CManager::SoundPlay(CSound::LABEL_VOICE_WIN_ICARUS);
+                    break;
+                case VOICE_SET_WOMAN:
+                    CManager::SoundPlay(CSound::LABEL_VOICE_WIN_KLEINOD);
+                    break;
+                case VOICE_SET_GHOST:
+                    CManager::SoundPlay(CSound::LABEL_VOICE_WIN_KNIGHT);
+                    break;
+                case VOICE_SET_OOO:
+                    CManager::SoundPlay(CSound::LABEL_VOICE_WIN_OOO);
+                    break;
+                case VOICE_SET_MAN:
+                    CManager::SoundPlay(CSound::LABEL_VOICE_WIN_RANGER);
+                    break;
+                case VOICE_SET_BOY:
+                    CManager::SoundPlay(CSound::LABEL_VOICE_WIN_X);
+                    break;
+                }
             }
             break;
         case RANK_2:

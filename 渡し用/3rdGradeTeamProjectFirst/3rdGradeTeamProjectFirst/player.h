@@ -50,6 +50,7 @@
 #define PLAYER_WEAPON_LOOK_FRAME 250                        // カスタマイズ画面で武器を見るフレーム数
 #define PLAYER_VICTORY_WAIT_START_FRAME 120                 // リザルト画面で待機状態になるフレーム数
 #define PLAYER_SP_GAUGE_MAX_EFFECT_INTERVAL 30              // SPゲージエフェクトのインターバル
+#define PLAYER_VICTORY_VOICE_FRAME 60                       // 勝利ボイスフレーム
 
 // プレイヤーの防御周り
 #define PLAYER_MAX_STOCK 6                                  // ストックの最大数
@@ -319,10 +320,12 @@ public:
     // ボイスセット
     typedef enum
     {
-        VOICE_SET_0 = 0,      // 
-        VOICE_SET_1,          // 
-        VOICE_SET_2,          // 
-        VOICE_SET_3           // 
+        VOICE_SET_ROBO = 0,   // ロボ
+        VOICE_SET_WOMAN,      // 女性
+        VOICE_SET_GHOST,      // ゴースト
+        VOICE_SET_OOO,        // オーズ
+        VOICE_SET_MAN,        // 男性
+        VOICE_SET_BOY,        // 少年
     }VOICE_SET;
 
     // 特殊能力（アビリティ）のフラグ
@@ -357,7 +360,6 @@ public:
 
     HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size);
     void LoadCustom(void);                                                              // カスタマイズ読み込み
-    void BindVoiceSet(int voiceSet);                                                    // ボイスセットを結びつける
     void Uninit(void);                                                                  // 終了処理
     void Input(void);                                                                   // 入力処理
     void Update(void);                                                                  // 更新処理
@@ -540,6 +542,7 @@ private:
 
 	bool m_bSpBarrier;						 // 必殺技によるバリアを獲得しているかどうか
     int m_nCntSpGaugeMaxTime;                // 必殺ゲージMAX時間
+    int m_voiceSet;                          // ボイスセット
 
     //===================================    
     // 特殊能力対応周り                      

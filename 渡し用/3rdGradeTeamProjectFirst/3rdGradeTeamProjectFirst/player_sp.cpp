@@ -13,6 +13,7 @@
 #include "ball.h"
 #include "game.h"
 #include "effect2d.h"
+#include "manager.h"
 
 //=============================================================================
 // 必殺技の打ちだし処理
@@ -23,6 +24,29 @@ void CPlayer::EmitSpShot(void)
     // スイング、スマッシュ、スパイクのいずれかなら
     if (m_attackState == ATTACK_STATE_SWING || m_attackState == ATTACK_STATE_SMASH || m_attackState == ATTACK_STATE_SPIKE)
     {
+        // 必殺ボイス
+        switch (m_voiceSet)
+        {
+        case VOICE_SET_ROBO:
+            CManager::SoundPlay(CSound::LABEL_VOICE_SP_ICARUS);
+            break;
+        case VOICE_SET_WOMAN:
+            CManager::SoundPlay(CSound::LABEL_VOICE_SP_KLEINOD);
+            break;
+        case VOICE_SET_GHOST:
+            CManager::SoundPlay(CSound::LABEL_VOICE_SP_KNIGHT);
+            break;
+        case VOICE_SET_OOO:
+            CManager::SoundPlay(CSound::LABEL_VOICE_SP_OOO);
+            break;
+        case VOICE_SET_MAN:
+            CManager::SoundPlay(CSound::LABEL_VOICE_SP_RANGER);
+            break;
+        case VOICE_SET_BOY:
+            CManager::SoundPlay(CSound::LABEL_VOICE_SP_X);
+            break;
+        }
+
         // 必殺技ごとの打ちだし処理
         switch (m_spShot)
         {

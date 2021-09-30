@@ -92,6 +92,7 @@ public:
         TYPE_BARRIER,               // バリア
         TYPE_SP_MAX_1,              // 必殺ゲージMAX1
         TYPE_SP_MAX_2,              // 必殺ゲージMAX2
+        TYPE_KAMI,                  // 紙吹雪
     }TYPE;  // 生成するエフェクトの種類
 
     typedef enum

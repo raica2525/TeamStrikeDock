@@ -506,14 +506,14 @@ void CGame::InButtle(void)
     // ポーズするなら
     if (pInputKeyboard->GetKeyboardTrigger(DIK_P) || nNumPausePlayer != NO_PAUSE_PLAYER)
     {
+        // SE
+        CManager::SoundPlay(CSound::LABEL_SE_INFO);
+
         // キーボード操作でポーズする際は、1Pのコントローラを使う
         if (nNumPausePlayer == NO_PAUSE_PLAYER)
         {
             nNumPausePlayer = PLAYER_1;
         }
-
-        //// ポーズ音
-        //pSound->Play(CSound::LABEL_SE_SYSTEM_PAUSE);
 
         // ポーズ状態にする
         m_state = STATE_PAUSE_MENU;

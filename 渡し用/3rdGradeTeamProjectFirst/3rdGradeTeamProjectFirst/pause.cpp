@@ -203,6 +203,9 @@ void CPause::Update(void)
         // スタートボタンが押されたら
         if (pInputKeyboard->GetKeyboardTrigger(DIK_P) || pInputJoypad->GetJoypadTrigger(m_nWho, CInputJoypad::BUTTON_START))
         {
+            // SE
+            CManager::SoundPlay(CSound::LABEL_SE_CANCEL);
+
             // ポーズ解除にする
             CGame::SetQuitPause();
             pCamera->SetState(CCamera::STATE_BUTTLE);
@@ -388,6 +391,9 @@ void CPause::SelectPauseMenu(void)
             // Aが押された(決定)
             if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(m_nWho, CInputJoypad::BUTTON_A))
             {
+                // SE
+                CManager::SoundPlay(CSound::LABEL_SE_SELECT);
+
                 // ポーズ解除にする
                 CGame::SetQuitPause();
                 pCamera->SetState(CCamera::STATE_BUTTLE);
@@ -400,8 +406,8 @@ void CPause::SelectPauseMenu(void)
                 // 上移動
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_W) || Controller.lY < 0 && m_nSelectCoolTime <= 0)
                 {
-                    //// 選択音
-                    //pSound->Play(CSound::LABEL_SE_SELECT);
+                    // SE
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
 
                     // 上の選択肢に
                     m_typePauseSelect = TYPE_QUIT;
@@ -413,8 +419,8 @@ void CPause::SelectPauseMenu(void)
                 // 下移動
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_S) || Controller.lY > 0 && m_nSelectCoolTime <= 0)
                 {
-                    //// 選択音
-                    //pSound->Play(CSound::LABEL_SE_SELECT);
+                    // SE
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
 
                     // 下の選択肢に
                     m_typePauseSelect = TYPE_RETRY;
@@ -431,8 +437,8 @@ void CPause::SelectPauseMenu(void)
             // Aが押された(決定)
             if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(m_nWho, CInputJoypad::BUTTON_A))
             {
-                //// 現在のゲームモードを、次回に結びつける
-                //CManager::SetSetStage(CGame::GetStage());
+                // SE
+                CManager::SoundPlay(CSound::LABEL_SE_SELECT);
 
                 // リトライ
                 CFade::SetFade(CManager::MODE_GAME);
@@ -445,8 +451,8 @@ void CPause::SelectPauseMenu(void)
                 // 上移動
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_W) || Controller.lY < 0 && m_nSelectCoolTime <= 0)
                 {
-                    //// 選択音
-                    //pSound->Play(CSound::LABEL_SE_SELECT);
+                    // SE
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
 
                     // 上の選択肢に
                     m_typePauseSelect = TYPE_CONTINUE;
@@ -458,8 +464,8 @@ void CPause::SelectPauseMenu(void)
                 // 下移動
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_S) || Controller.lY > 0 && m_nSelectCoolTime <= 0)
                 {
-                    //// 選択音
-                    //pSound->Play(CSound::LABEL_SE_SELECT);
+                    // SE
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
 
                     // 下の選択肢に
                     m_typePauseSelect = TYPE_QUIT;
@@ -476,6 +482,9 @@ void CPause::SelectPauseMenu(void)
             // Aが押された(決定)
             if (pInputKeyboard->GetKeyboardTrigger(DIK_RETURN) || pInputJoypad->GetJoypadTrigger(m_nWho, CInputJoypad::BUTTON_A))
             {
+                // SE
+                CManager::SoundPlay(CSound::LABEL_SE_SELECT);
+
                 // やめる(タイトルへ)
                 CFade::SetFade(CManager::MODE_TITLE);
 
@@ -487,8 +496,8 @@ void CPause::SelectPauseMenu(void)
                 // 上移動
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_W) || Controller.lY < 0 && m_nSelectCoolTime <= 0)
                 {
-                    //// 選択音
-                    //pSound->Play(CSound::LABEL_SE_SELECT);
+                    // SE
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
 
                     // 上の選択肢に
                     m_typePauseSelect = TYPE_RETRY;
@@ -500,8 +509,8 @@ void CPause::SelectPauseMenu(void)
                 // 下移動
                 if (pInputKeyboard->GetKeyboardTrigger(DIK_S) || Controller.lY > 0 && m_nSelectCoolTime <= 0)
                 {
-                    //// 選択音
-                    //pSound->Play(CSound::LABEL_SE_SELECT);
+                    // SE
+                    CManager::SoundPlay(CSound::LABEL_SE_CUSTOM);
 
                     // 下の選択肢に
                     m_typePauseSelect = TYPE_CONTINUE;
