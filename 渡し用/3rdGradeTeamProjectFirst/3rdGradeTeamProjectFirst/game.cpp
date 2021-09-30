@@ -34,11 +34,12 @@
 //========================================
 
 // ゲーム状態の管理フレーム
-#define BLOW_MOMENT_FRAME 180   // 一撃の瞬間フレーム数
-#define FINISH_WAIT_FRAME 240   // 決着時に、待つフレーム数
-#define CREATE_POS_Y_RATE 0.8f  // ボールの発生位置Yの割合
-#define FADE_IN_TELOP 30        // テロップのフェードイン開始フレーム
-#define FADE_OUT_TELOP 150      // テロップのフェードアウト開始フレーム
+#define BLOW_MOMENT_FRAME 180          // 一撃の瞬間フレーム数
+#define FINISH_WAIT_FRAME 240          // 決着時に、待つフレーム数
+#define CREATE_POS_Y_RATE 0.8f         // ボールの発生位置Yの割合
+#define FADE_IN_TELOP 30               // テロップのフェードイン開始フレーム
+#define FADE_OUT_TELOP 150             // テロップのフェードアウト開始フレーム
+#define FADE_IN_FINISH_TELOP 90        // フィニッシュテロップのフェードイン開始フレーム
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -531,12 +532,35 @@ void CGame::InButtle(void)
 //=============================================================================
 void CGame::BlowMoment(void)
 {
+    // 背景と黒線を取得
+    CUI *pBg = CUI::GetAccessUI(100);
+    CUI *pLine = CUI::GetAccessUI(101);
+    // 背景と黒線を見えるように
+    if (pBg)
+    {
+        pBg->SetDisp(true);
+    }
+    if (pLine)
+    {
+        pLine->SetDisp(true);
+    }
+
     // カウンタを加算
     m_nCntGameTime++;
 
     // 一定フレームで、勝敗判定
     if (m_nCntGameTime >= BLOW_MOMENT_FRAME)
     {
+        // 背景と黒線を見えないように
+        if (pBg)
+        {
+            pBg->SetDisp(false);
+        }
+        if (pLine)
+        {
+            pLine->SetDisp(false);
+        }
+
         // カウンタをリセット
         m_nCntGameTime = 0;
 
@@ -597,6 +621,33 @@ void CGame::JudgmentFinish(void)
 
             // もう一度ラウンド開始へ
             m_state = STATE_ROUND_START;
+        }
+    }
+    else if (m_nCntGameTime == FADE_IN_FINISH_TELOP)
+    {
+        // 死んだプレイヤーが全体のプレイヤー-1に達したら
+        if (m_nNumDeathPlayer >= m_nNumAllPlayer - 1)
+        {
+            // SE
+            CManager::SoundPlay(CSound::LABEL_SE_FINISH);
+
+            // フィニッシュ
+            CUI *pTelopBg = CUI::GetAccessUI(6);
+            CUI *pTelop = CUI::GetAccessUI(7);
+            if (pTelopBg)
+            {
+                pTelopBg->SetActionReset(0);
+                pTelopBg->SetActionLock(0, false);
+                pTelopBg->SetActionReset(2);
+            }
+            if (pTelop)
+            {
+                pTelop->SetActionReset(0);
+                pTelop->SetActionLock(0, false);
+                pTelop->SetActionReset(1);
+                pTelop->SetActionLock(1, false);
+                pTelop->SetActionReset(2);
+            }
         }
     }
 }

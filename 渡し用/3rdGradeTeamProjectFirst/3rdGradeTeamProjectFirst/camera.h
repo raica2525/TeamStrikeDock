@@ -24,7 +24,7 @@
 
 // Œˆ’…‚ÌƒJƒƒ‰‚ÌˆÊ’u”÷’²®
 #define CAMERA_FINISH_NEXT_PLAYER_FRAME 90
-#define CAMERA_FINISH_ROT_SPEED D3DXToRadian(2.0f)
+#define CAMERA_FINISH_ROT_SPEED D3DXToRadian(3.0f)
 //#define CAMERA_FINISH_OFFSET -600.0f
 //#define CAMERA_FINISH_HEIGHT D3DXToRadian(75.0f)
 

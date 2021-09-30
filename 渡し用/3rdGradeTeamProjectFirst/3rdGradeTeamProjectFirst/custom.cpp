@@ -1427,7 +1427,7 @@ void CCustom::DoOsusume(int nNumWho)
 		anNumParts[0] = 23;
 		anNumParts[1] = 24;
 		anNumParts[2] = 25;
-		anNumParts[3] = 26;
+		anNumParts[3] = 22;
 		break;
     }
 

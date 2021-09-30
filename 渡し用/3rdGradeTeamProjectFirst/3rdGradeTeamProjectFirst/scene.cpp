@@ -277,6 +277,18 @@ void CScene::DrawInBlowMoment(void)
             }
         }
     }
+
+    // ”wŒi‚Æ•ü‚ð•`‰æ
+    CUI *pBg = CUI::GetAccessUI(100);
+    CUI *pLine = CUI::GetAccessUI(101);
+    if (pBg)
+    {
+        pBg->Draw();
+    }
+    if (pLine)
+    {
+        pLine->Draw();
+    }
 }
 
 //==============================================

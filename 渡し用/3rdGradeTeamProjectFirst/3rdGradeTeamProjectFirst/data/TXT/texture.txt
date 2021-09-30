@@ -929,4 +929,20 @@ TEXTURESET
     NAME = data/TEXTURE/112_nextround_belt.png
 END_TEXTURESET
 
+#---------------------------------------
+# [113] サイドの黒線
+#---------------------------------------
+TEXTURESET
+    TYPE = 113
+    NAME = data/TEXTURE/113_line.png
+END_TEXTURESET
+
+#---------------------------------------
+# [114] 背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 114
+    NAME = data/TEXTURE/114_bg.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！
