@@ -1375,7 +1375,14 @@ void CCustom::DoOsusume(int nNumWho)
 {
     // 書き込むパーツの数字たち
     int anNumParts[MAX_PARTS] = {};
-    int nRand = GetRandNum(4, 1);
+    int nRand = 0;
+
+	//連続で同じものが出ないようにする処理
+	do
+	{
+		nRand = GetRandNum(7, 1);
+	} while (nRand == m_aEntryInfo[nNumWho].nOsusumeOld);
+	m_aEntryInfo[nNumWho].nOsusumeOld = nRand;
 
     // おすすめ装備は随時更新
     switch (nRand)
@@ -1398,12 +1405,30 @@ void CCustom::DoOsusume(int nNumWho)
         anNumParts[2] = 10;
         anNumParts[3] = 11;
         break;
-    case 4:
+	case 4:
+		anNumParts[0] = 12;
+		anNumParts[1] = 13;
+		anNumParts[2] = 14;
+		anNumParts[3] = 26;
+		break;
+    case 5:
         anNumParts[0] = 15;
         anNumParts[1] = 16;
         anNumParts[2] = 17;
         anNumParts[3] = 18;
         break;
+	case 6:
+		anNumParts[0] = 19;
+		anNumParts[1] = 20;
+		anNumParts[2] = 21;
+		anNumParts[3] = 22;
+		break;
+	case 7:
+		anNumParts[0] = 23;
+		anNumParts[1] = 24;
+		anNumParts[2] = 25;
+		anNumParts[3] = 26;
+		break;
     }
 
     // カスタマイズデータのファイルを開く
