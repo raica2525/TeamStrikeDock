@@ -25,6 +25,7 @@ public:
     HRESULT Init(HWND hWnd, bool bWindow);
     void Uninit(void);
     void Update(void);    // オブジェクトのインスタンスがないと、関数が呼べないため持ってくる
+    void SpUpdate(void);  // ストライクシュート時の更新
     void Draw(void);      // オブジェクトのインスタンスがないと、関数が呼べないため持ってくる
     LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }
     LPDIRECT3DTEXTURE9 GetScreenTexture(void) { return m_pScreenTexture; }

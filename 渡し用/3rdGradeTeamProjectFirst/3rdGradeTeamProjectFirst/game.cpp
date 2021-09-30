@@ -68,6 +68,9 @@ int CGame::m_nWhoWorstPlayer = PLAYER_1;
 int CGame::m_nNumDeathPlayer = 0;
 CGame::RESERVE_SHOOT CGame::m_aReserveShoot[] = {};
 
+CPlayer *CGame::m_pSpPlayer = NULL;
+bool CGame::m_bCurrentSpShot = false;
+
 //=============================================================================
 // ゲームのコンストラクタ
 // Author : 後藤慎之助
@@ -75,6 +78,7 @@ CGame::RESERVE_SHOOT CGame::m_aReserveShoot[] = {};
 CGame::CGame()
 {
     m_bStopObjUpdate = false;
+    m_bCurrentSpShot = false;
 
     memset(m_apPlayer, 0, sizeof(m_apPlayer));
     memset(m_anPlayerRank, 0, sizeof(m_anPlayerRank));
@@ -84,6 +88,7 @@ CGame::CGame()
     m_pEffect2d_Nega = NULL;
     m_pEffect2d_Posi = NULL;
     m_pNumArray_BallSpd = NULL;
+    m_pSpPlayer = NULL;
 
     // 静的メンバ変数を初期化（遷移時に毎回必要なものだけ）
     //m_type = TYPE_TRAINING;
@@ -478,50 +483,53 @@ void CGame::InButtle(void)
 
     //================================================================================
     // ポーズ処理
-    const int NO_PAUSE_PLAYER = -1; // 誰もポーズを押していない
+    if (!m_bStopObjUpdate)
+    {
+        const int NO_PAUSE_PLAYER = -1; // 誰もポーズを押していない
 
-    // 変数宣言
-    CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();  // キーボード
-    CInputJoypad *pInputJoypad = CManager::GetInputJoypad();        // コントローラ
-    int nNumPausePlayer = NO_PAUSE_PLAYER;  // ポーズを押したプレイヤー
+        // 変数宣言
+        CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();  // キーボード
+        CInputJoypad *pInputJoypad = CManager::GetInputJoypad();        // コントローラ
+        int nNumPausePlayer = NO_PAUSE_PLAYER;  // ポーズを押したプレイヤー
 
-    // スタートボタンを押した人を結びつける
-    if (pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START))
-    {
-        nNumPausePlayer = PLAYER_1;
-    }
-    else if (pInputJoypad->GetJoypadTrigger(PLAYER_2, CInputJoypad::BUTTON_START))
-    {
-        nNumPausePlayer = PLAYER_2;
-    }
-    else if (pInputJoypad->GetJoypadTrigger(PLAYER_3, CInputJoypad::BUTTON_START))
-    {
-        nNumPausePlayer = PLAYER_3;
-    }
-    else if (pInputJoypad->GetJoypadTrigger(PLAYER_4, CInputJoypad::BUTTON_START))
-    {
-        nNumPausePlayer = PLAYER_4;
-    }
-
-    // ポーズするなら
-    if (pInputKeyboard->GetKeyboardTrigger(DIK_P) || nNumPausePlayer != NO_PAUSE_PLAYER)
-    {
-        // SE
-        CManager::SoundPlay(CSound::LABEL_SE_INFO);
-
-        // キーボード操作でポーズする際は、1Pのコントローラを使う
-        if (nNumPausePlayer == NO_PAUSE_PLAYER)
+                                                // スタートボタンを押した人を結びつける
+        if (pInputJoypad->GetJoypadTrigger(PLAYER_1, CInputJoypad::BUTTON_START))
         {
             nNumPausePlayer = PLAYER_1;
         }
+        else if (pInputJoypad->GetJoypadTrigger(PLAYER_2, CInputJoypad::BUTTON_START))
+        {
+            nNumPausePlayer = PLAYER_2;
+        }
+        else if (pInputJoypad->GetJoypadTrigger(PLAYER_3, CInputJoypad::BUTTON_START))
+        {
+            nNumPausePlayer = PLAYER_3;
+        }
+        else if (pInputJoypad->GetJoypadTrigger(PLAYER_4, CInputJoypad::BUTTON_START))
+        {
+            nNumPausePlayer = PLAYER_4;
+        }
 
-        // ポーズ状態にする
-        m_state = STATE_PAUSE_MENU;
-        m_pPause->SetPauseMenuSelect(nNumPausePlayer);
-        m_bStopObjUpdate = true;
+        // ポーズするなら
+        if (pInputKeyboard->GetKeyboardTrigger(DIK_P) || nNumPausePlayer != NO_PAUSE_PLAYER)
+        {
+            // SE
+            CManager::SoundPlay(CSound::LABEL_SE_INFO);
 
-        // カメラも止める
-        CManager::GetCamera()->SetState(CCamera::STATE_NONE);
+            // キーボード操作でポーズする際は、1Pのコントローラを使う
+            if (nNumPausePlayer == NO_PAUSE_PLAYER)
+            {
+                nNumPausePlayer = PLAYER_1;
+            }
+
+            // ポーズ状態にする
+            m_state = STATE_PAUSE_MENU;
+            m_pPause->SetPauseMenuSelect(nNumPausePlayer);
+            m_bStopObjUpdate = true;
+
+            // カメラも止める
+            CManager::GetCamera()->SetState(CCamera::STATE_NONE);
+        }
     }
     //================================================================================
 }

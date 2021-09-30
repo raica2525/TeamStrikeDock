@@ -54,6 +54,7 @@ public:
     virtual void Update(void) = 0;
     virtual void Draw(void) = 0;
     static void UpdateAll(void);                                                        // 全て更新
+    static void SpUpdate(void);                                                         // 必殺技使用時のアップデート
     static void DrawExceptWave(void);                                                   // 波以外を描画
     static void DrawExceptWaveAndUI(void);                                              // 波とUI以外を描画
     static void DrawWave(void);                                                         // 波を描画

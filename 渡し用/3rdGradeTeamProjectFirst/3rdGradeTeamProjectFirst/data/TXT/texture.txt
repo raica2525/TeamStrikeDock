@@ -953,4 +953,29 @@ TEXTURESET
     NAME = data/TEXTURE/115_kami.png
 END_TEXTURESET
 
+#---------------------------------------
+# [116] 背後の光
+#---------------------------------------
+TEXTURESET
+    TYPE = 116
+    NAME = data/TEXTURE/116_strikeshotbg.png
+END_TEXTURESET
+
+#---------------------------------------
+# [117] ストライクシュート背景
+#---------------------------------------
+TEXTURESET
+    TYPE = 117
+    NAME = data/TEXTURE/117_blitz.png
+END_TEXTURESET
+
+#---------------------------------------
+# [118] ストライクシュート文字
+#---------------------------------------
+TEXTURESET
+    TYPE = 118
+    NAME = data/TEXTURE/118_strikeshoot.png
+END_TEXTURESET
+
+
 END_SCRIPT		# この行は絶対消さないこと！

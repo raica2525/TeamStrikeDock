@@ -1207,6 +1207,19 @@ void CPlayer::Respawn(void)
 //=============================================================================
 void CPlayer::Draw(void)
 {
+    // 必殺技を撃っているときは、表示を消す
+    if (m_pUI_Playable)
+    {
+        if (CGame::GetCurrentSpShot())
+        {
+            m_pUI_Playable->SetDisp(false);
+        }
+        else
+        {
+            m_pUI_Playable->SetDisp(true);
+        }
+    }
+
     // 表示するなら、描画
     if (m_bDisp)
     {

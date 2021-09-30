@@ -112,6 +112,8 @@ public:
         }
         m_anPlayerRankInThisRound[nRank] = nIdxPlayer;
     }
+    static void SetSpPlayer(CPlayer *pPlayer) { m_bCurrentSpShot = true; m_pSpPlayer = pPlayer; }
+    static void SetCurrentSpShot(bool bStopUpdate) { m_bCurrentSpShot = bStopUpdate; }
 
     /*========================================================
     // ゲッター
@@ -134,6 +136,8 @@ public:
     static int GetStock(void) { return m_nNumStock; }                               // ストック数を取得
     static int GetPlayerRank(int nIdx) { return m_anPlayerRank[nIdx]; }             // プレイヤーの順位を取得
     static int GetPlayerRankInThisRound(int nIdx) { return m_anPlayerRankInThisRound[nIdx]; }  // 現ラウンドのプレイヤーの順位を取得
+    static CPlayer*GetSpPlayer(void) { return m_pSpPlayer; }
+    static bool GetCurrentSpShot(void) { return m_bCurrentSpShot; }
 
     /*========================================================
     // 便利な関数
@@ -168,6 +172,9 @@ private:
     static int m_nWhoWorstPlayer;                          // ワーストのプレイヤー
     static int m_nNumDeathPlayer;                          // 死んだプレイヤー人数
     static RESERVE_SHOOT m_aReserveShoot[MAX_PLAYER];      // シュートの予約
+
+    static CPlayer *m_pSpPlayer;                           // ストライクシュートプレイヤーのポインタ
+    static bool m_bCurrentSpShot;                          // 現在ストライクシュートを撃っているかどうか
 
     int m_nCntGameTime;                                    // ゲーム時間のカウンタ
     bool m_bFirestRound;                                   // 最初のラウンドかどうか

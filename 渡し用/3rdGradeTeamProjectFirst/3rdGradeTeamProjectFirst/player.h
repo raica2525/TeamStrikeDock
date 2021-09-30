@@ -51,6 +51,7 @@
 #define PLAYER_VICTORY_WAIT_START_FRAME 120                 // リザルト画面で待機状態になるフレーム数
 #define PLAYER_SP_GAUGE_MAX_EFFECT_INTERVAL 30              // SPゲージエフェクトのインターバル
 #define PLAYER_VICTORY_VOICE_FRAME 60                       // 勝利ボイスフレーム
+#define PLAYER_SP_WHOLE_FRAME 120                           // 必殺技全体フレーム
 
 // プレイヤーの防御周り
 #define PLAYER_MAX_STOCK 6                                  // ストックの最大数

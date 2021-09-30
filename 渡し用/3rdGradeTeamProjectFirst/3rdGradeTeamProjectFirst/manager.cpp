@@ -337,8 +337,16 @@ void CManager::Update(void)
                 // 更新を止めていないなら
                 if (!CGame::GetStopObjUpdate())
                 {
-                    // 全て更新
-                    m_pRenderer->Update();
+                    if (!CGame::GetCurrentSpShot())
+                    {
+                        // 全て更新
+                        m_pRenderer->Update();
+                    }
+                    else
+                    {
+                        // ストライクシュート
+                        m_pRenderer->SpUpdate();
+                    }
                 }
             }
             else

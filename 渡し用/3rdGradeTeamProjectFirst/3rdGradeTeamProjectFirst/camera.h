@@ -53,6 +53,7 @@ public:
         STATE_OUT_GAME,         // アウトゲーム
         STATE_BUTTLE,           // バトル中
         STATE_FINISH_EACH,      // 決着時の各自注視
+        STATE_SP,               // 必殺技中
     }STATE;
 
     // カメラの使用場面

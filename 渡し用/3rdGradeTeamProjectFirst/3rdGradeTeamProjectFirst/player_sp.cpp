@@ -14,6 +14,7 @@
 #include "game.h"
 #include "effect2d.h"
 #include "manager.h"
+#include "camera.h"
 
 //=============================================================================
 // 必殺技の打ちだし処理
@@ -24,6 +25,10 @@ void CPlayer::EmitSpShot(void)
     // スイング、スマッシュ、スパイクのいずれかなら
     if (m_attackState == ATTACK_STATE_SWING || m_attackState == ATTACK_STATE_SMASH || m_attackState == ATTACK_STATE_SPIKE)
     {
+        // 必殺技使用者を登録
+        CGame::SetSpPlayer(this);
+        CManager::GetCamera()->SetState(CCamera::STATE_SP);
+
         // 必殺ボイス
         switch (m_voiceSet)
         {

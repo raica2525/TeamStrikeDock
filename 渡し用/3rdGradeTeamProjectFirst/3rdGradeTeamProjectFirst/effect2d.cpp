@@ -94,86 +94,98 @@ void CEffect2D::Uninit(void)
 //=============================================================================
 void CEffect2D::Update(void)
 {
-    // 更新処理をするなら
-    if (m_bUseUpdate)
+    if (!m_pPlayer || !CGame::GetCurrentSpShot())
     {
-        // 位置と大きさを取得
-        D3DXVECTOR3 pos = GetPosition();
-        D3DXVECTOR3 size = GetSize();
-
-        // 位置を更新（重力や加速度も考慮）
-        pos += m_move;
-        m_move *= m_fAcceleration;
-        m_move.y += m_fGravity; // 注意（3Dと逆）
-        if (m_fGravityLimit > 0.0f)
+        // 更新処理をするなら
+        if (m_bUseUpdate)
         {
-            // 重力制限（3Dと逆）
-            if (m_move.y > m_fGravityLimit)
+            // 位置と大きさを取得
+            D3DXVECTOR3 pos = GetPosition();
+            D3DXVECTOR3 size = GetSize();
+
+            // 位置を更新（重力や加速度も考慮）
+            pos += m_move;
+            m_move *= m_fAcceleration;
+            m_move.y += m_fGravity; // 注意（3Dと逆）
+            if (m_fGravityLimit > 0.0f)
             {
-                m_move.y = m_fGravityLimit;
+                // 重力制限（3Dと逆）
+                if (m_move.y > m_fGravityLimit)
+                {
+                    m_move.y = m_fGravityLimit;
+                }
             }
-        }
 
-        // 大きさをロックするカウンタ
-        if (m_nCntSizeChangeLock > 0)
-        {
-            m_nCntSizeChangeLock--;
-        }
-
-        // 大きさを、開始と終了に場合分けしながら更新
-        if (!m_bSizeChangeStartOrFinish)
-        {
-            // 開始かつ、カウンタがないなら大きさ更新
-            if (m_nCntSizeChangeLock <= 0)
-            {
-                size += m_sizeChangeRate;
-            }
-        }
-        else
-        {
-            // 終了なら、カウンタがなくなるまで大きさ更新
+            // 大きさをロックするカウンタ
             if (m_nCntSizeChangeLock > 0)
             {
-                size += m_sizeChangeRate;
+                m_nCntSizeChangeLock--;
             }
-        }
 
-        // 色を更新
-        m_col += m_colChangeRate;
-
-        // α値をロックするカウンタ
-        if (m_nCntFadeOutLock > 0)
-        {
-            m_nCntFadeOutLock--;
-        }
-
-        // アニメーションを使うなら（フェードアウト周りが変わる）
-        if (m_nAnimPattern > 1)
-        {
-            // 一周していないならテクスチャアニメーションを更新
-            if (!m_bOneRoundAnim)
+            // 大きさを、開始と終了に場合分けしながら更新
+            if (!m_bSizeChangeStartOrFinish)
             {
-                // リピートするなら、一周のフラグと結びつけない
-                if (m_bRepeat)
+                // 開始かつ、カウンタがないなら大きさ更新
+                if (m_nCntSizeChangeLock <= 0)
                 {
-                    if (m_nAnimParagraph > 2)
+                    size += m_sizeChangeRate;
+                }
+            }
+            else
+            {
+                // 終了なら、カウンタがなくなるまで大きさ更新
+                if (m_nCntSizeChangeLock > 0)
+                {
+                    size += m_sizeChangeRate;
+                }
+            }
+
+            // 色を更新
+            m_col += m_colChangeRate;
+
+            // α値をロックするカウンタ
+            if (m_nCntFadeOutLock > 0)
+            {
+                m_nCntFadeOutLock--;
+            }
+
+            // アニメーションを使うなら（フェードアウト周りが変わる）
+            if (m_nAnimPattern > 1)
+            {
+                // 一周していないならテクスチャアニメーションを更新
+                if (!m_bOneRoundAnim)
+                {
+                    // リピートするなら、一周のフラグと結びつけない
+                    if (m_bRepeat)
                     {
-                        SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                        if (m_nAnimParagraph > 2)
+                        {
+                            SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                        }
+                        else
+                        {
+                            SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                        }
                     }
                     else
                     {
-                        SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                        if (m_nAnimParagraph >= 2)
+                        {
+                            m_bOneRoundAnim = SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                        }
+                        else
+                        {
+                            m_bOneRoundAnim = SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                        }
                     }
                 }
                 else
                 {
-                    if (m_nAnimParagraph >= 2)
+                    // α値のロックが解かれたら
+                    if (m_nCntFadeOutLock <= 0)
                     {
-                        m_bOneRoundAnim = SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
-                    }
-                    else
-                    {
-                        m_bOneRoundAnim = SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                        // 一周したらフェードアウト開始
+                        m_col.a -= m_fFadeOutRate;
                     }
                 }
             }
@@ -182,55 +194,46 @@ void CEffect2D::Update(void)
                 // α値のロックが解かれたら
                 if (m_nCntFadeOutLock <= 0)
                 {
-                    // 一周したらフェードアウト開始
+                    // アニメーションを使わないならフェードアウト開始
                     m_col.a -= m_fFadeOutRate;
                 }
             }
-        }
-        else
-        {
-            // α値のロックが解かれたら
-            if (m_nCntFadeOutLock <= 0)
+
+            // 大きさの制限（effect3dから持ってきた際に、反転合成用で追加）
+            if (size.x > SCREEN_WIDTH * 5)
             {
-                // アニメーションを使わないならフェードアウト開始
-                m_col.a -= m_fFadeOutRate;
+                size.x = SCREEN_WIDTH * 5;
             }
-        }
 
-        // 大きさの制限（effect3dから持ってきた際に、反転合成用で追加）
-        if (size.x > SCREEN_WIDTH * 5)
-        {
-            size.x = SCREEN_WIDTH * 5;
-        }
+            if (size.y > SCREEN_HEIGHT * 5)
+            {
+                size.y = SCREEN_HEIGHT * 5;
+            }
 
-        if (size.y > SCREEN_HEIGHT * 5)
-        {
-            size.y = SCREEN_HEIGHT * 5;
-        }
+            // プレイヤーのポインタがあるなら、場所を追従
+            if (m_pPlayer)
+            {
+                pos = ConvertScreenPos(m_pPlayer->GetPos() + D3DXVECTOR3(0.0f, m_pPlayer->GetCollisionSizeDeffence().y / 2, 0.0f));
+            }
 
-        // プレイヤーのポインタがあるなら、場所を追従
-        if (m_pPlayer)
-        {
-            pos = ConvertScreenPos(m_pPlayer->GetPos() + D3DXVECTOR3(0.0f, m_pPlayer->GetCollisionSizeDeffence().y / 2, 0.0f));
-        }
+            // 位置、大きさ、色を反映
+            CScene2D::SetPosition(pos);
+            CScene2D::SetSize(size);
+            CScene2D::SetColor(m_col);
 
-        // 位置、大きさ、色を反映
-        CScene2D::SetPosition(pos);
-        CScene2D::SetSize(size);
-        CScene2D::SetColor(m_col);
+            // 各頂点を更新（角度も反映）
+            m_fRotAngle += m_fRotSpeed;
+            if (m_fRotAngle > D3DXToRadian(180.0f) || m_fRotAngle < D3DXToRadian(-180.0f))
+            {
+                m_fRotAngle *= -1;
+            }
+            CScene2D::SetRotVertex(m_fRotAngle);
 
-        // 各頂点を更新（角度も反映）
-        m_fRotAngle += m_fRotSpeed;
-        if (m_fRotAngle > D3DXToRadian(180.0f) || m_fRotAngle < D3DXToRadian(-180.0f))
-        {
-            m_fRotAngle *= -1;
-        }
-        CScene2D::SetRotVertex(m_fRotAngle);
-
-        // 透明、大きさがないなら終了処理
-        if (m_col.a <= 0.0f || size.x < 0.0f || size.y < 0.0f)
-        {
-            Uninit();
+            // 透明、大きさがないなら終了処理
+            if (m_col.a <= 0.0f || size.x < 0.0f || size.y < 0.0f)
+            {
+                Uninit();
+            }
         }
     }
 }
@@ -241,19 +244,32 @@ void CEffect2D::Update(void)
 //=============================================================================
 void CEffect2D::Draw(void)
 {
-    // 加算合成
-    if (m_bUseAdditiveSynthesis)
+    bool bDraw = true;
+    if (m_pPlayer)
     {
-        CScene2D::SetAdditiveSynthesis();
+        // 必殺技を使っているときに、追従エフェクトは描画しない
+        if (CGame::GetCurrentSpShot())
+        {
+            bDraw = false;
+        }
     }
 
-    // 反転合成
-    if (m_nTexType == 20)
+    if (bDraw)
     {
-        SetNega();
-    }
+        // 加算合成
+        if (m_bUseAdditiveSynthesis)
+        {
+            CScene2D::SetAdditiveSynthesis();
+        }
 
-    CScene2D::Draw();
+        // 反転合成
+        if (m_nTexType == 20)
+        {
+            SetNega();
+        }
+
+        CScene2D::Draw();
+    }
 }
 
 //=============================================================================

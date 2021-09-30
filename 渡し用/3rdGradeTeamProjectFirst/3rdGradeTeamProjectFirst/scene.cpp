@@ -125,6 +125,48 @@ void CScene::UpdateAll(void)
 }
 
 //==============================================
+// 必殺演出用の更新
+// Author : 後藤慎之助
+//==============================================
+void CScene::SpUpdate(void)
+{
+    for (int nCnt = 0; nCnt < OBJTYPE_MAX; nCnt++)
+    {
+        // ボールとプレイヤー以外なら
+        if (nCnt != OBJTYPE_BALL && nCnt != OBJTYPE_PLAYER)
+        {
+            // 先頭、最新のものがあるなら
+            if (m_apTop[nCnt] != NULL && m_apCur[nCnt] != NULL)
+            {
+                // 記憶用の変数
+                CScene*pScene = m_apTop[nCnt];
+
+                do
+                {
+                    // 記憶用の変数(Update中に、Uninitされることを考慮)
+                    CScene*pNextScene = pScene->m_pNext;
+
+                    // 更新処理
+                    pScene->Update();
+
+                    // 使用フラグがfalseなら
+                    if (pScene->m_bUse == false)
+                    {
+                        // メモリの開放
+                        delete pScene;
+                        pScene = NULL;
+                    }
+
+                    // 次のシーンに変えていく
+                    pScene = pNextScene;
+
+                } while (pScene != NULL);
+            }
+        }
+    }
+}
+
+//==============================================
 // 波紋エフェクト以外を描画
 // Author : 後藤慎之助
 //==============================================
