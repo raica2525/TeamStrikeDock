@@ -1726,4 +1726,42 @@ EFFECT_DATASET
 	ALPHA_TEST_BORDER = 25
 END_EFFECT_DATASET
 
+#---------------------------------------
+# [47] バリア
+#---------------------------------------
+EFFECT_DATASET
+	TYPE = 47
+	TEX_TYPE = 106
+	ONCE = 1
+	PLANE = 0		# 0がXYで1がXZ
+	ON_CIRCLE = 0		# bool
+	EMIT_INSIDE = 0		# bool
+	SCATTER_ANGLE = 0	# 0～314
+	SCATTER_WIDTH = 0	# 0～314
+	SPEED_MAX = 0
+	SPEED_MIN = 0
+	SPEED_AA_MAX = 0
+	SPEED_AA_MIN = 0
+	ACCEL = 1.000	# 1.0倍が基本
+	GRAVITY = 0.000
+	GRAVITY_LIMIT = 0.0	# 0.0より大きいと適用
+	ROT_LAY = 0		# bool
+	ROT_EQUAL_MOVE = 0	# bool
+	ROT_SPEED_MAX = 0
+	ROT_SPEED_MIN = 0
+	COL = 1.000 1.000 1.000 0.750
+	COL_CHANGE = 0.000 0.000 0.000 0.000
+	FADE_OUT_RATE = 0.1	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_LOCK_TIME = 0
+	SIZE_MAX = 25000
+	SIZE_MIN = 25000
+	SIZE_CHANGE = 0.0 0.0 0.0
+	SIZE_CHANGE_LOCK_TIME = 0
+	SIZE_CHANGE_START_OR_FINISH = 0		# 0が開始で1が終わり
+	EMITRADIUS = 0
+	ADD_BLEND = 0		# bool
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 50
+END_EFFECT_DATASET
+
 END_SCRIPT		# この行は絶対消さないこと！

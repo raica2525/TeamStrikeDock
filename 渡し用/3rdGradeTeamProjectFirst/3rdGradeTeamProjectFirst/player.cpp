@@ -150,7 +150,7 @@ CPlayer::CPlayer() :CCharacter(OBJTYPE::OBJTYPE_PLAYER)
     m_rank = RANK_1;
     m_hipPosOld = DEFAULT_VECTOR;
 
-	bSpBarrier = false;
+	m_bSpBarrier = false;
 
     //===================================
     // 特殊能力対応周り
@@ -1828,18 +1828,18 @@ void CPlayer::TakeDamage(float fDamage, int nWho, D3DXVECTOR3 damagePos, D3DXVEC
             if (bUseLuckyGuard)
             {
                 // ラッキーガードを使っていないor必殺技バリア使用後なら
-                if (!m_bUsedLuckyGuard||bSpBarrier)
+                if (!m_bUsedLuckyGuard||m_bSpBarrier)
                 {
                     // 乱数の結果で、ラッキーガード
                     int nRandNum = GetRandNum(PLAYER_LUCKY_GUARD_MAX, 1);
 
                     // ファーストヒットガード適用中か必殺技バリア使用後なら、次の一撃を必ずガード
-                    if (IS_BITON(m_exFlag, EX_FLAG_FIRST_HIT_GUARD)||bSpBarrier)
+                    if (IS_BITON(m_exFlag, EX_FLAG_FIRST_HIT_GUARD)||m_bSpBarrier)
                     {
                         nRandNum = 0;
-						if (bSpBarrier)
+						if (m_bSpBarrier)
 						{
-							bSpBarrier = false;
+							m_bSpBarrier = false;
 						}
                     }
 
@@ -3337,9 +3337,9 @@ void CPlayer::ResetStatusEveryRound(void)
     // 必殺ゲージ
     m_fSpGaugeCurrent = 0.0f;
 
-	if (bSpBarrier)
+	if (m_bSpBarrier)
 	{
-		bSpBarrier = false;
+		m_bSpBarrier = false;
 	}
 
     // ラッキーガード（ファーストヒットガードのキャラのみリセット）

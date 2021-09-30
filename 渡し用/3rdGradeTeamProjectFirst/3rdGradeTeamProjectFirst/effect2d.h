@@ -13,6 +13,7 @@
 #include "main.h"
 #include "scene2d.h"
 #include "effectData.h"
+#include "player.h"
 
 //=============================================================================
 // マクロ定義
@@ -41,6 +42,7 @@ public:
     void SetCol(D3DXCOLOR col) { m_col = col; }
     void SetColChangeRate(D3DXCOLOR colChangeRate) { m_colChangeRate = colChangeRate; }
     void SetUseUpdate(bool bUseUpdate) { m_bUseUpdate = bUseUpdate; }
+    void SetPlayer(CPlayer *pPlayer) { m_pPlayer = pPlayer; }
 
 private:
     int m_nTexType;                 // 使うテクスチャの種類
@@ -67,10 +69,12 @@ private:
 
     //int m_nCntAnimTime;           // アニメーション用カウンタ（effect3dから持ってきた際に削除、scene2dに元々あるため）
     bool m_bOneRoundAnim;           // アニメーションが一周したかどうか
+    int m_nAnimParagraph;           // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     int m_nAnimPattern;             // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     int m_nAnimSpeed;               // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     bool m_bRepeat;                 // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
 
     bool m_bUseUpdate;              // 更新処理をするかどうか（反転合成の時に使ったりする）
+    CPlayer *m_pPlayer;             // プレイヤー
 };
 #endif

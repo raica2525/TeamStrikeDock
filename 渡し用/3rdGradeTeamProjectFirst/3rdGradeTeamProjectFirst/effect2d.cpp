@@ -46,11 +46,13 @@ CEffect2D::CEffect2D(CScene::OBJTYPE objtype) :CScene2D(objtype)
     m_bUseAdditiveSynthesis = false;
 
     m_bOneRoundAnim = false;
+    m_nAnimParagraph = 0;
     m_nAnimPattern = 0;
     m_nAnimSpeed = 0;
     m_bRepeat = false;
 
     m_bUseUpdate = true;
+    m_pPlayer = NULL;
 }
 
 //=============================================================================
@@ -154,11 +156,25 @@ void CEffect2D::Update(void)
                 // リピートするなら、一周のフラグと結びつけない
                 if (m_bRepeat)
                 {
-                    SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                    if (m_nAnimParagraph > 2)
+                    {
+                        SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                    }
+                    else
+                    {
+                        SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                    }
                 }
                 else
                 {
-                    m_bOneRoundAnim = SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                    if (m_nAnimParagraph >= 2)
+                    {
+                        m_bOneRoundAnim = SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                    }
+                    else
+                    {
+                        m_bOneRoundAnim = SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                    }
                 }
             }
             else
@@ -190,6 +206,12 @@ void CEffect2D::Update(void)
         if (size.y > SCREEN_HEIGHT * 5)
         {
             size.y = SCREEN_HEIGHT * 5;
+        }
+
+        // プレイヤーのポインタがあるなら、場所を追従
+        if (m_pPlayer)
+        {
+            pos = ConvertScreenPos(m_pPlayer->GetPos() + D3DXVECTOR3(0.0f, m_pPlayer->GetCollisionSizeDeffence().y / 2, 0.0f));
         }
 
         // 位置、大きさ、色を反映
@@ -396,6 +418,7 @@ CEffect2D* CEffect2D::Create(const int nType, D3DXVECTOR3 pos, float fScatterAng
 
         // テクスチャ情報から、アニメーションの有無を取得
         CTexture *pTexture = CManager::GetTexture();
+        pEffect2D->m_nAnimParagraph = pTexture->GetInfo(pCreateInfo->nTexType)->nParagraph;
         pEffect2D->m_nAnimPattern = pTexture->GetInfo(pCreateInfo->nTexType)->nPattern;
         pEffect2D->m_nAnimSpeed = pTexture->GetInfo(pCreateInfo->nTexType)->nSpeed;
         pEffect2D->m_bRepeat = pTexture->GetInfo(pCreateInfo->nTexType)->bRepeat;

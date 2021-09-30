@@ -870,4 +870,15 @@ TEXTURESET
     NAME = data/TEXTURE/105_scatterright.png
 END_TEXTURESET
 
+#---------------------------------------
+# [106] バリア
+#---------------------------------------
+TEXTURESET
+    TYPE = 106
+    NAME = data/TEXTURE/106_barrier.png
+    PARAGRAPH = 4
+    PATTERN = 5
+    SPEED = 3
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

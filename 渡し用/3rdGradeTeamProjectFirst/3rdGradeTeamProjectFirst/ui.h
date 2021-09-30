@@ -251,6 +251,7 @@ private:
 
     //int m_nCntAnimTime;                       // アニメーション用カウンタ（effect3dから持ってきた際に削除、scene2dに元々あるため）
     bool m_bOneRoundAnim;                       // アニメーションが一周したかどうか
+    int m_nAnimParagraph;                       // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     int m_nAnimPattern;                         // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     int m_nAnimSpeed;                           // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）
     bool m_bRepeat;                             // テクスチャ情報保持用（updateで毎回取得するのを防ぐ）

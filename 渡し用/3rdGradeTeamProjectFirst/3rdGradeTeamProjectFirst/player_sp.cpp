@@ -12,6 +12,7 @@
 #include "effect3d.h"
 #include "ball.h"
 #include "game.h"
+#include "effect2d.h"
 
 //=============================================================================
 // •KŽE‹Z‚Ì‘Å‚¿‚¾‚µˆ—
@@ -137,6 +138,8 @@ void CPlayer::SpWallThrough(void)
 //=============================================================================
 void CPlayer::SpBarrier(void)
 {
-	bSpBarrier = true;
-	//‰‰o‚ðo‚·‚È‚ç‚±‚±‚É’Ç‰Á
+	m_bSpBarrier = true;
+	
+    CEffect2D *pBarrier = CEffect2D::Create(CEffectData::TYPE_BARRIER, ConvertScreenPos(GetPos() + D3DXVECTOR3(0.0f, m_collisionSizeDeffence.y / 2, 0.0f)));
+    pBarrier->SetPlayer(this);
 }

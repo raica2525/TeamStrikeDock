@@ -89,6 +89,7 @@ public:
         TYPE_CHARGE_SWING_LEFT,     // チャージスイングエフェクト左
         TYPE_CHARGE_SWING_RIGHT,    // チャージスイングエフェクト右
         TYPE_CHARGE_LIGHT,          // チャージ時の光
+        TYPE_BARRIER,               // バリア
     }TYPE;  // 生成するエフェクトの種類
 
     typedef enum

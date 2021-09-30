@@ -29,6 +29,7 @@ CTexture::CTexture()
     for (int nCount = 0; nCount < MAX_TEXTURE; nCount++)
     {
         m_aInfo[nCount].pTexture = NULL;
+        m_aInfo[nCount].nParagraph = 1; // 1段落目
         m_aInfo[nCount].nPattern = 0;
         m_aInfo[nCount].nSpeed = 0;
         m_aInfo[nCount].bRepeat = false;
@@ -105,6 +106,10 @@ HRESULT CTexture::Init(void)
                             //テクスチャの読み込み
                             LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
                             D3DXCreateTextureFromFile(pDevice, cLoadName, &m_aInfo[nNumType].pTexture);
+                        }
+                        else if (strcmp(cHeadText, "PARAGRAPH") == 0)
+                        {
+                            sscanf(cReadText, "%s %s %d", &cDie, &cDie, &m_aInfo[nNumType].nParagraph);
                         }
                         else if (strcmp(cHeadText, "PATTERN") == 0)
                         {

@@ -536,7 +536,9 @@ private:
     int m_nCntStopRedLifeTime;               // 赤ゲージ停止時間のカウンタ
     RANK m_rank;                             // 順位
     D3DXVECTOR3 m_hipPosOld;                 // 1F前の腰の位置
-	bool bSpBarrier;						 // 必殺技によるバリアを獲得しているかどうか
+
+	bool m_bSpBarrier;						 // 必殺技によるバリアを獲得しているかどうか
+
     //===================================    
     // 特殊能力対応周り                      
     //===================================    

@@ -47,6 +47,7 @@ CUI::CUI(CScene::OBJTYPE objtype) :CScene2D(objtype)
     m_memoryCol = DEFAULT_COLOR;
 
     m_bOneRoundAnim = false;
+    m_nAnimParagraph = 0;
     m_nAnimPattern = 0;
     m_nAnimSpeed = 0;
     m_bRepeat = false;
@@ -112,11 +113,25 @@ void CUI::Update(void)
             // リピートするなら、一周のフラグと結びつけない
             if (m_bRepeat)
             {
-                CScene2D::SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                if (m_nAnimParagraph > 2)
+                {
+                    CScene2D::SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                }
+                else
+                {
+                    CScene2D::SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                }
             }
             else
             {
-                m_bOneRoundAnim = CScene2D::SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                if (m_nAnimParagraph > 2)
+                {
+                    m_bOneRoundAnim = CScene2D::SetAllParagraphAnimation(m_nAnimParagraph, m_nAnimSpeed, m_nAnimPattern);
+                }
+                else
+                {
+                    m_bOneRoundAnim = CScene2D::SetAnimation(m_nAnimSpeed, m_nAnimPattern);
+                }
             }
         }
     }
@@ -222,6 +237,7 @@ CUI *CUI::Create(int nTexType, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nRotAngle,
 
     // テクスチャ情報から、アニメーションの有無等を取得
     CTexture *pTexture = CManager::GetTexture();
+    pUI->m_nAnimParagraph = pTexture->GetInfo(pUI->m_nTexType)->nParagraph;
     pUI->m_nAnimPattern = pTexture->GetInfo(pUI->m_nTexType)->nPattern;
     pUI->m_nAnimSpeed = pTexture->GetInfo(pUI->m_nTexType)->nSpeed;
     pUI->m_bRepeat = pTexture->GetInfo(pUI->m_nTexType)->bRepeat;

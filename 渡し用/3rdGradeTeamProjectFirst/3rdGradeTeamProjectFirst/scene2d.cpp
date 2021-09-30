@@ -52,6 +52,7 @@ CScene2D::CScene2D(OBJTYPE objType) :CScene(objType)
     m_size = DEFAULT_VECTOR;
     memset(m_anCounterAnim, 0, sizeof(m_anCounterAnim));
     memset(m_anPatternAnim, 0, sizeof(m_anPatternAnim));
+    memset(m_anParagraphAnim, 0, sizeof(m_anParagraphAnim));
 
     m_nNumTexture = 0;
     memset(m_aBrend, BREND_NORMAL, sizeof(m_aBrend));
@@ -686,6 +687,73 @@ void CScene2D::SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpe
 
     //頂点データをアンロックする
     m_pVtxBuff->Unlock();
+}
+
+//=============================================================
+// 段落のあるアニメーションの設定（全段落用）
+// Author : 後藤慎之助
+//=============================================================
+bool CScene2D::SetAllParagraphAnimation(int nMaxParagraph, int nSpeed, int nPattern, int nTex)
+{
+    // 変数宣言
+    bool bOneRound = false;   // アニメーションが一周したかどうか
+    bool bNextParagraoh = false; // 次の段落に行くかどうか
+
+    // アニメーション
+    m_anCounterAnim[nTex]++;	//カウンタ加算
+    if (m_anCounterAnim[nTex] == nSpeed)//速さ
+    {
+        // オーバーフロー防止
+        m_anCounterAnim[nTex] = 0;  // カウンタを0に戻す
+
+        // アニメーションが一周したら
+        if ((m_anPatternAnim[nTex] + 1) % nPattern == 0)
+        {
+            // 次の段落へ
+            bNextParagraoh = true;
+        }
+
+        // アニメーションを切り替える
+        m_anPatternAnim[nTex] = (m_anPatternAnim[nTex] + 1) % nPattern;  // 枚数
+    }
+
+    VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
+
+                            // 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+    m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);	// この書式は変えないこと
+
+    // テクスチャ座標の設定
+    // 変数宣言
+    float fEqualDivisionX = 0.0f;   // テクスチャを等分する（縦）
+    float fEqualDivisionY = 0.0f;   // テクスチャを等分する（横）
+
+    // 何等分するか計算
+    fEqualDivisionX = Divide(1.0f, (float)nPattern);
+    fEqualDivisionY = Divide(1.0f, (float)nMaxParagraph);
+
+    // テクスチャの座標を反映
+    pVtx[0].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX, fEqualDivisionY * m_anParagraphAnim[nTex]);
+    pVtx[1].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX + fEqualDivisionX, fEqualDivisionY * m_anParagraphAnim[nTex]);
+    pVtx[2].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX, fEqualDivisionY * (m_anParagraphAnim[nTex] + 1));
+    pVtx[3].tex[nTex] = D3DXVECTOR2(m_anPatternAnim[nTex] * fEqualDivisionX + fEqualDivisionX, fEqualDivisionY * (m_anParagraphAnim[nTex] + 1));
+
+    //頂点データをアンロックする
+    m_pVtxBuff->Unlock();
+
+    // 次の段落へ
+    if (bNextParagraoh)
+    {
+        m_anParagraphAnim[nTex]++;
+
+        // 全段落回ったら
+        if (m_anParagraphAnim[nTex] >= nMaxParagraph)
+        {
+            // 一周のフラグをtrueに
+            bOneRound = true;
+        }
+    }
+
+    return bOneRound;
 }
 
 //=============================================================

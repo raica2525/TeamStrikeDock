@@ -62,6 +62,7 @@ public:
     bool SetFlowingAnimation(int nSpeed, int nPattern, bool bRightToLeft, DIRECT direct, int nTex = 0);         // 流れるアニメーション
     void SetTextureRange(int nRange, int nPattern, int nTex = 0);                                               // テクスチャの描画範囲を設定
     void SetParagraphAnimation(int nParagraph, int nMaxParagraph, int nSpeed, int nPattern, int nTex = 0);      // 段落のあるアニメーション
+    bool SetAllParagraphAnimation(int nMaxParagraph, int nSpeed, int nPattern, int nTex = 0);                   // 段落のあるアニメーション
     void SetTexturePlace(int nPlace, int nPattern, int nTex = 0);                                               // テクスチャの描画場所を決める
     void SetParagraphTexturePlace(int nPlace, int nParagraph, int nMaxParagraph, int nPattern, int nTex = 0);   // 段落のあるアニメーションから一部分を切り取る
     int CountAnimation(int nSpeed, int nPattern);                                                               // アニメーションのカウンタを利用する
@@ -97,6 +98,7 @@ private:
     D3DXVECTOR3             m_size;                         // 大きさ
     int m_anCounterAnim[MAX_BREND_TEXTURE];                 // アニメーションカウンタ
     int m_anPatternAnim[MAX_BREND_TEXTURE];                 // アニメーションパターン
+    int m_anParagraphAnim[MAX_BREND_TEXTURE];               // アニメーション段落
 
     int m_nNumTexture;						                // 使用中のテクスチャ数
     BREND m_aBrend[MAX_BREND_TEXTURE];		                // ブレンド方法

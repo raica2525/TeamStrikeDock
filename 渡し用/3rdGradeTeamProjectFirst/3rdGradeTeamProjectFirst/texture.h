@@ -29,6 +29,7 @@ public:
     typedef struct
     {
         LPDIRECT3DTEXTURE9 pTexture;
+        int nParagraph;
         int nPattern;
         int nSpeed;
         bool bRepeat;
