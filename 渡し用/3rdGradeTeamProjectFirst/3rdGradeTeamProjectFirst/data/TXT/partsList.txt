@@ -95,7 +95,7 @@ PARTS_PARAM
 	WIDTH = 200		# 攻横（基本正方形）
 	HEIGHT = 200		# 攻縦（基本正方形）
 	PARAM0 = 17		# 使うモデルデータ番号1、武器
-	PARAM1 = 0		# 必殺技番号
+	PARAM1 = 3		# 必殺技番号
 	PARAM2 = 1000		# 必殺技ゲージ量1～1000
 	PARAM3 = 0		#
 	PARAM4 = 0		#
