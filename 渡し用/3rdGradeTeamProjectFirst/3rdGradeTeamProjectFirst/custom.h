@@ -136,6 +136,7 @@ public:
         int nNumSelectUp;               // 上半身パーツ選択
         int nNumSelectDown;             // 下半身パーツ選択
         int nNumSelectWep;              // 武器パーツ選択
+		int nOsusumeOld;				// 前回のおすすめの情報
         CText *pText_Head;              // 頭パーツの名前表示
         CText *pText_Up;                // 上半身パーツの名前表示
         CText *pText_Down;              // 下半身パーツの名前表示
