@@ -339,6 +339,8 @@ public:
         EX_FLAG_FIRST_HIT_GUARD = 0x001 << 4,  // ファーストヒットガード
         EX_FLAG_TRAIL_GREEN = 0x001 << 5,      // 武器軌跡色:緑
         EX_FLAG_TRAIL_PURPLE = 0x001 << 6,     // 武器軌跡色:紫
+        EX_FLAG_SAVE_SP_GAUGE = 0x001 << 7,    // 必殺ゲージ保持
+        EX_FLAG_ROUND_HEAL = 0x001 << 8,       // ラウンドリジェネ
     }EX_FLAG;
 
     // 必殺技（SPショット）の種類

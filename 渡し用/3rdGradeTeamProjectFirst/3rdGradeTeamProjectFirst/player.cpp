@@ -3365,9 +3365,31 @@ void CPlayer::GainSpGauge(bool bExAdd)
 //=============================================================================
 void CPlayer::ResetStatusEveryRound(void)
 {
-    // 必殺ゲージ
-    m_fSpGaugeCurrent = 0.0f;
+    // ラウンドリジェネ
+    if (IS_BITON(m_exFlag, EX_FLAG_ROUND_HEAL))
+    {
+        // 最大HPなら、エフェクトも回復もない
+        if (m_fLife != m_fDef)
+        {
+            // 回復
+            const float HEAL_VALUE = 0.0011f;
+            m_fLife += m_fDef * HEAL_VALUE;
 
+            // 回復の上限
+            if (m_fLife > m_fDef)
+            {
+                m_fLife = m_fDef;
+            }
+        }
+    }
+
+    // 必殺ゲージ
+    if (IS_BITOFF(m_exFlag, EX_FLAG_SAVE_SP_GAUGE))
+    {
+        m_fSpGaugeCurrent = 0.0f;
+    }
+
+    // バリア状態をリセット
 	if (m_bSpBarrier)
 	{
 		m_bSpBarrier = false;

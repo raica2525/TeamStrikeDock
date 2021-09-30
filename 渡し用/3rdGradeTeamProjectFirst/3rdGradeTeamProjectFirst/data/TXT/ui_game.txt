@@ -226,4 +226,5 @@ UISET
 	PARAM3 = 0.0
 END_UISET
 
+
 END_SCRIPT		# この行は絶対消さないこと！

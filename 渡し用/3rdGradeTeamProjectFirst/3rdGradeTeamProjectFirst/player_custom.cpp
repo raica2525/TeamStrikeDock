@@ -168,6 +168,32 @@ void CPlayer::CustomExName(char* pName, int exFlag)
         bExist = true;
     }
 
+    if (IS_BITON(exFlag, EX_FLAG_SAVE_SP_GAUGE))
+    {
+        if (!bExist)
+        {
+            wsprintf(pName, "必殺ゲージ持ち越し");
+        }
+        else
+        {
+            strcat(pName, "/必殺ゲージ持ち越し");
+        }
+        bExist = true;
+    }
+
+    if (IS_BITON(exFlag, EX_FLAG_ROUND_HEAL))
+    {
+        if (!bExist)
+        {
+            wsprintf(pName, "ラウンドリジェネ");
+        }
+        else
+        {
+            strcat(pName, "/ラウンドリジェネ");
+        }
+        bExist = true;
+    }
+
     if (IS_BITON(exFlag, EX_FLAG_DONT_CATCH))
     {
         if (!bExist)

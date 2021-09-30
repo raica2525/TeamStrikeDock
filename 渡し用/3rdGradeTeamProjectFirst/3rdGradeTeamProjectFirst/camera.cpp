@@ -15,6 +15,7 @@
 #include "game.h"
 #include "character.h"
 #include "player.h"
+#include "text.h"
 
 //========================
 // 静的メンバ変数宣言
@@ -261,12 +262,20 @@ void CCamera::Update(void)
             CGame::SetCurrentSpShot(false);
             bResetCamera = true;
         }
+        else if (m_nCntState == 80)
+        {
+            CText *pSpName = CGame::GetSpText();
+            if (pSpName)
+            {
+                pSpName->SetColor(TEXT_NOT_EXIST_COLOR);
+            }
+        }
 
         // 必殺技使用者にロックオン
         CPlayer *pUser = CGame::GetSpPlayer();
         if (pUser)
         {
-            m_pos = pUser->GetPos() + D3DXVECTOR3(0.0f, pUser->GetCollisionSizeDeffence().y / 2, 0.0f);
+            m_pos = pUser->GetPartsPos(CPlayer::PARTS_HEAD);
             m_posRDest = m_pos;
         }
 

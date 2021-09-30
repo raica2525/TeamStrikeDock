@@ -22,6 +22,7 @@ class CPause;
 class CUI;
 class CEffect2D;
 class CNumberArray;
+class CText;
 
 //*****************************************************************************
 // マクロ定義
@@ -138,6 +139,7 @@ public:
     static int GetPlayerRankInThisRound(int nIdx) { return m_anPlayerRankInThisRound[nIdx]; }  // 現ラウンドのプレイヤーの順位を取得
     static CPlayer*GetSpPlayer(void) { return m_pSpPlayer; }
     static bool GetCurrentSpShot(void) { return m_bCurrentSpShot; }
+    static CText *GetSpText(void) { return m_pSpText; }
 
     /*========================================================
     // 便利な関数
@@ -175,6 +177,7 @@ private:
 
     static CPlayer *m_pSpPlayer;                           // ストライクシュートプレイヤーのポインタ
     static bool m_bCurrentSpShot;                          // 現在ストライクシュートを撃っているかどうか
+    static CText *m_pSpText;                               // ストライクシュートの名前
 
     int m_nCntGameTime;                                    // ゲーム時間のカウンタ
     bool m_bFirestRound;                                   // 最初のラウンドかどうか

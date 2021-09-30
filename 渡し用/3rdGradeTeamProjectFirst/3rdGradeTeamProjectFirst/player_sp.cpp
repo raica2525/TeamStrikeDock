@@ -15,6 +15,7 @@
 #include "effect2d.h"
 #include "manager.h"
 #include "camera.h"
+#include "text.h"
 
 //=============================================================================
 // 必殺技の打ちだし処理
@@ -28,6 +29,25 @@ void CPlayer::EmitSpShot(void)
         // 必殺技使用者を登録
         CGame::SetSpPlayer(this);
         CManager::GetCamera()->SetState(CCamera::STATE_SP);
+
+        // エフェクトと文字を出す
+        CEffect2D *pBg = CEffect2D::Create(CEffectData::TYPE_SS_BG, D3DXVECTOR3(640.0f, 210.0f, 0.0f));
+        pBg->SetSize(D3DXVECTOR3(1280.0f, 300.0f, 0.0f));
+        CEffect2D *pText = CEffect2D::Create(CEffectData::TYPE_SS_TEXT, D3DXVECTOR3(640.0f, 210.0f, 0.0f));
+        pText->SetSize(D3DXVECTOR3(550.0f, 550.0f, 0.0f));
+        CText *pSpName = CGame::GetSpText();
+        if (pSpName)
+        {
+            char cSpName[256];
+            CustomSpName(cSpName);
+            pSpName->SetText(cSpName);
+            pSpName->SetColor(TEXT_EXIST_COLOR);
+        }
+
+        D3DXVECTOR3 hipPos = GetPartsPos(PARTS_HIP);
+        CEffect3D::Create(CEffectData::TYPE_SS_1, hipPos);
+        CEffect3D::Create(CEffectData::TYPE_SS_2, hipPos);
+        CEffect3D::Create(CEffectData::TYPE_SS_3, hipPos);
 
         // 必殺ボイス
         switch (m_voiceSet)

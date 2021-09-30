@@ -967,6 +967,9 @@ END_TEXTURESET
 TEXTURESET
     TYPE = 117
     NAME = data/TEXTURE/117_blitz.png
+    PARAGRAPH = 5
+    PATTERN = 5
+    SPEED = 3
 END_TEXTURESET
 
 #---------------------------------------

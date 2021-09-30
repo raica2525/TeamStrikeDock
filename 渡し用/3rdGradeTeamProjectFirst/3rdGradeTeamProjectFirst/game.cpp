@@ -28,6 +28,7 @@
 #include "effect2d.h"
 #include "effect3d.h"
 #include "number_array.h"
+#include "text.h"
 
 //========================================
 // マクロ定義
@@ -70,6 +71,7 @@ CGame::RESERVE_SHOOT CGame::m_aReserveShoot[] = {};
 
 CPlayer *CGame::m_pSpPlayer = NULL;
 bool CGame::m_bCurrentSpShot = false;
+CText *CGame::m_pSpText = NULL;
 
 //=============================================================================
 // ゲームのコンストラクタ
@@ -79,6 +81,7 @@ CGame::CGame()
 {
     m_bStopObjUpdate = false;
     m_bCurrentSpShot = false;
+    m_pSpText = NULL;
 
     memset(m_apPlayer, 0, sizeof(m_apPlayer));
     memset(m_anPlayerRank, 0, sizeof(m_anPlayerRank));
@@ -134,6 +137,10 @@ CGame::~CGame()
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+    // テキスト生成
+    m_pSpText = CText::Create(D3DXVECTOR3(640.0f, 500.0f, 0.0f), 100,
+        "なし", CText::ALIGN_CENTER, "Reggae One", TEXT_NOT_EXIST_COLOR);
+
     // 定義
     const float SPLIT_RATE_UNDER_3 = 0.5f;
     const float SPLIT_RATE_ABOVE_2 = 0.333f;

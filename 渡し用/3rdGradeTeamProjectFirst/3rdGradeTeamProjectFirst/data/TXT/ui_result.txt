@@ -101,6 +101,12 @@ UISET
 	TYPE = 96
 	POS = 755.0 130.0
 	SIZE = 133.0 114.0
+	ACTION0 = 2		# 補助値はこの下に書いていく
+	LOCK = 0		# bool
+	PARAM0 = 1.0
+	PARAM2 = 1
+	PARAM3 = 4
+	PARAM4 = 25
 END_UISET
 
 #---------------------------------------
