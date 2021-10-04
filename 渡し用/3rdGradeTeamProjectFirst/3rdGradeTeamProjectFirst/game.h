@@ -83,6 +83,7 @@ public:
     void RoundStart(void);      // ラウンド開始
     void InButtle(void);        // バトル中
     void BlowMoment(void);      // 一撃の瞬間
+    void BlowMomentMakeSureReset(void);   // 一撃の瞬間時、念のためリセットするもの
     void JudgmentFinish(void);  // 勝敗判定
 
     /*========================================================

@@ -590,6 +590,34 @@ void CGame::BlowMoment(void)
 
         // ボールは消しておく
         m_pBall->SetDispOff();
+
+        // 一撃の瞬間時、念のためリセットするもの
+        BlowMomentMakeSureReset();
+    }
+}
+
+//=============================================================================
+// 一撃の瞬間時、念のためリセットするもの
+// Author : 後藤慎之助
+//=============================================================================
+void CGame::BlowMomentMakeSureReset(void)
+{
+    // 反転合成を、念のため止める（AIつよい同士で戦わせた際、反転合成が戻らないままゲームが進行したため）（←打ち始め1Fに当たったから?）
+    if (m_pEffect2d_Nega && m_pEffect2d_Posi)
+    {
+        m_pEffect2d_Nega->SetSize(DEFAULT_VECTOR);
+        m_pEffect2d_Posi->SetSize(DEFAULT_VECTOR);
+        m_pEffect2d_Nega->SetUseUpdate(false);
+        m_pEffect2d_Posi->SetUseUpdate(false);
+        m_pEffect2d_Nega->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
+        m_pEffect2d_Posi->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
+    }
+
+    // 現在必殺技を使っている状況を、念のためリセットする（必殺技を使った直後1Fに倒されると、ここのフラグが戻らなくなったため）
+    m_bCurrentSpShot = false;
+    if (m_pSpText)
+    {
+        m_pSpText->SetColor(TEXT_NOT_EXIST_COLOR);
     }
 }
 
@@ -607,17 +635,6 @@ void CGame::JudgmentFinish(void)
     {
         // カウンタをリセット
         m_nCntGameTime = 0;
-
-        // 反転合成を、念のため止める（AIつよい同士で戦わせた際、反転合成が戻らないままゲームが進行したため）（←打ち始め1Fに当たったから?）
-        if (m_pEffect2d_Nega && m_pEffect2d_Posi)
-        {
-            m_pEffect2d_Nega->SetSize(DEFAULT_VECTOR);
-            m_pEffect2d_Posi->SetSize(DEFAULT_VECTOR);
-            m_pEffect2d_Nega->SetUseUpdate(false);
-            m_pEffect2d_Posi->SetUseUpdate(false);
-            m_pEffect2d_Nega->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
-            m_pEffect2d_Posi->SetRotVertex(0.0f);     // 更新を止める代わりに、頂点はここで調整
-        }
 
         // 死んだプレイヤーが全体のプレイヤー-1に達したら
         if (m_nNumDeathPlayer >= m_nNumAllPlayer - 1)

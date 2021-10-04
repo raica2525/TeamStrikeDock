@@ -47,7 +47,7 @@
 #define MAX_SPD 2700.0f
 #define MAX_WEI 4100.0f
 
-#define SHADOW_POS_Y 20.0f
+#define SHADOW_POS_Y 2.0f
 
 //=============================================================================
 // コンストラクタ
@@ -2591,35 +2591,31 @@ void CPlayer::AttackGenerator(D3DXVECTOR3 pos)
 //=============================================================================
 void CPlayer::SwingCharge(void)
 {
+    // スイングボタンから指を離したか、最大チャージに達したら
+    if (m_controlInput.bReleaseX || m_nCntSwingCharge >= m_nSwingChargeMax)
+    {
+        // 素振り音
+        CManager::SoundPlay(CSound::LABEL_SE_SWISH);
+
+        // スイングのクールタイム等決定
+        m_attackState = ATTACK_STATE_SWING;
+        m_nCntAttackTime = ATTACK_SWING_WHOLE_FRAME;
+        m_nCntAttackAnimTime = PLAYER_ATTACK_ANIM_MIN_FRAME;
+    }
+
     // スイングボタンを押し続けたら
     if (m_controlInput.bPressX)
     {
         // チャージカウンタアップ
         m_nCntSwingCharge++;
     }
-
-    // スイングボタンから指を離したら
-    if (m_controlInput.bReleaseX)
+    else
     {
-        // 素振り音
-        CManager::SoundPlay(CSound::LABEL_SE_SWISH);
-
-        // スイングのクールタイム等決定
-        m_attackState = ATTACK_STATE_SWING;
-        m_nCntAttackTime = ATTACK_SWING_WHOLE_FRAME;
-        m_nCntAttackAnimTime = PLAYER_ATTACK_ANIM_MIN_FRAME;
-    }
-
-    // 最大チャージに達したら
-    if (m_nCntSwingCharge >= m_nSwingChargeMax)
-    {
-        // 素振り音
-        CManager::SoundPlay(CSound::LABEL_SE_SWISH);
-
-        // スイングのクールタイム等決定
-        m_attackState = ATTACK_STATE_SWING;
-        m_nCntAttackTime = ATTACK_SWING_WHOLE_FRAME;
-        m_nCntAttackAnimTime = PLAYER_ATTACK_ANIM_MIN_FRAME;
+        // 何らかの拍子でスイングボタンを離したのに、スイングに移行できていないなら、チャージカウンタをリセット
+        if (m_attackState != ATTACK_STATE_SWING)
+        {
+            m_nCntSwingCharge = 0;
+        }
     }
 
     // チャージエフェクト
@@ -3365,20 +3361,24 @@ void CPlayer::GainSpGauge(bool bExAdd)
 //=============================================================================
 void CPlayer::ResetStatusEveryRound(void)
 {
-    // ラウンドリジェネ
-    if (IS_BITON(m_exFlag, EX_FLAG_ROUND_HEAL))
+    // 生存しているなら
+    if (m_bDisp)
     {
-        // 最大HPなら、エフェクトも回復もない
-        if (m_fLife != m_fDef)
+        // ラウンドリジェネ
+        if (IS_BITON(m_exFlag, EX_FLAG_ROUND_HEAL))
         {
-            // 回復
-            const float HEAL_VALUE = 0.0011f;
-            m_fLife += m_fDef * HEAL_VALUE;
-
-            // 回復の上限
-            if (m_fLife > m_fDef)
+            // 最大HPなら、エフェクトも回復もない
+            if (m_fLife != m_fDef)
             {
-                m_fLife = m_fDef;
+                // 回復
+                const float HEAL_VALUE = 0.0011f;
+                m_fLife += m_fDef * HEAL_VALUE;
+
+                // 回復の上限
+                if (m_fLife > m_fDef)
+                {
+                    m_fLife = m_fDef;
+                }
             }
         }
     }
