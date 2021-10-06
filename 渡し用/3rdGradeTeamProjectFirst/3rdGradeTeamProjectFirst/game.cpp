@@ -490,7 +490,7 @@ void CGame::InButtle(void)
 
     //================================================================================
     // ポーズ処理
-    if (!m_bStopObjUpdate)
+    if (!m_bStopObjUpdate && !m_bCurrentSpShot)
     {
         const int NO_PAUSE_PLAYER = -1; // 誰もポーズを押していない
 
