@@ -16,6 +16,11 @@
 // マクロ定義
 //================================================
 
+#define SHAKE_VALUE_BALL_HIT_WALL 6.25f
+#define SHAKE_VALUE_SHOOT_BALL_SMALL 25.0f
+#define SHAKE_VALUE_SHOOT_BALL_BIG 50.0f
+#define SHAKE_VALUE_SHOOT_BALL_ULTRA 50.0f
+
 #define CAMERA_DEFAULT_ROT D3DXToRadian(90.0f)
 
 // ロックオン時のカメラの位置の微調整
@@ -63,17 +68,32 @@ public:
         SETTING_CUSTOM,           // カスタマイズ中
     }SETTING;
 
+    // カメラの振動段階
+    typedef enum
+    {
+        SHAKE_PHASE_NONE = 0,
+        SHAKE_PHASE_1,       
+        SHAKE_PHASE_2,       
+        SHAKE_PHASE_3,       
+        SHAKE_PHASE_4,
+        SHAKE_PHASE_5,
+        SHAKE_PHASE_6,
+        SHAKE_PHASE_MAX
+    }SHAKE_PHASE;
+
     HRESULT Init(void);
     void Uninit(void);
     void Update(void);
     CCamera *Create(void);
     void ResetCamera(D3DXVECTOR3 pos, float fRot, SETTING setting);     // カメラのリセット
+    void Shake(void);
 
     /*========================================================
     // セッター
     //======================================================*/
-    void SetState(STATE state) { m_nCntState = 0; m_state = state; }    // 状態をセットするときは、カウンタも同時にリセット
+    void SetState(STATE state) { m_nCntState = 0; m_shakePhase = SHAKE_PHASE_NONE; m_state = state; }    // 状態をセットするときは、カウンタも同時にリセット
     void SetLookAt(D3DXVECTOR3 pos) { m_posRDest = pos; }
+    void SetShake(float fShakeValue, bool bResetShake = true);
 
     /*========================================================
     // ゲッター
@@ -97,6 +117,8 @@ private:
     float		m_fPhi;             // ファイ
     float		m_fTheta;           // シータ
     int m_nCntState;                // 状態カウンタ
+    int m_shakePhase;               // 振動段階
+    float m_fShakeValue;            // 振動量
 };
 
 #endif

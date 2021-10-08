@@ -698,6 +698,24 @@ void CPlayer::Update(void)
             }
             else
             {
+                // カメラの振動
+                CBall*pBall = CGame::GetBall();
+                if (pBall)
+                {
+                    if (pBall->GetSpeed() < BALL_SHOOT_BIG_HIT_SPEED)
+                    {
+                        CManager::GetCamera()->CCamera::SetShake(SHAKE_VALUE_SHOOT_BALL_SMALL, false);
+                    }
+                    else if (pBall->GetSpeed() >= BALL_SHOOT_BIG_HIT_SPEED && pBall->GetSpeed() < BALL_SHOOT_ULTRA_HIT_SPEED)
+                    {
+                        CManager::GetCamera()->CCamera::SetShake(SHAKE_VALUE_SHOOT_BALL_BIG, false);
+                    }
+                    else if (pBall->GetSpeed() >= BALL_SHOOT_ULTRA_HIT_SPEED)
+                    {
+                        CManager::GetCamera()->CCamera::SetShake(SHAKE_VALUE_SHOOT_BALL_ULTRA, false);
+                    }
+                }
+
                 // 硬直時間をカウント
                 m_nCntStopTime--;
 

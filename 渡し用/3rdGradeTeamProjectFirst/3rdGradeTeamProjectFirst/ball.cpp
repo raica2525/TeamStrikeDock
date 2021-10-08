@@ -22,6 +22,7 @@
 #include "outline.h"
 #include "input.h"
 #include "locus.h"
+#include "camera.h"
 
 //=============================================================================
 // コンストラクタ
@@ -1036,6 +1037,9 @@ D3DXVECTOR3 CBall::HitWall(D3DXVECTOR3 pos, HIT_WALL hitWall)
             // 壁ヒットエフェクト
             CEffect3D::Emit(CEffectData::TYPE_WALL_HIT_SMOKE, returnPos, m_posOld);
             CEffect3D::Emit(CEffectData::TYPE_WALL_HIT_SHOCK, returnPos, m_posOld);
+
+            // カメラの振動
+            CManager::GetCamera()->CCamera::SetShake(SHAKE_VALUE_BALL_HIT_WALL);
         }
     }
 

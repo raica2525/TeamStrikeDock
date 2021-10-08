@@ -45,6 +45,8 @@ CCamera::CCamera()
     m_fPhi = 0.0f;
     m_fTheta = 1;
     m_nCntState = 0;
+    m_shakePhase = SHAKE_PHASE_NONE;
+    m_fShakeValue = 0.0f;
 }
 
 //=============================================================================
@@ -87,11 +89,98 @@ void CCamera::ResetCamera(D3DXVECTOR3 pos, float fRot, SETTING setting)
     m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
     m_fPhi = fRot;
     m_nCntState = 0;
+    m_shakePhase = SHAKE_PHASE_NONE;
 
     // 位置を更新(球面座標の公式)
     m_posV.x = m_fDistance * (sin(m_fTheta) * cos(m_fPhi)) + m_pos.x;
     m_posV.y = (m_fDistance / 2.0f) * cos(m_fTheta) + m_pos.y;
     m_posV.z = m_fDistance * (sin(m_fTheta) * sin(m_fPhi)) + m_pos.z;
+}
+
+//=============================================================================
+// カメラの振動処理
+// Author : 後藤慎之助
+//=============================================================================
+void CCamera::Shake(void)
+{
+    // カウンタを加算
+    m_nCntState++;
+
+    // 位置を変える
+    const int CHANGE_FRAME = 3;
+    D3DXVECTOR3 cameraPos = m_pos;
+    switch (m_shakePhase)
+    {
+    case SHAKE_PHASE_1:
+        cameraPos.x += m_fShakeValue;
+        cameraPos.y += m_fShakeValue;
+        break;
+    case SHAKE_PHASE_2:
+        cameraPos.x += -m_fShakeValue;
+        cameraPos.y += -m_fShakeValue;
+        break;
+    case SHAKE_PHASE_3:
+        cameraPos.x += m_fShakeValue;
+        cameraPos.y += -m_fShakeValue;
+        break;
+    case SHAKE_PHASE_4:
+        cameraPos.x += -m_fShakeValue;
+        cameraPos.y += m_fShakeValue;
+        break;
+    case SHAKE_PHASE_5:
+        cameraPos.x += m_fShakeValue / 2;
+        cameraPos.y += m_fShakeValue / 2;
+        break;
+    case SHAKE_PHASE_6:
+        cameraPos.x -= m_fShakeValue / 2;
+        cameraPos.y -= m_fShakeValue / 2;
+        break;
+    }
+
+    // 次の振動段階へ
+    if (m_nCntState >= CHANGE_FRAME)
+    {
+        m_nCntState = 0;
+        m_shakePhase++;
+        if (m_shakePhase >= SHAKE_PHASE_MAX)
+        {
+            m_shakePhase = SHAKE_PHASE_NONE;
+        }
+    }
+
+    // 位置の目的地を更新(球面座標の公式)
+    m_posVDest.x = m_fDistance * (sin(m_fTheta) * cos(m_fPhi)) + cameraPos.x;
+    m_posVDest.y = (m_fDistance / 2.0f) * cos(m_fTheta) + cameraPos.y;
+    m_posVDest.z = m_fDistance * (sin(m_fTheta) * sin(m_fPhi)) + cameraPos.z;
+
+    // カメラの位置と注視点を更新
+    m_posR += (m_posRDest - m_posR) * CAMERA_MOVE_RATE;
+    m_posV += (m_posVDest - m_posV) * CAMERA_MOVE_RATE;
+}
+
+//=============================================================================
+// カメラ振動設定
+// Author : 後藤慎之助
+//=============================================================================
+void CCamera::SetShake(float fShakeValue, bool bResetShake)
+{
+    if (CGame::GetState() == CGame::STATE_BUTTLE)
+    {
+        m_fShakeValue = fShakeValue;
+        if (m_shakePhase == SHAKE_PHASE_NONE)
+        {
+            m_nCntState = 0;
+            m_shakePhase = SHAKE_PHASE_1;
+        }
+        else
+        {
+            if (bResetShake)
+            {
+                m_nCntState = 0;
+                m_shakePhase = SHAKE_PHASE_1;
+            }
+        }
+    }
 }
 
 //=============================================================================
@@ -119,6 +208,7 @@ HRESULT CCamera::Init(void)
     m_fPhi = 0.0f;
     m_fTheta = 1;
     m_nCntState = 0;
+    m_shakePhase = SHAKE_PHASE_NONE;
 
     // ビューマトリックスの作成
     D3DXMatrixLookAtLH(&m_mtxView, &m_posV, &m_posR, &m_vecU);
@@ -170,14 +260,21 @@ void CCamera::Update(void)
         // カメラと自身の距離
         m_fDistance = CAMERA_LOCK_ON_OFFSET;
 
-        // 位置の目的地を更新(球面座標の公式)
-        m_posVDest.x = m_fDistance * (sin(m_fTheta) * cos(m_fPhi)) + m_pos.x;
-        m_posVDest.y = (m_fDistance / 2.0f) * cos(m_fTheta) + m_pos.y;
-        m_posVDest.z = m_fDistance * (sin(m_fTheta) * sin(m_fPhi)) + m_pos.z;
+        if (m_shakePhase == SHAKE_PHASE_NONE)
+        {
+            // 位置の目的地を更新(球面座標の公式)
+            m_posVDest.x = m_fDistance * (sin(m_fTheta) * cos(m_fPhi)) + m_pos.x;
+            m_posVDest.y = (m_fDistance / 2.0f) * cos(m_fTheta) + m_pos.y;
+            m_posVDest.z = m_fDistance * (sin(m_fTheta) * sin(m_fPhi)) + m_pos.z;
 
-        // カメラの位置と注視点を更新
-        m_posR += (m_posRDest - m_posR) * CAMERA_MOVE_RATE;
-        m_posV += (m_posVDest - m_posV) * CAMERA_MOVE_RATE;
+            // カメラの位置と注視点を更新
+            m_posR += (m_posRDest - m_posR) * CAMERA_MOVE_RATE;
+            m_posV += (m_posVDest - m_posV) * CAMERA_MOVE_RATE;
+        }
+        else
+        {
+            Shake();
+        }
 
         break;
 
