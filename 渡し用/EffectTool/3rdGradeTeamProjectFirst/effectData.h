@@ -19,11 +19,11 @@
 #define EFFECT_PI 314                   // 円の表現の際に使う値（これをエフェクトの浮動小数点で割る）
 #define EFFECT_FLOATING_POINT 100.0f    // エフェクトの浮動小数点
 
-// ブロック等に当たった際、板ポリのエフェクトを置くための回転量
-#define LAY_ROT_TOP D3DXVECTOR3(D3DXToRadian(90.0f), 0.0f, D3DXToRadian(90.0f))
-#define LAY_ROT_BOT D3DXVECTOR3(D3DXToRadian(-90.0f), 0.0f, D3DXToRadian(90.0f))
-#define LAY_ROT_LEFT D3DXVECTOR3(0.0f, D3DXToRadian(90.0f), 0.0f)
-#define LAY_ROT_RIGHT D3DXVECTOR3(0.0f, D3DXToRadian(-90.0f), 0.0f)
+// ブロック等に当たった際、板ポリのエフェクトを置くための回転量（ブロックの中から見ているので注意）
+#define LAY_ROT_TOP D3DXVECTOR3(D3DXToRadian(-90.0f), 0.0f, 0.0f)    // 天井
+#define LAY_ROT_LEFT D3DXVECTOR3(0.0f, D3DXToRadian(270.0f), 0.0f)   // 左壁
+#define LAY_ROT_BOT D3DXVECTOR3(D3DXToRadian(90.0f), 0.0f, 0.0f)     // 地面
+#define LAY_ROT_RIGHT D3DXVECTOR3(0.0f, D3DXToRadian(90.0f), 0.0f)   // 右壁
 #define LAY_ROT_BACK D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f)
 #define LAY_ROT_FRONT D3DXVECTOR3(0.0f, 0.0f, D3DXToRadian(0.0001f))
 

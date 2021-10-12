@@ -174,4 +174,28 @@ TEXTURESET
     NAME = data/TEXTURE/020_kirakira.png
 END_TEXTURESET
 
+#---------------------------------------
+# [18] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 21
+    NAME = data/TEXTURE/021_gamestartline.png
+END_TEXTURESET
+
+#---------------------------------------
+# [18] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 22
+    NAME = data/TEXTURE/022_confetti.png
+END_TEXTURESET
+
+#---------------------------------------
+# [18] 線
+#---------------------------------------
+TEXTURESET
+    TYPE = 23
+    NAME = data/TEXTURE/023_strikeshotbg.png
+END_TEXTURESET
+
 END_SCRIPT		# この行は絶対消さないこと！

@@ -5,39 +5,39 @@ SCRIPT		# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 
 #-------------------------------------------------------------
-# [12] （エフェクト名）
+# [0] （エフェクト名）
 #-------------------------------------------------------------
 EFFECT_DATASET
-	TYPE = 12
-	TEX_TYPE = 11
-	ONCE = 10
+	TYPE = 0
+	TEX_TYPE = 14
+	ONCE = 1
 	PLANE = 0		# 0がXYで1がXZ
-	ON_CIRCLE = 1		# bool
+	ON_CIRCLE = 0		# bool
 	EMIT_INSIDE = 0		# bool
 	SCATTER_ANGLE = 0	# 0～314
 	SCATTER_WIDTH = 0	# 0～314
-	SPEED_MAX = 600
-	SPEED_MIN = 600
+	SPEED_MAX = 100
+	SPEED_MIN = 100
 	SPEED_AA_MAX = 0
 	SPEED_AA_MIN = 0
 	ACCEL = 1.000	# 1.0倍が基本
 	GRAVITY = 0.000
 	GRAVITYLIMIT = 0.000
 	ROT_LAY = 0		# bool
-	ROT_EQUAL_MOVE = 1	# bool
+	ROT_EQUAL_MOVE = 0	# bool
 	ROT_SPEED_MAX = 0
 	ROT_SPEED_MIN = 0
-	COL = 0.560 0.560 0.560 1.000
+	COL = 0.000 0.548 1.000 1.000
 	COL_CHANGE = 0.000 0.000 0.000 0.000
-	FADE_OUT_RATE = 0.000	# アルファ値減衰(0ならサイズを減衰させる)
+	FADE_OUT_RATE = 0.010	# アルファ値減衰(0ならサイズを減衰させる)
 	FADE_OUT_LOCK_COUNT = 0
 	SIZE_MAX = 15000
 	SIZE_MIN = 15000
-	SIZE_CHANGE = -12.0 -12.0 0.0
-	EMITRADIUS = 50
+	SIZE_CHANGE = 0.0 0.0 0.0
+	EMITRADIUS = 0
 	ADD_BLEND = 1		# bool
-	USE_ZBUFFER = 1		# bool
-	ALPHA_TEST_BORDER = 100
+	USE_ZBUFFER = 0		# bool
+	ALPHA_TEST_BORDER = 0
 END_EFFECT_DATASET
 
 

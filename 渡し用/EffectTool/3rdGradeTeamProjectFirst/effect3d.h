@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // エフェクト3D処理 [effect3d.h]
-// Author : 後藤慎之助
+// Author : 伊藤陽梧
 //
 //=============================================================================
 #ifndef _EFFECT3D_H_
@@ -34,7 +34,11 @@ public:
     static void Emit(const int nType, D3DXVECTOR3 pos, D3DXVECTOR3 posOld, float fEmitRadius = 0.0f);
     static CEffect3D * Create(const int nType, D3DXVECTOR3 pos, const float fScatterAngle);
     void MoveCalculation(const int nType, const float fScatterAngle);
-
+	void UpdateMove(D3DXVECTOR3 &pos);
+	void UpdateSize(D3DXVECTOR3 &size);
+	void UpdateColor(void);
+	void UpdateAnim(void);
+	void UpdateAngle(float &fAngle);
 private:
     int m_nTexType;                 // 使うテクスチャの種類
 
